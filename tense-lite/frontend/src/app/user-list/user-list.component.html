@@ -1,0 +1,6 @@
+<ul *ngIf="users$ | async as users; else loading">
+  <li *ngFor="let user of users">
+    {{ user.first_name }} {{ user.last_name }}
+  </li>
+</ul>
+<ng-template #loading>Loading...</ng-template>
