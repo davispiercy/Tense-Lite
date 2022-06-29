@@ -1,15 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-user-profile',
-  template: `
-    <ul *ngIf="auth.user$ | async as user">
-      <li>{{ user.name }}</li>
-      <li>{{ user.email }} </li>
-    </ul>`
+  templateUrl: './user-profile.component.html',
 })
-export class UserProfileComponent {
+export class UserProfileComponent implements OnInit {
+  profileJson: string | null;
 
-  constructor(public auth: AuthService) { }
+  constructor(public auth: AuthService) {}
+
+  ngOnInit(): void {
+    this.auth.user$.subscribe(
+      (profile) => (this.profileJson = JSON.stringify(profile, null, 2)!),
+    );
+  }
 }
