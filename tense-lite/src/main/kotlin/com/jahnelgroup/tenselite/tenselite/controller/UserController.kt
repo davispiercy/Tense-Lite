@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 @RestController
 class UserController (val userService: UserService) {
@@ -32,7 +33,7 @@ class UserController (val userService: UserService) {
         return user
     }
     @DeleteMapping("/deleteUser/{id}")
-    fun deleteUser(@PathVariable("id") id: Long) :User {
+    fun deleteUser(@PathVariable("id") id: Long) : Optional<User> {
         return userService.deleteUser(id)
     }
 

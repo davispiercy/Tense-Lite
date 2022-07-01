@@ -6,6 +6,7 @@ import com.jahnelgroup.tenselite.tenselite.repository.UserRepository
 import org.apache.tomcat.util.json.JSONParser
 import org.springframework.boot.json.GsonJsonParser
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class UserService (val userRepository: UserRepository){
@@ -23,8 +24,9 @@ class UserService (val userRepository: UserRepository){
         userRepository.save(user)
         return user
     }
-    fun deleteUser(user_id: Long) : User {
+    fun deleteUser(user_id: Long) : Optional<User> {
+        var user: Optional<User> = userRepository.findById(user_id)
         userRepository.deleteById(user_id)
-        return userRepository.findById(user_id).get()
+        return user
     }
 }
