@@ -9,6 +9,7 @@ import { AuthButtonComponent } from './auth-button/auth-button.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HeaderComponent } from './header/header.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token')
@@ -19,7 +20,8 @@ export function tokenGetter() {
     AppComponent,
     UserListComponent,
     AuthButtonComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

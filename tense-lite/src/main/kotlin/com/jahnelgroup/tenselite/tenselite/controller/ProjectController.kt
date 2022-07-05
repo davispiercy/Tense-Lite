@@ -15,7 +15,6 @@ import java.util.*
 class ProjectController (val projectService: ProjectService){
     @GetMapping("/projects")
     fun findAll(): List<Project> {
-        println("test")
         return projectService.findAll()
     }
     @GetMapping("/projects/{id}")
