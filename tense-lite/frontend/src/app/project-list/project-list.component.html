@@ -1,0 +1,13 @@
+<div class="title">
+  <h1>Projects</h1>
+</div>
+
+<ul *ngIf="projects$ | async as projects; else loading">
+  <li *ngFor="let project of projects">
+    Project Name: {{ project.name }} <br>
+    Start Date: {{ project.start_date }} <br>
+    End Date: {{ project.end_date }} <br>
+    Billable: {{ project.billable }}
+  </li>
+</ul>
+<ng-template #loading>Loading...</ng-template>

@@ -16,4 +16,8 @@ export class UserListComponent implements OnInit {
   ngOnInit(): void {
     this.users$ = this.userService.getUsers();
   }
+  isChecked = false;
+  showFormToggle() {
+    this.isChecked = !this.isChecked;
+  }
 }
