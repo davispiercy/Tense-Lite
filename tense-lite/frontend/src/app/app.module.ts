@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
 import { ProjectListComponent } from './project-list/project-list.component';
+import { TimeEntryComponent } from './time-entries/time-entries.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token')
@@ -24,6 +25,7 @@ export function tokenGetter() {
     UserProfileComponent,
     HeaderComponent,
     ProjectListComponent,
+    TimeEntryComponent,
   ],
   imports: [
     BrowserModule,

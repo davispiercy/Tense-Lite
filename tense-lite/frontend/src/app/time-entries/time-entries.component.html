@@ -1,0 +1,14 @@
+<div class="title">
+  <h1>Time Entries</h1>
+</div>
+<ul *ngIf="entries$ | async as entries; else loading">
+  <li *ngFor="let entry of entries">
+    Entry Id: {{ entry.id }} <br>
+    User Id: {{ entry.user_id }} <br>
+    Project Id: {{ entry.project_id }} <br>
+    Entry Date: {{ entry.entry_date }} <br>
+    Notes: {{ entry.notes }} <br>
+    Hours: {{ entry.hours }}
+  </li>
+</ul>
+<ng-template #loading>Loading...</ng-template>

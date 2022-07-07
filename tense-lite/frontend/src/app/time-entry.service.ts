@@ -4,9 +4,9 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class ProjectService {
+export class TimeEntryService {
   constructor(private http: HttpClient) { }
-  getProjects(): Observable<any> {
-    return this.http.get('http://localhost:8080/projects');
+  getEntries(): Observable<any> {
+    return this.http.get('http://localhost:8080/entries');
   }
 }
