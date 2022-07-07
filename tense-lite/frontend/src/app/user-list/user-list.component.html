@@ -3,21 +3,25 @@
 </div>
 
 <div class="add-user">
-  <button (click)="showFormToggle()">Add User</button>
+  <div *ngIf="!isChecked">
+    <button (click)="showFormToggle()">Add User</button>
+  </div>
+
   <div *ngIf="isChecked">
-    <form action="http://localhost:8080/createUser" method="post">
-      <label for="id">Id:</label><br>
-      <input type="id" id="id" name="id"><br>
-      <label for="fname">First name:</label><br>
-      <input type="text" id="fname" name="fname"><br>
-      <label for="lname">Last name:</label><br>
-      <input type="text" id="lname" name="lname"><br>
-      <label for="email">Email:</label><br>
-      <input type="text" id="email" name="email"><br>
-      <input type="submit" value="Submit">
+    <form [formGroup]="userForm">
+      <h3>New User</h3>
+      <label for="first-name">First Name: </label>
+      <input id="first-name" type="text" formControlName="first_name"> <br>
+      <label for="last-name">Last Name: </label>
+      <input id="last-name" type="text" formControlName="last_name"> <br>
+      <label for="email">Email: </label>
+      <input id="email" type="text" formControlName="email">
     </form>
+    <button type="submit" [disabled]="!userForm.valid" (click)="onSubmit()">Submit</button>
+    <button id="cancel" (click)="showFormToggle()">Cancel</button>
   </div>
 </div>
+
 
 <ul *ngIf="users$ | async as users; else loading">
   <li *ngFor="let user of users">

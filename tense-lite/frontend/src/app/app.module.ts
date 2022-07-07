@@ -30,7 +30,7 @@ export function tokenGetter() {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
     AuthModule.forRoot({
