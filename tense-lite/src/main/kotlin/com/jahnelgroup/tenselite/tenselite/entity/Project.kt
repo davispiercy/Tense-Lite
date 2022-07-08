@@ -24,4 +24,7 @@ class Project {
 
     @Column(name = "billable")
     var billable: Boolean = false
+
+    @Column(name = "enabled")
+    var enabled: Boolean = true
 }

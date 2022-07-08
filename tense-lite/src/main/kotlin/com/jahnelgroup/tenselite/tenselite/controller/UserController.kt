@@ -18,6 +18,10 @@ class UserController (val userService: UserService) {
     fun findAll(): List<User> {
         return userService.findAll()
     }
+    @GetMapping("/enabledUsers")
+    fun findEnabledUsers(): List<User> {
+        return userService.getEnabledUsers()
+    }
     @GetMapping("/user/{id}")
     fun getUser(@PathVariable("id") id: Long) :User {
         return userService.getUser(id)

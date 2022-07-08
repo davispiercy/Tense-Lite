@@ -17,6 +17,10 @@ class ProjectController (val projectService: ProjectService){
     fun findAll(): List<Project> {
         return projectService.findAll()
     }
+    @GetMapping("/enabledProjects")
+    fun findAllEnabled(): List<Project> {
+        return projectService.findAllEnabled()
+    }
     @GetMapping("/projects/{id}")
     fun getProject(@PathVariable("id") id: Long) : Project {
         return projectService.getProject(id)

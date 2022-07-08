@@ -15,7 +15,7 @@
       <label for="last-name">Last Name: </label>
       <input id="last-name" type="text" formControlName="last_name"> <br>
       <label for="email">Email: </label>
-      <input id="email" type="text" formControlName="email">
+      <input id="email" type="text" formControlName="email"> <br>
     </form>
     <button type="submit" [disabled]="!userForm.valid" (click)="onSubmit()">Submit</button>
     <button id="cancel" (click)="showFormToggle()">Cancel</button>
@@ -25,7 +25,9 @@
 
 <ul *ngIf="users$ | async as users; else loading">
   <li *ngFor="let user of users">
-    Name: {{ user.first_name }}  {{ user.last_name }} <br> Email: {{user.email}}
+    Name: {{ user.first_name }}  {{ user.last_name }} <br>
+    Email: {{user.email}} <br>
+    <button id="disable" (click)="disable(user)">Disable User</button>
   </li>
 </ul>
 <ng-template #loading>Loading...</ng-template>

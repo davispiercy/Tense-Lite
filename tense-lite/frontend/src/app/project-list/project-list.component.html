@@ -2,12 +2,35 @@
   <h1>Projects</h1>
 </div>
 
+<div class="add-project">
+  <div *ngIf="!isChecked">
+    <button (click)="showFormToggle()">Add Project</button>
+  </div>
+
+  <div *ngIf="isChecked">
+    <form [formGroup]="projectForm">
+      <h3>New Project</h3>
+      <label for="name">Project Name: </label>
+      <input id="name" type="text" formControlName="name"> <br>
+      <label for="start-date">Start Date: </label>
+      <input id="start-date" type="date" formControlName="start_date"> <br>
+      <label for="end-date">End Date: </label>
+      <input id="end-date" type="date" formControlName="end_date"> <br>
+      <label for="billable">Billable: </label>
+      <input id="billable" type="checkbox" formControlName="billable">
+    </form>
+    <button type="sumbit" [disabled]="!projectForm.valid" (click)="onSubmit()">Submit</button>
+    <button id="cancel" (click)="showFormToggle()">Cancel</button>
+  </div>
+</div>
+
 <ul *ngIf="projects$ | async as projects; else loading">
   <li *ngFor="let project of projects">
     Project Name: {{ project.name }} <br>
     Start Date: {{ project.start_date }} <br>
     End Date: {{ project.end_date }} <br>
-    Billable: {{ project.billable }}
+    Billable: {{ project.billable }} Enabled: {{ project.enabled }}
+    <button id="disable" (click)="disable(project)">Retire Project</button>
   </li>
 </ul>
 <ng-template #loading>Loading...</ng-template>

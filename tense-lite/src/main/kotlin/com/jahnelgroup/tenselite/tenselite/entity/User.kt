@@ -19,5 +19,5 @@ class User {
     var email = ""
 
     @Column(name = "enabled")
-    var enabled: Boolean = false
+    var enabled: Boolean = true
 }

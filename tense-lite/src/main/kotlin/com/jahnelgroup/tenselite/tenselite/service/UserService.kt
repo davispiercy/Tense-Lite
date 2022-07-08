@@ -16,6 +16,9 @@ class UserService (val userRepository: UserRepository){
     fun getUser(user_id: Long) : User {
         return userRepository.findById(user_id).get()
     }
+    fun getEnabledUsers(): List<User> {
+        return userRepository.findByEnabledTrue();
+    }
     fun createUser(user: User) : User {
         userRepository.save(user)
         return user

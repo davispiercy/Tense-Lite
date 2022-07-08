@@ -10,6 +10,9 @@ class ProjectService (val projectRepository: ProjectRepository){
     fun findAll(): List<Project> {
         return projectRepository.findAll()
     }
+    fun findAllEnabled(): List<Project> {
+        return projectRepository.findAllEnabled()
+    }
     fun getProject(id: Long) : Project {
         return projectRepository.findById(id).get()
     }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserService } from '../user.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { User } from '../models/user.model';
 
 @Component({
   selector: 'app-user-list',
@@ -11,7 +12,6 @@ import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms'
 
 export class UserListComponent implements OnInit {
   users$: Observable<any>;
-  empty$: Observable<any>;
 
   constructor(private userService: UserService, private fb: FormBuilder) {}
 
@@ -33,19 +33,16 @@ export class UserListComponent implements OnInit {
     email: ['', Validators.required]
   });
 
-
-  refresh() {
-      this.users$ = this.empty$;
-      this.users$ = this.userService.getUsers();
-  }
-
   onSubmit() {
     this.userService.addUser(this.userForm.value).subscribe((response: any) =>
     { console.log(response);});
-    this.refresh();
-    this.showFormToggle()
+    window.location.reload();
   }
 
-
+  disable(user: User) {
+    this.userService.disableUser(user).subscribe((response: any) =>
+    { console.log(response);} );
+    window.location.reload();
+  }
 
 }
