@@ -1,6 +1,7 @@
 package com.jahnelgroup.tenselite.tenselite.service
 
 import com.jahnelgroup.tenselite.tenselite.entity.Entry
+import com.jahnelgroup.tenselite.tenselite.entity.Project
 import com.jahnelgroup.tenselite.tenselite.repository.EntryRepository
 import org.springframework.stereotype.Service
 import java.util.*
@@ -19,6 +20,11 @@ class EntryService (val entryRepository: EntryRepository){
     }
     fun updateEntry(entry: Entry) : Entry {
         entryRepository.save(entry)
+        return entry
+    }
+    fun deleteEntry(id: Long) : Optional<Entry> {
+        var entry: Optional<Entry> = entryRepository.findById(id)
+        entryRepository.deleteById(id)
         return entry
     }
 }

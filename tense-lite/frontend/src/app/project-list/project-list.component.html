@@ -26,11 +26,14 @@
 
 <ul *ngIf="projects$ | async as projects; else loading">
   <li *ngFor="let project of projects">
-    Project Name: {{ project.name }} <br>
-    Start Date: {{ project.start_date }} <br>
-    End Date: {{ project.end_date }} <br>
-    Billable: {{ project.billable }} Enabled: {{ project.enabled }}
-    <button id="disable" (click)="disable(project)">Retire Project</button>
+      Project Name: {{ project.name }} <br>
+      Start Date: {{ project.start_date }} <br>
+      End Date: {{ project.end_date }} <br>
+      Billable: {{ project.billable }} Enabled: {{ project.enabled }} <br>
+      <button id="disable" (click)="disable(project)">Retire Project</button> <br>
+      <button id="edit" >Edit Project</button>
+
   </li>
 </ul>
+
 <ng-template #loading>Loading...</ng-template>

@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@auth0/auth0-angular": "^1.10.0"
+    "@auth0/auth0-angular": "^1.10.0",
+    "firebase": "^9.9.0"
   }
 }

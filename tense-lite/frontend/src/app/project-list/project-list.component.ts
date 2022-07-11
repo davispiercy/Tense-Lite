@@ -11,6 +11,7 @@ import { Project } from '../models/project.model';
 })
 export class ProjectListComponent implements OnInit {
   projects$: Observable<any>;
+
   constructor(private projectService: ProjectService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -18,21 +19,21 @@ export class ProjectListComponent implements OnInit {
   }
 
   isChecked = false;
-    showFormToggle() {
-      this.isChecked = !this.isChecked;
-      this.projectForm.patchValue({
-        name: '',
-        start_date: '',
-        end_date: '',
-        billable: ''
-      })
-    }
-    projectForm = this.fb.group({
-      name: ['', Validators.required],
-      start_date: ['', Validators.required],
-      end_date: ['', Validators.required],
-      billable: ['']
+  showFormToggle() {
+    this.isChecked = !this.isChecked;
+    this.projectForm.patchValue({
+      name: '',
+      start_date: '',
+      end_date: '',
+      billable: ''
     });
+  }
+  projectForm = this.fb.group({
+    name: ['', Validators.required],
+    start_date: ['', Validators.required],
+    end_date: ['', Validators.required],
+    billable: ['']
+  });
 
   onSubmit() {
     this.projectService.addProject(this.projectForm.value).subscribe((response: any) =>
@@ -45,5 +46,6 @@ export class ProjectListComponent implements OnInit {
     { console.log(response);} );
     window.location.reload();
   }
+
 
 }

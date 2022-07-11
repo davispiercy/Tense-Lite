@@ -1,0 +1,17 @@
+<div class="login">
+  <div *ngIf="!isChecked">
+    <button (click)="showFormToggle()">Log In</button>
+  </div>
+
+  <div *ngIf="isChecked">
+    <form [formGroup]="loginForm">
+      <h3>Log In</h3>
+      <label for="email">Email: </label>
+      <input id="email" type="text" formControlName="email"> <br>
+      <label for="password">Password: </label>
+      <input id="password" type="text" formControlName="password">
+    </form>
+    <button type="submit" [disabled]="!loginForm.valid" (click)="onSubmit()">Submit</button>
+    <button id="cancel" (click)="showFormToggle()">Cancel</button>
+  </div>
+</div>

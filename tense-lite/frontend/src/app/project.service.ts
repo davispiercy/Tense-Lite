@@ -10,6 +10,7 @@ export class ProjectService {
   getProjects(): Observable<any> {
     return this.http.get('http://localhost:8080/enabledProjects');
   }
+
   addProject(data: any): Observable<any>{
     return this.http.post<Project>(
       'http://localhost:8080/createProject/',

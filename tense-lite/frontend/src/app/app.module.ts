@@ -12,10 +12,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { TimeEntryComponent } from './time-entries/time-entries.component';
+import { initializeApp } from 'firebase/app';
+import { LoginComponent } from './login/login.component'
 
-export function tokenGetter() {
-  return localStorage.getItem('token')
-}
+
 
 @NgModule({
   declarations: [
@@ -26,6 +26,7 @@ export function tokenGetter() {
     HeaderComponent,
     ProjectListComponent,
     TimeEntryComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
