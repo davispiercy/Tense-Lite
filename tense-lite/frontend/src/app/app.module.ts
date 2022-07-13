@@ -4,29 +4,29 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UserListComponent } from './user-list/user-list.component';
-import { AuthModule } from '@auth0/auth0-angular';
-import { AuthButtonComponent } from './auth-button/auth-button.component';
-import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { TimeEntryComponent } from './time-entries/time-entries.component';
 import { initializeApp } from 'firebase/app';
-import { LoginComponent } from './login/login.component'
-
-
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { environment } from '../environments/environment';
+import { AuthService } from './shared/services/auth.service';
+import { DashboardComponent} from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserListComponent,
-    AuthButtonComponent,
-    UserProfileComponent,
     HeaderComponent,
     ProjectListComponent,
     TimeEntryComponent,
-    LoginComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,9 +34,11 @@ import { LoginComponent } from './login/login.component'
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
-    AuthModule.forRoot({
-      domain: 'dev-jgjqp8xg.us.auth0.com',
-      clientId: '87wELKEXbCnnEtZuGFg1XOOnX6j6XYDm'})
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
+    AngularFireStorageModule,
+    AngularFireDatabaseModule,
   ],
   providers: [
   ],
