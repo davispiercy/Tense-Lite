@@ -6,11 +6,11 @@ import javax.persistence.*
 @Table(name = "users")
 class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0L
+
     @Column(name = "uid")
     var uid = ""
-
-    @Column(name = "id")
-    var id: Long = 0L
 
     @Column(name = "first_name")
     var first_name = ""
@@ -22,7 +22,7 @@ class User {
     var email = ""
 
     @Column(name = "sec_group")
-    var sec_group = ""
+    var sec_group = "basic"
 
     @Column(name = "enabled")
     var enabled: Boolean = true

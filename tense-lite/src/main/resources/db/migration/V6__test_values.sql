@@ -1,10 +1,10 @@
 START TRANSACTION;
 
 INSERT INTO `tense-lite`.users
-(uid, id, first_name, last_name, email, sec_group, enabled)
-VALUES ('5jU418lBmSR8W4GDx26lkw8CXPx1', 1, 'Davis', 'Piercy', 'dpiercy@jahnelgroup.com', 'admin', true),
-('czwIwm2al6SECTc1VQLT3UmWMT93', 2, 'Dom', 'Favata', 'dfavata@jahnelgroup.com', 'basic', true),
-('yLxgKEYJzPXIhP4Wkzts3k9HIUf1', 3, 'Jory', 'Hutchins', 'jhutchins@jahnelgroup.com', 'admin', true);
+(id, uid, first_name, last_name, email, sec_group, enabled)
+VALUES (1, '5jU418lBmSR8W4GDx26lkw8CXPx1', 'Davis', 'Piercy', 'dpiercy@jahnelgroup.com', 'admin', true),
+(2, 'czwIwm2al6SECTc1VQLT3UmWMT93', 'Dom', 'Favata', 'dfavata@jahnelgroup.com', 'basic', true),
+(3, 'yLxgKEYJzPXIhP4Wkzts3k9HIUf1', 'Jory', 'Hutchins', 'jhutchins@jahnelgroup.com', 'admin', true);
 
 INSERT INTO `tense-lite`.projects
 (id, name, start_date, end_date, billable, enabled)

@@ -18,6 +18,10 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
 import { AuthService } from './shared/services/auth.service';
 import { DashboardComponent} from './dashboard/dashboard.component';
+import { ForgotPasswordComponent} from './forgot-password/forgot-password.component';
+import { SignInComponent} from './sign-in/sign-in.component';
+import { SignUpComponent} from './sign-up/sign-up.component';
+import { VerifyEmailComponent} from './verify-email/verify-email.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +31,10 @@ import { DashboardComponent} from './dashboard/dashboard.component';
     ProjectListComponent,
     TimeEntryComponent,
     DashboardComponent,
+    ForgotPasswordComponent,
+    SignInComponent,
+    SignUpComponent,
+    VerifyEmailComponent,
   ],
   imports: [
     BrowserModule,

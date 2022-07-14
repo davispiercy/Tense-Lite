@@ -5,8 +5,8 @@ DROP TABLE IF EXISTS users, projects, assignments, time_entries;
 -- `tense-lite`.users definition
 
 CREATE TABLE `users` (
-  uid varchar(50) NOT NULL,
   id INT NOT NULL auto_increment,
+  uid varchar(50) NOT NULL,
   first_name varchar(120) NOT NULL,
   last_name varchar(120) NOT NULL,
   email varchar(255) NOT NULL,

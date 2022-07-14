@@ -10,4 +10,18 @@ interface UserRepository: JpaRepository<User, Long> {
 
     @Query("select u from User u where u.enabled = true")
     fun findByEnabledTrue(): List<User>
+
+    @Query("select u.id from User u where u.uid = ?1")
+    fun getUserId(uid: String): Long
+
+    @Query("select u from User u where u.email = ?1")
+    fun getUserByEmail(email: String): User
+
+    @Query("select u from User u where u.uid = ?1")
+    fun getUserById(uid: String): User
+
+    @Query("select (count(u) > 0) from User u where u.uid = ?1")
+    fun checkIfExists(uid: String): Boolean
+
+
 }

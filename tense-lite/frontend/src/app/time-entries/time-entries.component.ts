@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TimeEntryService } from '../time-entry.service';
+import { UserService } from '../user.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Entry } from '../models/entry.model';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   selector: 'app-time-entries',
@@ -11,10 +13,14 @@ import { Entry } from '../models/entry.model';
 })
 export class TimeEntryComponent implements OnInit {
   entries$: Observable<any>;
-  constructor(private timeEntryService: TimeEntryService, private fb: FormBuilder) { }
+  constructor(private timeEntryService: TimeEntryService, private fb: FormBuilder,
+  private userService: UserService, public authService: AuthService) { }
 
   ngOnInit(): void {
-    this.entries$ = this.timeEntryService.getEntries();
+    const user = JSON.parse(localStorage.getItem('user')!);
+    var id: number;
+    this.userService.getUserId(user.uid).subscribe((response) =>
+    { id = response; console.log(id); this.entries$ = this.timeEntryService.getUserEntries(id); });
   }
   isChecked = false;
   editing = false;

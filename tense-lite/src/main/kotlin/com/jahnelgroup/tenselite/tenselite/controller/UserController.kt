@@ -18,9 +18,25 @@ class UserController (val userService: UserService) {
     fun findAll(): List<User> {
         return userService.findAll()
     }
+    @GetMapping("/userExists/{uid}")
+    fun checkIfExists(@PathVariable("uid") uid: String) : Boolean {
+        return userService.checkIfExists(uid)
+    }
     @GetMapping("/enabledUsers")
     fun findEnabledUsers(): List<User> {
         return userService.getEnabledUsers()
+    }
+    @GetMapping("/findUserId/{uid}")
+    fun getUserId(@PathVariable("uid") uid: String) : Long {
+        return userService.getUserId(uid)
+    }
+    @GetMapping("/userByEmail/{email}")
+    fun getUserByEmail(@PathVariable("email") email: String) : User {
+        return userService.getUserByEmail(email)
+    }
+    @GetMapping("/userById/{uid}")
+    fun getUserById(@PathVariable("uid") uid: String) : User {
+        return userService.getUserById(uid)
     }
     @GetMapping("/user/{id}")
     fun getUser(@PathVariable("id") id: Long) :User {

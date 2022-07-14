@@ -9,6 +9,9 @@ export class TimeEntryService {
   getEntries(): Observable<any> {
     return this.http.get('http://localhost:8080/entries');
   }
+  getUserEntries(id: number): Observable<any> {
+    return this.http.get(`http://localhost:8080/entries/${id}`);
+  }
   addEntry(data: any): Observable<any>{
     return this.http.post('http://localhost:8080/addEntry/',
     { "user_id": data.user_id, "project_id": data.project_id, "entry_date": data.entry_date,

@@ -16,6 +16,18 @@ class UserService (val userRepository: UserRepository){
     fun getUser(user_id: Long) : User {
         return userRepository.findById(user_id).get()
     }
+    fun checkIfExists(uid: String) : Boolean {
+        return userRepository.checkIfExists(uid)
+    }
+    fun getUserId(uid: String) : Long {
+        return userRepository.getUserId(uid)
+    }
+    fun getUserByEmail(email: String) : User {
+        return userRepository.getUserByEmail(email)
+    }
+    fun getUserById(uid: String) : User {
+        return userRepository.getUserById(uid)
+    }
     fun getEnabledUsers(): List<User> {
         return userRepository.findByEnabledTrue();
     }

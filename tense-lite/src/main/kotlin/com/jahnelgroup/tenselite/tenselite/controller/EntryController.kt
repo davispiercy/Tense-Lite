@@ -17,6 +17,10 @@ class EntryController (val entryService: EntryService){
     fun findAll(): List<Entry> {
         return entryService.findAll()
     }
+    @GetMapping("/entries/{id}")
+    fun findAllById(@PathVariable("id") id: Long) : List<Entry> {
+        return entryService.findAllById(id)
+    }
     @GetMapping("/entry/{id}")
     fun getEntry(@PathVariable("id") id: Long) : Entry {
         return entryService.getEntry(id)

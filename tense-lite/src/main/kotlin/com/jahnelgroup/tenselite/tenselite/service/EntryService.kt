@@ -11,6 +11,9 @@ class EntryService (val entryRepository: EntryRepository){
     fun findAll(): List<Entry> {
         return entryRepository.findAll()
     }
+    fun findAllById(id: Long) : List<Entry> {
+        return entryRepository.findByUserId(id)
+    }
     fun getEntry(id: Long) : Entry {
         return entryRepository.findById(id).get()
     }

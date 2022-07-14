@@ -11,10 +11,10 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { AuthGuard } from './shared/guard/auth.guard';
 
 const routes: Routes = [
-{ path: '', redirectTo: '/sign-in', pathMatch: 'full' },
+{ path: '', redirectTo: '/dashboard', pathMatch: 'full' },
 { path: 'sign-in', component: SignInComponent },
 { path: 'register-user', component: SignUpComponent },
-{ path: 'dashboard', component: DashboardComponent },
+{ path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
 { path: 'forgot-password', component: ForgotPasswordComponent },
 { path: 'verify-email-address', component: VerifyEmailComponent },
 { path: 'users', component: UserListComponent},
