@@ -25,6 +25,10 @@ class ProjectController (val projectService: ProjectService){
     fun getProject(@PathVariable("id") id: Long) : Project {
         return projectService.getProject(id)
     }
+    @GetMapping("/getProjects/{ids}")
+    fun getProjects(@PathVariable("ids") ids: List<Long>) : List<Project> {
+        return projectService.getProjects(ids)
+    }
     @PostMapping("/createProject")
     fun createProject(@RequestBody project: Project) : Project {
         projectService.createProject(project)

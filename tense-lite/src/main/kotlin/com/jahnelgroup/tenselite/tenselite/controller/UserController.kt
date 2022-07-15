@@ -3,6 +3,7 @@ package com.jahnelgroup.tenselite.tenselite.controller
 import com.fasterxml.jackson.databind.util.JSONPObject
 import com.jahnelgroup.tenselite.tenselite.entity.User
 import com.jahnelgroup.tenselite.tenselite.service.UserService
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -26,6 +27,7 @@ class UserController (val userService: UserService) {
     fun findEnabledUsers(): List<User> {
         return userService.getEnabledUsers()
     }
+    @CrossOrigin(origins = arrayOf("http://localhost:8080"))
     @GetMapping("/findUserId/{uid}")
     fun getUserId(@PathVariable("uid") uid: String) : Long {
         return userService.getUserId(uid)

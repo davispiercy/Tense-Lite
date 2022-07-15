@@ -16,6 +16,9 @@ class ProjectService (val projectRepository: ProjectRepository){
     fun getProject(id: Long) : Project {
         return projectRepository.findById(id).get()
     }
+    fun getProjects(ids: List<Long>) : List<Project> {
+        return projectRepository.findAllById(ids)
+    }
     fun createProject(project: Project) : Project {
         projectRepository.save(project)
         return project
