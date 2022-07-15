@@ -147,4 +147,7 @@ export class AuthService {
       this.router.navigate(['sign-in']);
     });
   }
+  getJWT() {
+    return this.userData.getIdToken();
+  }
 }

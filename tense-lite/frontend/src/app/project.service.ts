@@ -10,6 +10,12 @@ export class ProjectService {
   getProjects(): Observable<any> {
     return this.http.get('http://localhost:8080/enabledProjects');
   }
+  getProjectIds(data: any): Observable<any> {
+    return this.http.get(`http://localhost:8080/getProjectIds/${data}`);
+  }
+  getUserProjects(data: any): Observable<any> {
+    return this.http.get(`http://localhost:8080/getProjects/${data}`);
+  }
 
   addProject(data: any): Observable<any>{
     return this.http.post<Project>(

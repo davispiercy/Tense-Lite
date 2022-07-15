@@ -20,7 +20,7 @@ export class TimeEntryComponent implements OnInit {
     const user = JSON.parse(localStorage.getItem('user')!);
     var id: number;
     this.userService.getUserId(user.uid).subscribe((response) =>
-    { id = response; console.log(id); this.entries$ = this.timeEntryService.getUserEntries(id); });
+    { id = response; this.entries$ = this.timeEntryService.getUserEntries(id); });
   }
   isChecked = false;
   editing = false;

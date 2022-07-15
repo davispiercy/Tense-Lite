@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { ProjectService } from '../project.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Project } from '../models/project.model';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-project-list',
@@ -12,10 +13,16 @@ import { Project } from '../models/project.model';
 export class ProjectListComponent implements OnInit {
   projects$: Observable<any>;
 
-  constructor(private projectService: ProjectService, private fb: FormBuilder) { }
+  constructor(private projectService: ProjectService, private fb: FormBuilder,
+  private userService: UserService ) { }
 
   ngOnInit(): void {
-    this.projects$ = this.projectService.getProjects();
+    var ids: any;
+    var id: any
+    this.userService.getUserId(JSON.parse(localStorage.getItem('user')!).uid).subscribe((response) =>
+      { id = response; this.projectService.getProjectIds(id).subscribe((response2) =>
+        { ids = response2; this.projects$ = this.projectService.getUserProjects(ids); });
+      });
   }
 
   isChecked = false;
