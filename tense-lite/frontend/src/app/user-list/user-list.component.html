@@ -9,13 +9,20 @@
 
   <div *ngIf="isChecked">
     <form [formGroup]="userForm">
-      <h3>New User</h3>
+      <div *ngIf="editing">
+        <h3>Edit User</h3>
+      </div>
+      <div *ngIf="!editing">
+        <h3>New User</h3>
+      </div>
       <label for="first-name">First Name: </label>
       <input id="first-name" type="text" formControlName="first_name"> <br>
       <label for="last-name">Last Name: </label>
       <input id="last-name" type="text" formControlName="last_name"> <br>
       <label for="email">Email: </label>
       <input id="email" type="text" formControlName="email"> <br>
+      <label for="sec_group">Admin</label>
+      <input id="sec_group" type="checkbox" formControlName="sec_group"> <br>
     </form>
     <button type="submit" [disabled]="!userForm.valid" (click)="onSubmit()">Submit</button>
     <button id="cancel" (click)="showFormToggle()">Cancel</button>
@@ -23,10 +30,14 @@
 </div>
 
 
-<ul *ngIf="users$ | async as users; else loading">
+<ul class="display-users" *ngIf="users$ | async as users; else loading">
   <li *ngFor="let user of users">
     Name: {{ user.first_name }}  {{ user.last_name }} <br>
     Email: {{user.email}} <br>
+    Enabled: {{user.enabled}} <br>
+    UID: {{user.uid}} <br>
+    Security Group: {{user.sec_group}} <br>
+    <button id="edit" (click)="edit(user)">Edit User</button>
     <button id="disable" (click)="disable(user)">Disable User</button>
   </li>
 </ul>

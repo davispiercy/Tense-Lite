@@ -19,18 +19,23 @@ export class UserListComponent implements OnInit {
     this.users$ = this.userService.getUsers();
   }
   isChecked = false;
+  editing = false;
   showFormToggle() {
     this.isChecked = !this.isChecked;
     this.userForm.patchValue({
       first_name: '',
       last_name: '',
-      email: ''
+      email: '',
+      sec_group: '',
+      enabled: '',
     })
   }
   userForm = this.fb.group({
     first_name: ['', Validators.required],
     last_name: ['', Validators.required],
-    email: ['', Validators.required]
+    email: ['', Validators.required],
+    sec_group: ['', Validators.required],
+    enabled: ['', Validators.required],
   });
 
   onSubmit() {
@@ -42,6 +47,30 @@ export class UserListComponent implements OnInit {
   disable(user: User) {
     this.userService.disableUser(user).subscribe((response: any) =>
     { console.log(response);} );
+    window.location.reload();
+  }
+  id: number = 0;
+  edit(user: User) {
+    this.id = user.id
+    this.editing = !this.editing;
+    this.isChecked = !this.isChecked;
+    var enabled = '';
+    if(user.enabled){
+      enabled = 'true'
+    }
+    this.userForm.patchValue({
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      sec_group: user.sec_group,
+      enabled: enabled,
+    });
+  }
+  editEntry() {
+    this.userService.editUser(this.id, this.userForm.value).subscribe((response: any) =>
+    { console.log(response);});
+    this.editing = !this.editing;
+    this.isChecked = !this.isChecked;
     window.location.reload();
   }
 

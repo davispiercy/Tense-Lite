@@ -12,7 +12,8 @@ export class UserService {
     return this.http.get(`http://localhost:8080/userExists/${uid}`)
   }
   getUsers(): Observable<any> {
-    return this.http.get('http://localhost:8080/enabledUsers');
+    //return this.http.get('http://localhost:8080/enabledUsers');
+    return this.http.get('http://localhost:8080/users');
   }
   getUserByEmail(email: string) : Observable<any> {
     return this.http.get(`http://localhost:8080/userByEmail/${email}`)
@@ -36,6 +37,14 @@ export class UserService {
       `http://localhost:8080/updateUser/`,
       { "id": data.id, "first_name": data.first_name, "last_name": data.last_name, "email": data.email, "enabled": false},
       {responseType: 'json'}
+    );
+  }
+  editUser(id: number, data: any): Observable<any>{
+    console.log(id);
+    return this.http.patch('http://localhost:8080/updateUser',
+    { "id": data.id, "first_name": data.first_name, "last_name": data.last_name, "email": data.email,
+    "sec_group": data.sec_group, "enabled": data.enabled},
+    {responseType: "json"}
     );
   }
 }

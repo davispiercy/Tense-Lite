@@ -6,6 +6,8 @@ spring:
   properties:
     hibernate:
       dialect: org.hibernate.dialect.MySQL8Dialect
+  mvc:
+    dispatch-options-request: true
 
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver

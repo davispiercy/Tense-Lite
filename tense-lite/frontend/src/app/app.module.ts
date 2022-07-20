@@ -49,6 +49,7 @@ import { VerifyEmailComponent} from './verify-email/verify-email.component';
     AngularFireStorageModule,
     AngularFireDatabaseModule,
   ],
+  //providers: [],
   providers: [ { provide: HTTP_INTERCEPTORS, useClass: MyInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

@@ -27,7 +27,7 @@ class UserController (val userService: UserService) {
     fun findEnabledUsers(): List<User> {
         return userService.getEnabledUsers()
     }
-    @CrossOrigin(origins = arrayOf("http://localhost:8080"))
+    //@CrossOrigin(origins = arrayOf("http://localhost:8080"))
     @GetMapping("/findUserId/{uid}")
     fun getUserId(@PathVariable("uid") uid: String) : Long {
         return userService.getUserId(uid)
