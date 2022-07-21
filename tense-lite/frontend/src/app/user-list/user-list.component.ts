@@ -69,7 +69,7 @@ export class UserListComponent implements OnInit {
   editEntry() {
     this.userService.editUser(this.id, this.userForm.value).subscribe((response: any) =>
     { console.log(response);});
-    this.editing = !this.editing;
+    this.editing = true;
     this.isChecked = !this.isChecked;
     window.location.reload();
   }

@@ -14,6 +14,8 @@ import { AuthService } from '../shared/services/auth.service';
 })
 export class TimeEntryComponent implements OnInit {
   entries$: Observable<any>;
+  date = new Date();
+  display = this.date.toLocaleDateString();
   constructor(private timeEntryService: TimeEntryService, private fb: FormBuilder,
   private userService: UserService, public authService: AuthService, public projectService: ProjectService) { }
 
@@ -61,7 +63,7 @@ export class TimeEntryComponent implements OnInit {
   id: number = 0;
   edit(entry: Entry) {
     this.id = entry.id;
-    this.editing = !this.editing;
+    this.editing = true;
     this.isChecked = !this.isChecked;
     var billable = '';
     if(entry.billable){

@@ -1,7 +1,26 @@
 <div class="title">
   <h1>Users</h1>
 </div>
-
+<div class="active-users" *ngIf="users$ | async as users; else loading">
+  <h3>Active Users</h3>
+  <table class="user" *ngFor="let user of users">
+    <tr>
+      <td>Name:</td>
+      <td>{{user.first_name}} {{user.last_name}}</td>
+    </tr>
+    <tr>
+      <td>Email:</td>
+      <td>{{user.email}}</td>
+    </tr>
+    <!--
+    <tr>
+      <td><button id="edit" (click)="edit(user)">Edit User</button></td>
+      <td><button id="disable" (click)="disable(user)">Disable User</button></td>
+    </tr>
+    -->
+  </table>
+</div>
+<!--
 <div class="add-user">
   <div *ngIf="!isChecked">
     <button (click)="showFormToggle()">Add User</button>
@@ -28,17 +47,5 @@
     <button id="cancel" (click)="showFormToggle()">Cancel</button>
   </div>
 </div>
-
-
-<ul class="display-users" *ngIf="users$ | async as users; else loading">
-  <li *ngFor="let user of users">
-    Name: {{ user.first_name }}  {{ user.last_name }} <br>
-    Email: {{user.email}} <br>
-    Enabled: {{user.enabled}} <br>
-    UID: {{user.uid}} <br>
-    Security Group: {{user.sec_group}} <br>
-    <button id="edit" (click)="edit(user)">Edit User</button>
-    <button id="disable" (click)="disable(user)">Disable User</button>
-  </li>
-</ul>
+-->
 <ng-template #loading>Loading...</ng-template>

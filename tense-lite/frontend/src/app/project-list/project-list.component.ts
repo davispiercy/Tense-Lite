@@ -12,7 +12,8 @@ import { UserService } from '../user.service';
 })
 export class ProjectListComponent implements OnInit {
   projects$: Observable<any>;
-
+  month: String;
+  result: String;
   constructor(private projectService: ProjectService, private fb: FormBuilder,
   private userService: UserService ) { }
 
@@ -54,6 +55,20 @@ export class ProjectListComponent implements OnInit {
     { console.log(response);} );
     window.location.reload();
   }
-
+  formatString(date: any) {
+    if(date[1] == 1){this.month='January'}
+    else if(date[2] == 2){this.month='February'}
+    else if(date[2] == 3){this.month='March'}
+    else if(date[2] == 4){this.month='April'}
+    else if(date[2] == 5){this.month='May'}
+    else if(date[2] == 6){this.month='June'}
+    else if(date[2] == 7){this.month='July'}
+    else if(date[2] == 8){this.month='August'}
+    else if(date[2] == 9){this.month='September'}
+    else if(date[2] == 10){this.month='October'}
+    else if(date[2] == 11){this.month='November'}
+    else{this.month='December'}
+    return this.month + ' ' + date[2] + ', ' + date[0]
+  }
 
 }
