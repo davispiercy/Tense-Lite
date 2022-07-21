@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TimeEntryService } from '../time-entry.service';
+import { ProjectService } from '../project.service';
 import { UserService } from '../user.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Entry } from '../models/entry.model';
@@ -14,16 +15,20 @@ import { AuthService } from '../shared/services/auth.service';
 export class TimeEntryComponent implements OnInit {
   entries$: Observable<any>;
   constructor(private timeEntryService: TimeEntryService, private fb: FormBuilder,
-  private userService: UserService, public authService: AuthService) { }
+  private userService: UserService, public authService: AuthService, public projectService: ProjectService) { }
 
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user')!);
     var id: number;
+
     this.userService.getUserId(user.uid).subscribe((response) =>
     { id = response; this.entries$ = this.timeEntryService.getUserEntries(id); });
+
   }
   isChecked = false;
   editing = false;
+
+
   showFormToggle() {
     this.isChecked = !this.isChecked;
     this.entryForm.patchValue({
@@ -78,5 +83,7 @@ export class TimeEntryComponent implements OnInit {
     this.isChecked = !this.isChecked;
     window.location.reload();
   }
+
+
 
 }

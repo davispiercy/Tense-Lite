@@ -1,6 +1,27 @@
 <div class="title">
   <h1>Projects</h1>
 </div>
+<div class="active-projects" *ngIf="projects$ | async as projects; else loading">
+  <h3>Active Projects</h3>
+  <table class="project" *ngFor="let project of projects">
+    <tr>
+      <td>Name:</td>
+      <td>{{project.name}}</td>
+    </tr>
+    <tr>
+      <td>Start Date:</td>
+      <td>{{project.start_date}}</td>
+    </tr>
+    <tr>
+      <td>End Date:</td>
+      <td>{{project.end_date}}</td>
+    </tr>
+    <tr>
+      <td><button id="disable" (click)="disable(project)">Retire Project</button></td>
+      <td><button id="edit" >Edit Project</button></td>
+    </tr>
+  </table>
+</div>
 
 <div class="add-project">
   <div *ngIf="!isChecked">
@@ -24,16 +45,6 @@
   </div>
 </div>
 
-<ul *ngIf="projects$ | async as projects; else loading">
-  <li *ngFor="let project of projects">
-      Project Name: {{ project.name }} <br>
-      Start Date: {{ project.start_date }} <br>
-      End Date: {{ project.end_date }} <br>
-      Billable: {{ project.billable }} Enabled: {{ project.enabled }} <br>
-      <button id="disable" (click)="disable(project)">Retire Project</button> <br>
-      <button id="edit" >Edit Project</button>
 
-  </li>
-</ul>
 
 <ng-template #loading>Loading...</ng-template>

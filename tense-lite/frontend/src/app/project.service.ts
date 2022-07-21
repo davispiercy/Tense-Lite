@@ -32,4 +32,7 @@ export class ProjectService {
       {responseType: 'json'}
     );
   }
+  getProjectName(data: any): Observable<any>{
+    return this.http.get(`http://localhost:8080/getProjectName/${data}`);
+  }
 }

@@ -19,10 +19,11 @@ export class ProjectListComponent implements OnInit {
   ngOnInit(): void {
     var ids: any;
     var id: any
-    this.userService.getUserId(JSON.parse(localStorage.getItem('user')!).uid).subscribe((response) =>
+    /*this.userService.getUserId(JSON.parse(localStorage.getItem('user')!).uid).subscribe((response) =>
       { id = response; this.projectService.getProjectIds(id).subscribe((response2) =>
         { ids = response2; this.projects$ = this.projectService.getUserProjects(ids); });
-      });
+      });*/
+    this.projects$ = this.projectService.getProjects();
   }
 
   isChecked = false;

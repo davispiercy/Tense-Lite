@@ -102,7 +102,7 @@ export class AuthService {
       .then((result) => {
         this.SetUserData(result.user);
         this.ngZone.run(() => {
-          this.router.navigate(['entries']);
+          this.router.navigate(['']);
         });
       })
       .catch((error) => {
