@@ -9,11 +9,58 @@
 }
 .user{
   border: 2px solid black;
-    margin: 10px;
-    width: 400px;
-    margin-left: auto;
-    margin-right: auto;
+  margin: 10px;
+  width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: grey;
+  color: white;
 }
 td{
   padding: 10px;
+}
+.active-users{
+  float: left;
+  width: 60%;
+}
+.inactive-users{
+
+}
+.title{
+  margin-left: 50%;
+  margin-right: 50%;
+}
+.add-user{
+  margin-left: 50%;
+  margin-right: 50%;
+  width: 100px;
+  position: center;
+}
+.add:hover{
+  background-color: yellow;
+}
+.edit:hover{
+  background-color: #555;
+  color: white;
+}
+.disable:hover{
+  background-color: red;
+  color: white;
+}
+.enable:hover{
+  background-color: green;
+  color: white;
+}
+.make-admin:hover{
+  background-color: blue;
+  color: white;
+}
+.remove-admin:hover{
+  background-color: black;
+  color: white;
+}
+.form{
+  border: 2px solid black;
+  margin: 10px;
+  width: 300px;
 }

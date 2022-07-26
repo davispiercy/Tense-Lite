@@ -15,6 +15,7 @@ import { Observable} from 'rxjs';
 })
 export class AuthService {
   userData: any; // Save logged in user data
+  isAdmin: boolean = false;
   constructor(
     public afs: AngularFirestore, // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
@@ -29,11 +30,15 @@ export class AuthService {
         this.userData = user;
         localStorage.setItem('user', JSON.stringify(this.userData));
         JSON.parse(localStorage.getItem('user')!);
+        //console.log(JSON.stringify(this.userData.uid));
       } else {
         localStorage.setItem('user', 'null');
         JSON.parse(localStorage.getItem('user')!);
       }
+      this.userService.getRole(JSON.parse(JSON.stringify(this.userData.uid))).subscribe((response) =>
+        { this.isAdmin = (response == 'admin'); });
     });
+
   }
   // Sign in with email/password
   SignIn(email: string, password: string) {
@@ -58,6 +63,7 @@ export class AuthService {
         up and returns promise */
         this.SendVerificationMail();
         this.SetUserData(result.user);
+        //window.alert(result.user!.email);
       })
       .catch((error) => {
         window.alert(error.message);
@@ -68,7 +74,8 @@ export class AuthService {
     return this.afAuth.currentUser
       .then((u: any) => u.sendEmailVerification())
       .then(() => {
-        this.router.navigate(['verify-email-address']);
+        //this.router.navigate(['verify-email-address']);
+        this.router.navigate(['']);
       });
   }
   // Reset Forgot password
@@ -85,8 +92,17 @@ export class AuthService {
   // Returns true when user is logged in and email is verified
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
-    return user !== null && user.emailVerified !== false ? true : false;
+    return user !== null; //&& user.emailVerified !== false ? true : false;
   }
+  /*get isAdmin(): boolean {
+    const user = JSON.parse(localStorage.getItem('user')!);
+    //let admin = 'basic';
+    //let admin = this.userService.getRole(user.uid);
+
+    //setTimeout(() => console.log(admin == 'admin'), 1000);
+    return admin == 'admin';
+    //return user !== null;
+  }*/
   // Sign in with Google
   GoogleAuth() {
     return this.AuthLogin(new auth.GoogleAuthProvider()).then((res: any) => {
@@ -117,7 +133,7 @@ export class AuthService {
       { if(response) {
           var eUser: User;
           this.userService.getUserById(user.uid).subscribe((response: any) =>
-            { eUser = response; console.log(eUser.uid);
+            { eUser = response;
           const userRef: AngularFirestoreDocument<any> = this.afs.doc(
             `users/${user.id}`
           );
@@ -127,8 +143,9 @@ export class AuthService {
         }
         else {
           var nUser: User;
-          var name = user.displayName.split(" ");
-          var data = {"uid": user.uid, "first_name": name[0], "last_name": name[1], "email": user.email};
+          console.log(user.uid);
+          //var name = user.displayName.split(" ");
+          var data = {"uid": user.uid, "email": user.email};
           this.userService.addUser(data).subscribe((response: any) =>
           { nUser = response; console.log(nUser);
           const userRef: AngularFirestoreDocument<any> = this.afs.doc(

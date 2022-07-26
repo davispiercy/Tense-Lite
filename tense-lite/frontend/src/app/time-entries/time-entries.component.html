@@ -9,7 +9,7 @@
       <button (click)="showFormToggle()">Add Entry</button>
     </div>
 
-    <div *ngIf="isChecked">
+    <div *ngIf="isChecked" class="form">
       <form [formGroup]="entryForm">
         <div *ngIf="editing">
           <h3>Edit Entry</h3>
@@ -17,8 +17,8 @@
         <div *ngIf="!editing">
           <h3>New Entry</h3>
         </div>
-        <label for="user-id">User ID: </label>
-        <input id="user-id" type="number" formControlName="user_id"> <br>
+        <!--<label for="user-id">User ID: </label>
+        <input id="user-id" type="number" formControlName="user_id"> <br>-->
         <label for="project-id">Project ID: </label>
         <input id="project-id" type="number" formControlName="project_id"> <br>
         <label for="entry-date">Entry Date: </label>
@@ -45,7 +45,7 @@
     <table id="entry" *ngFor="let entry of entries">
       <tr>
         <td>Project:</td>
-        <td></td>
+        <td><!--{{getName(entry.project_id)}}-->{{entry.project_id}}</td>
       </tr>
       <tr>
         <td>Hours:</td>

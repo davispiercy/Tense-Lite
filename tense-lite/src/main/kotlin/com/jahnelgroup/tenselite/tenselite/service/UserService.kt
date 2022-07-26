@@ -31,6 +31,9 @@ class UserService (val userRepository: UserRepository){
     fun getEnabledUsers(): List<User> {
         return userRepository.findByEnabledTrue();
     }
+    fun getDisabledUsers(): List<User> {
+        return userRepository.findByDisabled();
+    }
     fun getRole(uid: String): String {
         return userRepository.getRole(uid)
     }

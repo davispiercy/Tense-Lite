@@ -4,7 +4,48 @@
   width: 300px;
   margin-left: auto;
   margin-right: auto;
+  background-color: grey;
+  color: white;
 }
 td{
   padding: 10px;
 }
+
+.active-projects{
+  float: left;
+  width: 60%;
+}
+.inactive-projects{
+}
+.title{
+  margin-left: 50%;
+  margin-right: 50%;
+}
+.add-project{
+  margin-left: 43%;
+  margin-right: 50%;
+  position: center;
+  width: 400px;
+}
+
+.add:hover{
+  background-color: yellow;
+}
+.edit:hover{
+  background-color: #555;
+  color: white;
+}
+.disable:hover{
+  background-color: red;
+  color: white;
+}
+.enable:hover{
+  background-color: green;
+  color: white;
+}
+.form{
+  border: 2px solid black;
+  margin: 10px;
+  width: 300px;
+}
+

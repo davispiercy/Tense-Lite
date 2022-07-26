@@ -8,6 +8,10 @@ import org.springframework.stereotype.Repository
 @Repository
 interface UserRepository: JpaRepository<User, Long> {
 
+    @Query("select u from User u where u.enabled = false")
+    fun findByDisabled(): List<User>
+
+
     @Query("select u.sec_group from User u where u.uid = ?1")
     fun getRole(sec_group: String): String
 

@@ -13,6 +13,9 @@ class ProjectService (val projectRepository: ProjectRepository){
     fun findAllEnabled(): List<Project> {
         return projectRepository.findAllEnabled()
     }
+    fun findAllDisabled(): List<Project> {
+        return projectRepository.findAllDisabled()
+    }
     fun getProject(id: Long) : Project {
         return projectRepository.findById(id).get()
     }

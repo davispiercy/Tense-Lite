@@ -15,13 +15,20 @@ export class TimeEntryService {
   getUserEntriesByDate(id: number, date: Date): Observable<any> {
     return this.http.get(`http://localhost:8080/entries/${id}${date}`);
   }
-  addEntry(data: any): Observable<any>{
+  addEntry(id: number, data: any): Observable<any>{
     return this.http.post('http://localhost:8080/addEntry/',
-    { "user_id": data.user_id, "project_id": data.project_id, "entry_date": data.entry_date,
+    { "user_id": id, "project_id": data.project_id, "entry_date": data.entry_date,
     "notes": data.notes, "hours": data.hours, "billable": data.billable },
     {responseType: 'json'}
     );
   }
+  addUserEntry(data: any): Observable<any>{
+      return this.http.post('http://localhost:8080/addEntry/',
+      { "user_id": data.user_id, "project_id": data.project_id, "entry_date": data.entry_date,
+      "notes": data.notes, "hours": data.hours, "billable": data.billable },
+      {responseType: 'json'}
+      );
+    }
   delete(id: number): Observable<any> {
     return this.http.delete(`http://localhost:8080/deleteEntry/${id}`);
   }

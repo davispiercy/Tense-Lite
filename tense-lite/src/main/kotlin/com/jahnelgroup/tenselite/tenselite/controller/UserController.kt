@@ -27,6 +27,10 @@ class UserController (val userService: UserService) {
     fun findEnabledUsers(): List<User> {
         return userService.getEnabledUsers()
     }
+    @GetMapping("/disabledUsers")
+    fun findDisabledUsers(): List<User> {
+        return userService.getDisabledUsers()
+    }
     //@CrossOrigin(origins = arrayOf("http://localhost:8080"))
     @GetMapping("/findUserId/{uid}")
     fun getUserId(@PathVariable("uid") uid: String) : Long {
@@ -43,6 +47,10 @@ class UserController (val userService: UserService) {
     @GetMapping("/user/{id}")
     fun getUser(@PathVariable("id") id: Long) :User {
         return userService.getUser(id)
+    }
+    @GetMapping("/getRole/{uid}")
+    fun getRole(@PathVariable("uid") uid: String) : String {
+        return userService.getRole(uid)
     }
     @PostMapping("/createUser")
     fun createUser(@RequestBody user: User) : User {

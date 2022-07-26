@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { UserService } from '../user.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { User } from '../models/user.model';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   selector: 'app-user-list',
@@ -11,13 +12,17 @@ import { User } from '../models/user.model';
 })
 
 export class UserListComponent implements OnInit {
-  users$: Observable<any>;
+  activeUsers$: Observable<any>;
+  inactiveUsers$: Observable<any>;
 
-  constructor(private userService: UserService, private fb: FormBuilder) {}
+  constructor(private userService: UserService, private fb: FormBuilder,
+  public authService: AuthService) {}
 
   ngOnInit(): void {
-    this.users$ = this.userService.getUsers();
+    this.activeUsers$ = this.userService.getUsers();
+    this.inactiveUsers$ = this.userService.getDisabledUsers();
   }
+
   isChecked = false;
   editing = false;
   showFormToggle() {
@@ -49,14 +54,21 @@ export class UserListComponent implements OnInit {
     { console.log(response);} );
     window.location.reload();
   }
+  enable(user: User) {
+      this.userService.enableUser(user).subscribe((response: any) =>
+      { console.log(response);} );
+      window.location.reload();
+  }
   id: number = 0;
+  uid: string;
   edit(user: User) {
-    this.id = user.id
-    this.editing = !this.editing;
+    this.id = user.id;
+    this.uid = user.uid;
+    this.editing = true;
     this.isChecked = !this.isChecked;
     var enabled = '';
     if(user.enabled){
-      enabled = 'true'
+      enabled = 'true';
     }
     this.userForm.patchValue({
       first_name: user.first_name,
@@ -66,12 +78,26 @@ export class UserListComponent implements OnInit {
       enabled: enabled,
     });
   }
-  editEntry() {
-    this.userService.editUser(this.id, this.userForm.value).subscribe((response: any) =>
+  editUser() {
+    this.userService.editUser(this.id, this.uid, this.userForm.value).subscribe((response: any) =>
     { console.log(response);});
     this.editing = true;
     this.isChecked = !this.isChecked;
+    +window.location.reload();
+  }
+  makeAdmin(user: User) {
+    this.userService.makeAdmin(user).subscribe((response: any) =>
+    { console.log(response);} );
     window.location.reload();
   }
+  removeAdmin(user: User) {
+      this.userService.removeAdmin(user).subscribe((response: any) =>
+      { console.log(response);} );
+      window.location.reload();
+    }
+  stopEdit() {
+      this.editing = false;
+      this.isChecked = !this.isChecked;
+    }
 
 }

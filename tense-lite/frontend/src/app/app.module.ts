@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { MyInterceptor } from './my.interceptor';
+//import { MyInterceptor } from './my.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UserListComponent } from './user-list/user-list.component';
@@ -49,9 +49,9 @@ import { VerifyEmailComponent} from './verify-email/verify-email.component';
     AngularFireStorageModule,
     AngularFireDatabaseModule,
   ],
-  //providers: [],
-  providers: [ { provide: HTTP_INTERCEPTORS, useClass: MyInterceptor, multi: true }
-  ],
+  providers: [],
+  //providers: [ { provide: HTTP_INTERCEPTORS, useClass: MyInterceptor, multi: true }
+  //],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -4,4 +4,5 @@ export interface Project {
   start_date: Date;
   end_date: Date;
   billable: boolean;
+  enabled: boolean;
 }

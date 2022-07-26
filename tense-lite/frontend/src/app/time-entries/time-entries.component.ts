@@ -16,6 +16,7 @@ export class TimeEntryComponent implements OnInit {
   entries$: Observable<any>;
   date = new Date();
   display = this.date.toLocaleDateString();
+  name: String;
   constructor(private timeEntryService: TimeEntryService, private fb: FormBuilder,
   private userService: UserService, public authService: AuthService, public projectService: ProjectService) { }
 
@@ -27,23 +28,56 @@ export class TimeEntryComponent implements OnInit {
     { id = response; this.entries$ = this.timeEntryService.getUserEntries(id); });
 
   }
+  getName(id: number){
+    //console.log(id);
+    this.projectService.getProjectName(id).subscribe((response) =>
+    { console.log(response); });
+    //console.log(id);
+  }
   isChecked = false;
   editing = false;
-
+  convertDate(date: String) {
+    let month = date.slice(0, date.indexOf('/'));
+    if(month.length == 1){
+      month = '0' + month;
+    }
+    let day = date.slice(date.indexOf('/')+1, date.lastIndexOf('/'))
+    if(day.length == 1){
+      day = '0' + day;
+    }
+    let year = date.slice(date.lastIndexOf('/')+1);
+    let ret = year + '-' + month + '-' + day;
+    return ret;
+  }
+  convertDateFromDate(date: String) {
+    let year = date.slice(0, date.indexOf(','));
+    let month = date.slice(date.indexOf(',')+1, date.lastIndexOf(','));
+    if(month.length == 1){
+      month = '0' + month;
+    }
+    let day = date.slice(date.lastIndexOf(',')+1);
+    if(day.length == 1){
+      day = '0' + day;
+    }
+    let ret = year + '-' + month + '-' + day;
+    return ret;
+  }
 
   showFormToggle() {
     this.isChecked = !this.isChecked;
+    let date = new Date();
+    let newDate = this.convertDate(this.display);
     this.entryForm.patchValue({
-      user_id: '',
+      //user_id: '',
       project_id: '',
-      entry_date: '',
+      entry_date: newDate,
       notes: '',
       hours: '',
       billable: ''
     })
   }
   entryForm = this.fb.group({
-    user_id: ['', Validators.required],
+    //user_id: ['', Validators.required],
     project_id: ['', Validators.required],
     entry_date: ['', Validators.required],
     notes: ['', Validators.required],
@@ -51,8 +85,11 @@ export class TimeEntryComponent implements OnInit {
     billable: ['']
   });
   onSubmit() {
-      this.timeEntryService.addEntry(this.entryForm.value).subscribe((response: any) =>
-      { console.log(response);});
+      this.userService.getUserId(this.authService.userData.uid).subscribe((response) =>
+      { this.timeEntryService.addEntry(response, this.entryForm.value).subscribe((response) =>
+        { console.log(response); });
+      });
+      this.isChecked = false;
       window.location.reload();
   }
   delete(id: number) {
@@ -69,10 +106,11 @@ export class TimeEntryComponent implements OnInit {
     if(entry.billable){
       billable = 'true';
     }
+    let cur_date = this.convertDateFromDate(String(entry.entry_date))
     this.entryForm.patchValue({
-      user_id: entry.user_id,
+      //user_id: entry.user_id,
       project_id: entry.project_id,
-      entry_date: String(entry.entry_date),
+      entry_date: cur_date,
       notes: entry.notes,
       hours: String(entry.hours),
       billable: billable
@@ -85,7 +123,4 @@ export class TimeEntryComponent implements OnInit {
     this.isChecked = !this.isChecked;
     window.location.reload();
   }
-
-
-
 }

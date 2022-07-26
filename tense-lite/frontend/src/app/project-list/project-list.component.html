@@ -1,7 +1,42 @@
 <div class="title">
   <h1>Projects</h1>
 </div>
-<div class="active-projects" *ngIf="projects$ | async as projects; else loading">
+
+<div class="add-project" *ngIf="authService.isAdmin">
+  <div *ngIf="!isChecked">
+    <button class="add" (click)="showFormToggle()">Add Project</button>
+  </div>
+
+  <div *ngIf="isChecked" class="form">
+    <form [formGroup]="projectForm">
+      <div *ngIf="editing">
+        <h3>Edit Project</h3>
+      </div>
+      <div *ngIf="!editing">
+        <h3>New Project</h3>
+      </div>
+      <label for="name">Project Name: </label>
+      <input type="text" id="name" formControlName="name"> <br>
+      <label for="start-date">Start Date: </label>
+      <input id="start-date" type="date" formControlName="start_date"> <br>
+      <label for="end-date">End Date: </label>
+      <input id="end-date" type="date" formControlName="end_date"> <br>
+      <label for="billable">Billable: </label>
+      <input id="billable" type="checkbox" formControlName="billable">
+    </form>
+    <div *ngIf="editing">
+      <button type="sumbit" [disabled]="!projectForm.valid" (click)="editProject()">Submit</button>
+      <button (click)="stopEdit()">Cancel</button>
+    </div>
+    <div *ngIf="!editing">
+      <button type="sumbit" [disabled]="!projectForm.valid" (click)="onSubmit()">Submit</button>
+      <button (click)="showFormToggle()">Cancel</button>
+    </div>
+
+  </div>
+</div>
+
+<div class="active-projects" *ngIf="enabledProjects$ | async as projects; else loading">
   <h3>Active Projects</h3>
   <table class="project" *ngFor="let project of projects">
     <tr>
@@ -16,37 +51,36 @@
       <td>End Date:</td>
       <td>{{formatString(project.end_date)}}</td>
     </tr>
-    <!--
-    <tr>
-      <td><button id="disable" (click)="disable(project)">Retire Project</button></td>
-      <td><button id="edit" >Edit Project</button></td>
+    <tr *ngIf="authService.isAdmin">
+      <td><button class="edit" (click)="edit(project)">Edit Project</button></td>
+      <td><button class="disable" (click)="disable(project)">Retire Project</button></td>
     </tr>
-    -->
   </table>
 </div>
-<!--
-<div class="add-project">
-  <div *ngIf="!isChecked">
-    <button (click)="showFormToggle()">Add Project</button>
-  </div>
 
-  <div *ngIf="isChecked">
-    <form [formGroup]="projectForm">
-      <h3>New Project</h3>
-      <label for="name">Project Name: </label>
-      <input id="name" type="text" formControlName="name"> <br>
-      <label for="start-date">Start Date: </label>
-      <input id="start-date" type="date" formControlName="start_date"> <br>
-      <label for="end-date">End Date: </label>
-      <input id="end-date" type="date" formControlName="end_date"> <br>
-      <label for="billable">Billable: </label>
-      <input id="billable" type="checkbox" formControlName="billable">
-    </form>
-    <button type="sumbit" [disabled]="!projectForm.valid" (click)="onSubmit()">Submit</button>
-    <button id="cancel" (click)="showFormToggle()">Cancel</button>
+<div *ngIf="authService.isAdmin">
+  <div class="inactive-projects" *ngIf="disabledProjects$ | async as projects; else loading">
+    <h3>Inactive Projects</h3>
+    <table class="project" *ngFor="let project of projects">
+      <tr>
+        <td>Name:</td>
+        <td>{{project.name}}</td>
+      </tr>
+      <tr>
+        <td>Start Date:</td>
+        <td>{{formatString(project.start_date)}}</td>
+      </tr>
+      <tr>
+        <td>End Date:</td>
+        <td>{{formatString(project.end_date)}}</td>
+      </tr>
+      <tr>
+        <!--<td><button class="edit" (click)="edit(project)">Edit Project</button></td>-->
+        <td><button class="enable" (click)="enable(project)">Revive Project</button></td>
+      </tr>
+    </table>
   </div>
 </div>
--->
 
 
 <ng-template #loading>Loading...</ng-template>

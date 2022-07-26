@@ -12,7 +12,7 @@ class AssignmentController (val assignmentService: AssignmentService){
     fun findAll(): List<Assignment> {
         return assignmentService.findAll()
     }
-    @GetMapping("/getProjectIds/{user_id}")
+    @GetMapping("/getProjectsByUser/{user_id}")
     fun findAssignments(@PathVariable("user_id") user_id: Long) : List<Long> {
         return assignmentService.findAssignments(user_id)
     }
