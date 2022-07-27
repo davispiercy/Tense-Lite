@@ -13,7 +13,8 @@ import { AuthService } from '../shared/services/auth.service';
   styleUrls: ['./time-entries.component.scss']
 })
 export class TimeEntryComponent implements OnInit {
-  entries$: Observable<any>;
+  entries = new Array;
+  //entries$: Observable<any>;
   date = new Date();
   display = this.date.toLocaleDateString();
   name: String;
@@ -22,17 +23,22 @@ export class TimeEntryComponent implements OnInit {
 
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user')!);
-    var id: number;
-
+    /*this.userService.getUserId(user.uid).subscribe((response) =>
+    { this.entries$ = this.timeEntryService.getUserEntries(response); });*/
     this.userService.getUserId(user.uid).subscribe((response) =>
-    { id = response; this.entries$ = this.timeEntryService.getUserEntries(id); });
+      { this.timeEntryService.getUserEntries(response).subscribe((response) =>
+        { //this.entries = response;
+          for(let i = 0; i < response.length; i++){
+            this.getName(response[i]);
+          }
+        });
+      });
+
 
   }
-  getName(id: number){
-    //console.log(id);
-    this.projectService.getProjectName(id).subscribe((response) =>
-    { console.log(response); });
-    //console.log(id);
+  getName(entry: Entry){
+    this.projectService.getProjectName(entry.project_id).subscribe((response) =>
+    { this.entries.push([entry, response]);});
   }
   isChecked = false;
   editing = false;
@@ -68,7 +74,7 @@ export class TimeEntryComponent implements OnInit {
     let date = new Date();
     let newDate = this.convertDate(this.display);
     this.entryForm.patchValue({
-      //user_id: '',
+      user_id: '',
       project_id: '',
       entry_date: newDate,
       notes: '',
@@ -77,7 +83,7 @@ export class TimeEntryComponent implements OnInit {
     })
   }
   entryForm = this.fb.group({
-    //user_id: ['', Validators.required],
+    user_id: [''],
     project_id: ['', Validators.required],
     entry_date: ['', Validators.required],
     notes: ['', Validators.required],
@@ -108,7 +114,7 @@ export class TimeEntryComponent implements OnInit {
     }
     let cur_date = this.convertDateFromDate(String(entry.entry_date))
     this.entryForm.patchValue({
-      //user_id: entry.user_id,
+      user_id: entry.user_id,
       project_id: entry.project_id,
       entry_date: cur_date,
       notes: entry.notes,

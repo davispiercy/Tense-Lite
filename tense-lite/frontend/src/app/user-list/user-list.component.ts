@@ -4,6 +4,7 @@ import { UserService } from '../user.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { User } from '../models/user.model';
 import { AuthService } from '../shared/services/auth.service';
+import { ProjectService } from '../project.service';
 
 @Component({
   selector: 'app-user-list',
@@ -12,15 +13,32 @@ import { AuthService } from '../shared/services/auth.service';
 })
 
 export class UserListComponent implements OnInit {
-  activeUsers$: Observable<any>;
+  //activeUsers$: Observable<any>;
   inactiveUsers$: Observable<any>;
+  projects$: Observable<any>;
+  activeData = new Array;
 
   constructor(private userService: UserService, private fb: FormBuilder,
-  public authService: AuthService) {}
+  public authService: AuthService, private projectService: ProjectService) {}
 
   ngOnInit(): void {
-    this.activeUsers$ = this.userService.getUsers();
+    //this.activeUsers$ = this.userService.getUsers();
     this.inactiveUsers$ = this.userService.getDisabledUsers();
+    this.userService.getUsers().subscribe((response) =>
+    { for(let i = 0; i < response.length; i++){
+        //console.log(response[i].id);
+        this.activeData.push([response[i], []]);
+        this.projectService.getProjectsByUser(response[i].id).subscribe((response2) =>
+        { for(let j = 0; j < response2.length; j++){
+            this.getName(response2, i);
+          }
+          });
+      }
+    });
+  }
+  getName(id: number, user: number){
+    this.projectService.getProjectName(id).subscribe((response) =>
+    { this.activeData[user][1].push(response);});
   }
 
   isChecked = false;
@@ -99,5 +117,8 @@ export class UserListComponent implements OnInit {
       this.editing = false;
       this.isChecked = !this.isChecked;
     }
-
+  getProjects(id: number) {
+    this.projectService.getProjectsByUser(id).subscribe((response) =>
+    { console.log(response); });
+  }
 }

@@ -44,6 +44,10 @@
       <td>{{project.name}}</td>
     </tr>
     <tr>
+      <td>Project ID:</td>
+      <td>{{project.id}}</td>
+    </tr>
+    <tr>
       <td>Start Date:</td>
       <td>{{formatString(project.start_date)}}</td>
     </tr>
@@ -67,6 +71,10 @@
         <td>{{project.name}}</td>
       </tr>
       <tr>
+        <td>Project ID:</td>
+        <td>{{project.id}}</td>
+      </tr>
+      <tr>
         <td>Start Date:</td>
         <td>{{formatString(project.start_date)}}</td>
       </tr>
@@ -76,7 +84,7 @@
       </tr>
       <tr>
         <!--<td><button class="edit" (click)="edit(project)">Edit Project</button></td>-->
-        <td><button class="enable" (click)="enable(project)">Revive Project</button></td>
+        <td colspan="2"><button class="enable" (click)="enable(project)">Revive Project</button></td>
       </tr>
     </table>
   </div>

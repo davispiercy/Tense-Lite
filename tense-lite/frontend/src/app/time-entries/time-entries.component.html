@@ -41,23 +41,23 @@
     </div>
   </div>
 
-  <div id="entries" *ngIf="entries$ | async as entries; else loading">
-    <table id="entry" *ngFor="let entry of entries">
+  <div id="entries" *ngIf="entries">
+    <table id="entry" *ngFor="let entry of entries; let i = index" [attr.data-index]=""i>
       <tr>
         <td>Project:</td>
-        <td><!--{{getName(entry.project_id)}}-->{{entry.project_id}}</td>
+        <td>{{entry[1]}}</td>
       </tr>
       <tr>
         <td>Hours:</td>
-        <td>{{entry.hours}}</td>
+        <td>{{entry[0].hours}}</td>
       </tr>
       <tr>
         <td>Notes:</td>
-        <td>{{entry.notes}}</td>
+        <td>{{entry[0].notes}}</td>
       </tr>
       <tr>
-        <td><button id="edit" (click)="edit(entry)">Edit Entry</button></td>
-        <td><button id="delete" (click)="delete(entry.id)">Delete Entry</button></td>
+        <td><button id="edit" (click)="edit(entry[0])">Edit Entry</button></td>
+        <td><button id="delete" (click)="delete(entry[0].id)">Delete Entry</button></td>
       </tr>
     </table>
   </div>

@@ -13,8 +13,8 @@ export class ProjectService {
   getDisabledProjects(): Observable<any> {
     return this.http.get('http://localhost:8080/disabledProjects');
   }
-  getProjectIds(data: any): Observable<any> {
-    return this.http.get(`http://localhost:8080/getProjectIds/${data}`);
+  getProjectsByUser(data: any): Observable<any> {
+    return this.http.get(`http://localhost:8080/getProjectsByUser/${data}`);
   }
   getUserProjects(data: any): Observable<any> {
     return this.http.get(`http://localhost:8080/getProjects/${data}`);
@@ -45,7 +45,8 @@ export class ProjectService {
       );
     }
   getProjectName(data: any): Observable<any>{
-    return this.http.get(`http://localhost:8080/getProjectName/${data}`);
+    return this.http.get(`http://localhost:8080/getProjectName/${data}`,
+    {responseType: 'text'});
   }
   editProject(id: number, data: any): Observable<any>{
     //console.log(data.enabled);

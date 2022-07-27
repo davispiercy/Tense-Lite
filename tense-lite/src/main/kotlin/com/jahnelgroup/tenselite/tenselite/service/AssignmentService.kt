@@ -12,4 +12,8 @@ class AssignmentService (val assignmentRepository: AssignmentRepository){
     fun findAssignments(user_id: Long) : List<Long> {
         return assignmentRepository.findAssignments(user_id)
     }
+    fun createAssignment(assignment: Assignment) : Assignment {
+        assignmentRepository.save(assignment)
+        return assignment
+    }
 }
