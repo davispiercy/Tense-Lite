@@ -6,6 +6,7 @@ import { UserService } from '../user.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Entry } from '../models/entry.model';
 import { AuthService } from '../shared/services/auth.service';
+import { AssignmentService } from '../assignment.service';
 
 @Component({
   selector: 'app-time-entries',
@@ -19,7 +20,8 @@ export class TimeEntryComponent implements OnInit {
   display = this.date.toLocaleDateString();
   name: String;
   constructor(private timeEntryService: TimeEntryService, private fb: FormBuilder,
-  private userService: UserService, public authService: AuthService, public projectService: ProjectService) { }
+  private userService: UserService, public authService: AuthService, public projectService: ProjectService,
+  private assignmentService: AssignmentService) { }
 
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user')!);
@@ -79,7 +81,7 @@ export class TimeEntryComponent implements OnInit {
       entry_date: newDate,
       notes: '',
       hours: '',
-      billable: ''
+      //billable: ''
     })
   }
   entryForm = this.fb.group({
@@ -88,12 +90,15 @@ export class TimeEntryComponent implements OnInit {
     entry_date: ['', Validators.required],
     notes: ['', Validators.required],
     hours: ['', Validators.required],
-    billable: ['']
+    //billable: ['']
   });
   onSubmit() {
       this.userService.getUserId(this.authService.userData.uid).subscribe((response) =>
-      { this.timeEntryService.addEntry(response, this.entryForm.value).subscribe((response) =>
-        { console.log(response); });
+      { this.assignmentService.getAssignment(response, parseInt(this.entryForm.value.project_id!)).subscribe((response2) =>
+        { console.log(parseInt(this.entryForm.value.project_id!));
+          this.timeEntryService.addEntry(response, this.entryForm.value, response2.hourly_rate).subscribe((response3) =>
+          { console.log(response3); });
+        });
       });
       this.isChecked = false;
       window.location.reload();
@@ -109,9 +114,9 @@ export class TimeEntryComponent implements OnInit {
     this.editing = true;
     this.isChecked = !this.isChecked;
     var billable = '';
-    if(entry.billable){
+    /*if(entry.billable){
       billable = 'true';
-    }
+    }*/
     let cur_date = this.convertDateFromDate(String(entry.entry_date))
     this.entryForm.patchValue({
       user_id: entry.user_id,
@@ -119,7 +124,7 @@ export class TimeEntryComponent implements OnInit {
       entry_date: cur_date,
       notes: entry.notes,
       hours: String(entry.hours),
-      billable: billable
+      //billable: billable
     });
   }
   editEntry() {

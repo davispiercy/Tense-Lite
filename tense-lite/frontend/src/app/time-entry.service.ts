@@ -15,17 +15,21 @@ export class TimeEntryService {
   getUserEntriesByDate(id: number, date: Date): Observable<any> {
     return this.http.get(`http://localhost:8080/entries/${id}${date}`);
   }
-  addEntry(id: number, data: any): Observable<any>{
+  getEntriesUserProject(user: number, project: number): Observable<any> {
+    return this.http.get(`http://localhost:8080/entries/${user}/${project}`);
+  }
+  addEntry(id: number, data: any, rate: number): Observable<any>{
+    let value = rate * data.hours;
     return this.http.post('http://localhost:8080/addEntry/',
     { "user_id": id, "project_id": data.project_id, "entry_date": data.entry_date,
-    "notes": data.notes, "hours": data.hours, "billable": data.billable },
+    "notes": data.notes, "hours": data.hours, "hourly_rate": rate, "entry_value": value, /*"billable": data.billable*/ },
     {responseType: 'json'}
     );
   }
   addUserEntry(data: any): Observable<any>{
       return this.http.post('http://localhost:8080/addEntry/',
       { "user_id": data.user_id, "project_id": data.project_id, "entry_date": data.entry_date,
-      "notes": data.notes, "hours": data.hours, "billable": data.billable },
+      "notes": data.notes, "hours": data.hours, /*"billable": data.billable*/ },
       {responseType: 'json'}
       );
     }
@@ -36,7 +40,7 @@ export class TimeEntryService {
     console.log(id);
     return this.http.patch('http://localhost:8080/updateEntry',
       { "id": id, "user_id": data.user_id, "project_id": data.project_id, "entry_date": data.entry_date,
-      "notes": data.notes, "hours": data.hours, "billable": data.billable },
+      "notes": data.notes, "hours": data.hours, /*"billable": data.billable*/ },
       {responseType: 'json'}
     );
   }

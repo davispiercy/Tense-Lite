@@ -19,9 +19,9 @@ VALUES (1, 1, 999.0, '2022-06-15', '2022-07-05', true),
 (3, 3, 500.0, '2020-06-15', '2022-07-05', true);
 
 INSERT INTO `tense-lite`.time_entries
-(id, user_id, project_id, entry_date, notes, hours, hourly_rate, entry_value, billable, enabled)
-VALUES (1,1,1,'2022-06-15', 'Worked on bugs', 8.0, 100.0, 800.0, true, true),
-(2,1,1,'2022-06-16', 'Wrote all the code', 7.0, 100.0, 700.0, true, true),
-(3,1,1,'2022-06-17', 'Made fun of Dom', 3.0, 100.0, 300.0, true, true);
+(id, user_id, project_id, entry_date, notes, hours, hourly_rate, entry_value, enabled)
+VALUES (1,1,1,'2022-06-15', 'Worked on bugs', 8.0, 999.0, 7992.0, true),
+(2,1,1,'2022-06-16', 'Wrote all the code', 7.0, 999.0, 6993.0, true),
+(3,1,1,'2022-06-17', 'Made fun of Dom', 3.0, 999.0, 2997.0, true);
 
 COMMIT;

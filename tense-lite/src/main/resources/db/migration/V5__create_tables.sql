@@ -57,7 +57,6 @@ CREATE TABLE `time_entries` (
   hours DOUBLE NULL,
   hourly_rate DOUBLE NULL,
   entry_value DOUBLE NULL,
-  billable Boolean NOT NULL,
   enabled Boolean NOT NULL,
   CONSTRAINT pkey_time_entries_id PRIMARY KEY (id),
   CONSTRAINT fkey_time_entries_users_id FOREIGN KEY (user_id) REFERENCES users(id),

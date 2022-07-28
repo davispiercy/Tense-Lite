@@ -31,8 +31,8 @@ class Entry {
     @Column(name = "entry_value")
     var entry_value: Double? = 0.0
 
-    @Column(name = "billable")
-    var billable: Boolean = false
+    /*@Column(name = "billable")
+    var billable: Boolean = false*/
 
     @Column(name = "enabled")
     var enabled: Boolean = true

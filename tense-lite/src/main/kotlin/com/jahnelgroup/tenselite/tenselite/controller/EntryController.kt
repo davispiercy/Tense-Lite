@@ -29,6 +29,10 @@ class EntryController (val entryService: EntryService){
     fun getUserEntriesByDate(@PathVariable("id") id: Long, @PathVariable("date") date: Date): List<Entry> {
         return entryService.getEntryByDate(id, date)
     }
+    @GetMapping("/entries/{user_id}/{project_id}")
+    fun getEntriesUserProject(@PathVariable("user_id") user_id: Long, @PathVariable("project_id") project_id: Long) : List<Entry> {
+        return entryService.getEntriesUserProject(user_id, project_id)
+    }
     @PostMapping("/addEntry")
     fun addEntry(@RequestBody entry: Entry) : Entry {
         entryService.addEntry(entry)

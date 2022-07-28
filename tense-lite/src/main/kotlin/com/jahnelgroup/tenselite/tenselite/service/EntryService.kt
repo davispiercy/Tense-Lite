@@ -20,6 +20,9 @@ class EntryService (val entryRepository: EntryRepository){
     fun getEntryByDate(id: Long, date: Date): List<Entry> {
         return entryRepository.getEntryByDate(id, date)
     }
+    fun getEntriesUserProject(user_id: Long, project_id: Long): List<Entry> {
+        return entryRepository.getEntriesUserProject(user_id, project_id)
+    }
     fun addEntry(entry: Entry) : Entry {
         entryRepository.save(entry)
         return entry

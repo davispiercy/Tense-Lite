@@ -37,7 +37,7 @@
 
 <div class="active-users" *ngIf="activeData">
   <h3>Active Users</h3>
-  <table class="user" *ngFor="let user of activeData">
+  <table class="user" *ngFor="let user of activeData; let i = index" [attr.data-index]="i">
     <tr>
       <td>Name:</td>
       <td>{{user[0].first_name}} {{user[0].last_name}}</td>
@@ -50,18 +50,36 @@
       <td>Security Group:</td>
       <td>{{user[0].sec_group}}</td>
     </tr>
+    <tr *ngIf="!displayProjects">
+      <td><button (click)="displayProjects=true;">Display Projects</button></td>
+    </tr>
+    <tr *ngFor="let project of user[1]">
+      <td *ngIf="displayProjects">{{project[0]}}</td>
+      <td *ngIf="displayProjects">Hourly Rate: ${{project[2]}}, Billed: ${{project[1]}}</td>
+      <td *ngIf="displayProjects"><button>Remove</button></td>
+    </tr>
     <tr *ngIf="authService.isAdmin">
       <td><button class="edit" (click)="edit(user[0])">Edit User</button></td>
       <td><button class="disable" (click)="disable(user[0])">Disable User</button></td>
-    </tr>
-    <tr *ngIf="authService.isAdmin">
       <td *ngIf="user[0].sec_group == 'admin'"><button class="remove-admin" (click)="removeAdmin(user[0])">Revoke Admin</button></td>
       <td *ngIf="user[0].sec_group != 'admin'"><button class="make-admin" (click)="makeAdmin(user[0])">Make Admin</button></td>
-      <td><button class="assign">Assign to Project</button></td>
     </tr>
-    <tr *ngFor="let project of user[1]">
-      <td>{{project}}</td>
-      <td>Amount Billed: </td>
+    <tr>
+      <td *ngIf="!assigning"><button (click)="toggleAssign()">Assign to Project</button></td>
+      <td *ngIf="assigning" colspan="2">
+        <form [formGroup]="assignForm" (ngSubmit)="assignProject(user[0].id)">
+          <select formControlName="projectName">
+            <option value="">Projects</option>
+            <option *ngFor="let project of ps" [ngValue]="project">
+              {{ project }}
+            </option>
+          </select> <br>
+          <label for="hourly-rate">Hourly Rate: </label>
+          <input id="hourly-rate" type="number" formControlName="hourlyRate">
+          <button type="submit" class="submit">Assign</button>
+          <button (click)="toggleAssign()">Cancel</button>
+        </form>
+      </td>
     </tr>
   </table>
 </div>

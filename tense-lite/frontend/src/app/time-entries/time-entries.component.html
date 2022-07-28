@@ -17,8 +17,6 @@
         <div *ngIf="!editing">
           <h3>New Entry</h3>
         </div>
-        <!--<label for="user-id">User ID: </label>
-        <input id="user-id" type="number" formControlName="user_id"> <br>-->
         <label for="project-id">Project ID: </label>
         <input id="project-id" type="number" formControlName="project_id"> <br>
         <label for="entry-date">Entry Date: </label>
@@ -27,8 +25,6 @@
         <input id="notes" type="text" formControlName="notes"> <br>
         <label for="hours">Hours: </label>
         <input id="hours" type="number" formControlName="hours"> <br>
-        <label for="billable">Billable: </label>
-        <input id="billable" type="checkbox" formControlName="billable">
       </form>
       <div *ngIf="editing">
         <button type="submit" [disabled]="!entryForm.valid" (click)="editEntry()">Submit</button>

@@ -5,7 +5,7 @@ export interface Entry {
   entry_date: Date;
   notes: string;
   hours: number;
-  hourly_rate: number;
+  //hourly_rate: number;
   entry_value: number;
   billable: boolean
   enabled: boolean;
