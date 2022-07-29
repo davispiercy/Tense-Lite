@@ -18,10 +18,10 @@ export class TimeEntryService {
   getEntriesUserProject(user: number, project: number): Observable<any> {
     return this.http.get(`http://localhost:8080/entries/${user}/${project}`);
   }
-  addEntry(id: number, data: any, rate: number): Observable<any>{
+  addEntry(user_id: number, project_id: number, data: any, rate: number): Observable<any>{
     let value = rate * data.hours;
     return this.http.post('http://localhost:8080/addEntry/',
-    { "user_id": id, "project_id": data.project_id, "entry_date": data.entry_date,
+    { "user_id": user_id, "project_id": project_id, "entry_date": data.entry_date,
     "notes": data.notes, "hours": data.hours, "hourly_rate": rate, "entry_value": value, /*"billable": data.billable*/ },
     {responseType: 'json'}
     );

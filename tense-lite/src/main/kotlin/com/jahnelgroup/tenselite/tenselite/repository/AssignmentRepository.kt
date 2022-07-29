@@ -11,6 +11,9 @@ import java.util.*
 interface AssignmentRepository: JpaRepository<Assignment, AssignmentId> {
 
     @Query("select a.assignmentId.project_id from Assignment a where a.assignmentId.user_id = ?1")
-    fun findAssignments(user_id: Long): List<Long>
+    fun findProjectIds(user_id: Long): List<Long>
+
+    @Query("select a from Assignment a where a.assignmentId.user_id = ?1 and a.enabled = true")
+    fun findAssignments(user_id: Long): List<Assignment>
 
 }

@@ -15,7 +15,6 @@ import { AssignmentService } from '../assignment.service';
 })
 
 export class UserListComponent implements OnInit {
-  //activeUsers$: Observable<any>;
   inactiveUsers$: Observable<any>;
   projects$: Observable<any>;
   activeData = new Array;
@@ -29,40 +28,35 @@ export class UserListComponent implements OnInit {
   private assignmentService: AssignmentService) {}
 
   ngOnInit(): void {
-    //this.activeUsers$ = this.userService.getUsers();
     this.inactiveUsers$ = this.userService.getDisabledUsers();
     this.userService.getUsers().subscribe((response) =>
     { for(let i = 0; i < response.length; i++){
         this.activeData.push([response[i], []]);
         this.userProjects.push([response[i].id, []]);
-        this.projectService.getProjectsByUser(response[i].id).subscribe((response2) =>
+        this.assignmentService.getAssignmentsByUser(response[i].id).subscribe((response2) =>
         { for(let j = 0; j < response2.length; j++){
-            this.getName(response2[j], response[i].id, i);
+            this.activeData[i][1].push([response2[j], '', 0]);
+            this.getName(response2[j].project_id, response[i].id, i, j);
           }
         });
       }
     });
     this.getProjects();
   }
-  getName(id: number, user: number, position: number){
-    this.projectService.getProjectName(id).subscribe((response) =>
-    { this.activeData[position][1].push([response, 0]);
-      this.userProjects[position][1].push(response);
-      //this.ps.add(response);
-      //console.log(this.ps);
-      this.getAmount(user, id, position, this.activeData[position][1].length - 1);
+  getName(project_id: number, user_id: number, u_p: number, p_p: number){
+    this.projectService.getProjectName(project_id).subscribe((response) =>
+    { this.activeData[u_p][1][p_p][1] = response;
+      this.userProjects[u_p][1].push(response);
+      this.getAmount(user_id, project_id, u_p, p_p);
     });
   }
-  getAmount(user: number, project: number, ad_position: number, p_position: number) {
+  getAmount(user: number, project: number, u_p: number, p_p: number) {
     this.timeEntryService.getEntriesUserProject(user, project).subscribe((response) =>
     { let sum = 0;
-      let rate = 0;
       for(let i = 0; i < response.length; i++) {
         sum += response[i].entry_value;
-        rate = response[i].hourly_rate;
       }
-      this.activeData[ad_position][1][p_position][1] = sum;
-      this.activeData[ad_position][1][p_position][2] = rate;
+      this.activeData[u_p][1][p_p][2] = sum;
     });
   }
 
@@ -164,10 +158,13 @@ export class UserListComponent implements OnInit {
     this.assignmentService.createAssignment(user_id, project_id, this.hourlyRate!).subscribe((response) =>
     { console.log(response); });
     this.assigning = false;
+    window.location.reload();
   }
-  /*endAssignment(user_id: number, project_name: string) {
-    this.assignmentService.endAssignment(user_id, project_id)
-  }*/
+  endAssignment(data: any) {
+    console.log("test");
+    this.assignmentService.endAssignment(data).subscribe((response) =>
+    { console.log(response); });
+  }
   getProjects() {
     this.projectService.getProjects().subscribe((response) =>
     { for(let i = 0; i < response.length; i++) {
@@ -180,5 +177,21 @@ export class UserListComponent implements OnInit {
   toggleAssign(){
     this.assigning = !this.assigning;
   }
-  displayProjects = false;
+
+  //stuff to display projects
+  p_num = new Array
+  displayProject(index: number){
+    this.p_num.push(index);
+  }
+  hideProject(index: number){
+    this.p_num.splice(this.p_num.indexOf(index), 1);
+  }
+  //stuff to assign projects
+  a_num = new Array
+  displayAssign(index: number){
+    this.a_num.push(index);
+  }
+  hideAssign(index: number){
+    this.a_num.splice(this.a_num.indexOf(index), 1);
+  }
 }

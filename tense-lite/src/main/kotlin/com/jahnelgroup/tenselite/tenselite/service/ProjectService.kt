@@ -25,6 +25,9 @@ class ProjectService (val projectRepository: ProjectRepository){
     fun getProjectName(id: Long) : String {
         return projectRepository.getProjectName(id)
     }
+    fun getProjectId(name: String): Long {
+        return projectRepository.getProjectId(name)
+    }
     fun createProject(project: Project) : Project {
         projectRepository.save(project)
         return project

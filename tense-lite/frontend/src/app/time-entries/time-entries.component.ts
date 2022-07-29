@@ -15,32 +15,37 @@ import { AssignmentService } from '../assignment.service';
 })
 export class TimeEntryComponent implements OnInit {
   entries = new Array;
-  //entries$: Observable<any>;
   date = new Date();
   display = this.date.toLocaleDateString();
   name: String;
+  projects = new Array;
   constructor(private timeEntryService: TimeEntryService, private fb: FormBuilder,
   private userService: UserService, public authService: AuthService, public projectService: ProjectService,
   private assignmentService: AssignmentService) { }
 
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user')!);
-    /*this.userService.getUserId(user.uid).subscribe((response) =>
-    { this.entries$ = this.timeEntryService.getUserEntries(response); });*/
     this.userService.getUserId(user.uid).subscribe((response) =>
-      { this.timeEntryService.getUserEntries(response).subscribe((response) =>
-        { //this.entries = response;
-          for(let i = 0; i < response.length; i++){
+      { this.assignmentService.getAssignmentsByUser(response).subscribe((response2) =>
+        { for(let i = 0; i < response2.length; i++) {
+            this.getPName(response2[i].project_id);
+          }
+        });
+        this.timeEntryService.getUserEntries(response).subscribe((response) =>
+        { for(let i = 0; i < response.length; i++){
             this.getName(response[i]);
           }
         });
-      });
-
-
+      }
+    );
   }
   getName(entry: Entry){
     this.projectService.getProjectName(entry.project_id).subscribe((response) =>
     { this.entries.push([entry, response]);});
+  }
+  getPName(project_id: number){
+    this.projectService.getProjectName(project_id).subscribe((response) =>
+    { this.projects.push(response); });
   }
   isChecked = false;
   editing = false;
@@ -76,32 +81,29 @@ export class TimeEntryComponent implements OnInit {
     let date = new Date();
     let newDate = this.convertDate(this.display);
     this.entryForm.patchValue({
-      user_id: '',
-      project_id: '',
+      pName: '',
       entry_date: newDate,
       notes: '',
       hours: '',
-      //billable: ''
     })
   }
   entryForm = this.fb.group({
-    user_id: [''],
-    project_id: ['', Validators.required],
+    pName: ['', Validators.required],
     entry_date: ['', Validators.required],
     notes: ['', Validators.required],
     hours: ['', Validators.required],
-    //billable: ['']
   });
   onSubmit() {
-      this.userService.getUserId(this.authService.userData.uid).subscribe((response) =>
-      { this.assignmentService.getAssignment(response, parseInt(this.entryForm.value.project_id!)).subscribe((response2) =>
-        { console.log(parseInt(this.entryForm.value.project_id!));
-          this.timeEntryService.addEntry(response, this.entryForm.value, response2.hourly_rate).subscribe((response3) =>
-          { console.log(response3); });
+    this.userService.getUserId(this.authService.userData.uid).subscribe((response) =>
+    { this.projectService.getProjectId(this.entryForm.value.pName!).subscribe((response2) =>
+      { this.assignmentService.getAssignment(response, response2).subscribe((response3) =>
+        { this.timeEntryService.addEntry(response, response2, this.entryForm.value, response3.hourly_rate).subscribe((response4) =>
+          { });
         });
       });
-      this.isChecked = false;
-      window.location.reload();
+    });
+    this.isChecked = false;
+    window.location.reload();
   }
   delete(id: number) {
     this.timeEntryService.delete(id).subscribe((response: any) =>
@@ -113,18 +115,12 @@ export class TimeEntryComponent implements OnInit {
     this.id = entry.id;
     this.editing = true;
     this.isChecked = !this.isChecked;
-    var billable = '';
-    /*if(entry.billable){
-      billable = 'true';
-    }*/
     let cur_date = this.convertDateFromDate(String(entry.entry_date))
     this.entryForm.patchValue({
-      user_id: entry.user_id,
-      project_id: entry.project_id,
+      pName: '',
       entry_date: cur_date,
       notes: entry.notes,
       hours: String(entry.hours),
-      //billable: billable
     });
   }
   editEntry() {

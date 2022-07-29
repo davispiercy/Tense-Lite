@@ -13,11 +13,11 @@ export class ProjectService {
   getDisabledProjects(): Observable<any> {
     return this.http.get('http://localhost:8080/disabledProjects');
   }
-  getProjectsByUser(data: any): Observable<any> {
-    return this.http.get(`http://localhost:8080/getProjectsByUser/${data}`);
-  }
   getUserProjects(data: any): Observable<any> {
     return this.http.get(`http://localhost:8080/getProjects/${data}`);
+  }
+  getProjectId(name: string): Observable<any> {
+    return this.http.get(`http://localhost:8080/getProjectId/${name}`);
   }
 
   addProject(data: any): Observable<any>{
@@ -49,15 +49,6 @@ export class ProjectService {
     {responseType: 'text'});
   }
   editProject(id: number, data: any): Observable<any>{
-    //console.log(data.enabled);
-   /*return this.http.patch(
-      `http://localhost:8080/updateProject/`,
-    { "id": id, "name": data.name, "start_date": data.start_date, "end_date": data.end_date,
-    "billable": data.billable, "enabled": true},
-    {responseType: 'json'}
-    );*/
-          console.log(data.start_date);
-          console.log(data.end_date);
     let start = new Date(data.start_date);
     let end = new Date(data.end_date);
     return this.http.patch(`http://localhost:8080/updateProject`,

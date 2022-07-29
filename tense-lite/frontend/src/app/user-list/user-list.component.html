@@ -50,13 +50,18 @@
       <td>Security Group:</td>
       <td>{{user[0].sec_group}}</td>
     </tr>
-    <tr *ngIf="!displayProjects">
-      <td><button (click)="displayProjects=true;">Display Projects</button></td>
+    <tr>
+      <td *ngIf="authService.isAdmin && !p_num.includes(i)" colspan="3">
+        <button class="display" (click)="displayProject(i)">Display Project(s)</button>
+      </td>
+      <td *ngIf="authService.isAdmin && p_num.includes(i)" colspan="3">
+        <button class="hide" (click)="hideProject(i)">Hide Project(s)</button>
+      </td>
     </tr>
     <tr *ngFor="let project of user[1]">
-      <td *ngIf="displayProjects">{{project[0]}}</td>
-      <td *ngIf="displayProjects">Hourly Rate: ${{project[2]}}, Billed: ${{project[1]}}</td>
-      <td *ngIf="displayProjects"><button>Remove</button></td>
+      <td *ngIf="authService.isAdmin && p_num.includes(i)">{{project[1]}}</td>
+      <td *ngIf="authService.isAdmin && p_num.includes(i)">Hourly Rate: ${{project[0].hourly_rate}}, Billed: ${{project[2]}}</td>
+      <td *ngIf="authService.isAdmin && p_num.includes(i)"><button (click)="endAssignment(project[0])">Remove</button></td>
     </tr>
     <tr *ngIf="authService.isAdmin">
       <td><button class="edit" (click)="edit(user[0])">Edit User</button></td>
@@ -65,8 +70,8 @@
       <td *ngIf="user[0].sec_group != 'admin'"><button class="make-admin" (click)="makeAdmin(user[0])">Make Admin</button></td>
     </tr>
     <tr>
-      <td *ngIf="!assigning"><button (click)="toggleAssign()">Assign to Project</button></td>
-      <td *ngIf="assigning" colspan="2">
+      <td *ngIf="authService.isAdmin && !a_num.includes(i)" colspan="3"><button class="display" (click)="displayAssign(i)">Assign to Project</button></td>
+      <td *ngIf="authService.isAdmin && a_num.includes(i)" colspan="3">
         <form [formGroup]="assignForm" (ngSubmit)="assignProject(user[0].id)">
           <select formControlName="projectName">
             <option value="">Projects</option>
@@ -77,7 +82,7 @@
           <label for="hourly-rate">Hourly Rate: </label>
           <input id="hourly-rate" type="number" formControlName="hourlyRate">
           <button type="submit" class="submit">Assign</button>
-          <button (click)="toggleAssign()">Cancel</button>
+          <button class="hide" (click)="hideAssign(i)">Cancel</button>
         </form>
       </td>
     </tr>

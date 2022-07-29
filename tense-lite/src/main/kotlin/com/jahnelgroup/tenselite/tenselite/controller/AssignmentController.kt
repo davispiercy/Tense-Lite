@@ -20,8 +20,8 @@ class AssignmentController (val assignmentService: AssignmentService){
     fun getAssignment(@PathVariable("user_id") user_id: Long, @PathVariable("project_id") project_id: Long): Optional<Assignment> {
         return assignmentService.findAssignment(user_id, project_id)
     }
-    @GetMapping("/getProjectsByUser/{user_id}")
-    fun findAssignments(@PathVariable("user_id") user_id: Long) : List<Long> {
+    @GetMapping("/getAssignmentsByUser/{user_id}")
+    fun findAssignments(@PathVariable("user_id") user_id: Long) : List<Assignment> {
         return assignmentService.findAssignments(user_id)
     }
     @PostMapping("/createAssignment")

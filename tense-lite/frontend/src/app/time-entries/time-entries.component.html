@@ -6,7 +6,7 @@
 
   <div class="add-entry">
     <div *ngIf="!isChecked">
-      <button (click)="showFormToggle()">Add Entry</button>
+      <button class="add" (click)="showFormToggle()">Add Entry</button>
     </div>
 
     <div *ngIf="isChecked" class="form">
@@ -17,8 +17,12 @@
         <div *ngIf="!editing">
           <h3>New Entry</h3>
         </div>
-        <label for="project-id">Project ID: </label>
-        <input id="project-id" type="number" formControlName="project_id"> <br>
+        <select formControlName="pName">
+          <option value="">Select Project</option>
+          <option *ngFor="let project of projects" [ngValue]="project">
+            {{ project }}
+          </option>
+        </select> <br>
         <label for="entry-date">Entry Date: </label>
         <input id="entry-date" type="date" formControlName="entry_date"> <br>
         <label for="notes">Notes: </label>
@@ -52,8 +56,8 @@
         <td>{{entry[0].notes}}</td>
       </tr>
       <tr>
-        <td><button id="edit" (click)="edit(entry[0])">Edit Entry</button></td>
-        <td><button id="delete" (click)="delete(entry[0].id)">Delete Entry</button></td>
+        <td><button class="edit" (click)="edit(entry[0])">Edit Entry</button></td>
+        <td><button class="delete" (click)="delete(entry[0].id)">Delete Entry</button></td>
       </tr>
     </table>
   </div>

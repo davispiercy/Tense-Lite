@@ -8,6 +8,10 @@ import org.springframework.stereotype.Repository
 @Repository
 interface ProjectRepository: JpaRepository<Project, Long> {
 
+    @Query("select p.id from Project p where p.name = ?1")
+    fun getProjectId(name: String): Long
+
+
     @Query("select p.name from Project p where p.id = ?1")
     fun getProjectName(id: Long): String
 
