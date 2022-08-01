@@ -61,8 +61,23 @@
     <tr *ngFor="let project of user[1]">
       <td *ngIf="authService.isAdmin && p_num.includes(i)">{{project[1]}}</td>
       <td *ngIf="authService.isAdmin && p_num.includes(i)">Hourly Rate: ${{project[0].hourly_rate}}, Billed: ${{project[2]}}</td>
-      <td *ngIf="authService.isAdmin && p_num.includes(i)"><button (click)="endAssignment(project[0])">Remove</button></td>
+      <td *ngIf="authService.isAdmin && p_num.includes(i)"><button (click)="endAssignment(project[0])">End</button></td>
+      <td *ngIf="authService.isAdmin && p_num.includes(i)"><button>Edit</button></td>
     </tr>
+
+    <td *ngIf="authService.isAdmin && !f_num.includes(i)" colspan="3">
+      <button class="display" (click)="displayFinished(i)">Show Finished</button>
+    </td>
+    <td *ngIf="authService.isAdmin && f_num.includes(i)" colspan="3">
+      <button class="hide" (click)="hideFinished(i)">Hide Finished</button>
+    </td>
+    <tr *ngFor="let project of user[2]">
+      <td *ngIf="authService.isAdmin && f_num.includes(i)">{{project[1]}}</td>
+      <td *ngIf="authService.isAdmin && f_num.includes(i)">Hourly Rate: ${{project[0].hourly_rate}}, Billed: ${{project[2]}}</td>
+      <td *ngIf="authService.isAdmin && f_num.includes(i)"><button (click)="restartAssignment(project[0])">Restart</button></td>
+      <td *ngIf="authService.isAdmin && f_num.includes(i)"><button>Edit</button></td>
+    </tr>
+
     <tr *ngIf="authService.isAdmin">
       <td><button class="edit" (click)="edit(user[0])">Edit User</button></td>
       <td><button class="disable" (click)="disable(user[0])">Disable User</button></td>
@@ -75,7 +90,7 @@
         <form [formGroup]="assignForm" (ngSubmit)="assignProject(user[0].id)">
           <select formControlName="projectName">
             <option value="">Projects</option>
-            <option *ngFor="let project of ps" [ngValue]="project">
+            <option *ngFor="let project of userProjects[i]" [ngValue]="project">
               {{ project }}
             </option>
           </select> <br>

@@ -21,6 +21,7 @@ export class UserListComponent implements OnInit {
   userProjects = new Array;
   ps = new Array;
   p_ids = new Array;
+  possible_projects = new Array;
 
   constructor(private userService: UserService, private fb: FormBuilder,
   public authService: AuthService, private projectService: ProjectService,
@@ -31,25 +32,38 @@ export class UserListComponent implements OnInit {
     this.inactiveUsers$ = this.userService.getDisabledUsers();
     this.userService.getUsers().subscribe((response) =>
     { for(let i = 0; i < response.length; i++){
-        this.activeData.push([response[i], []]);
-        this.userProjects.push([response[i].id, []]);
+        this.activeData.push([response[i], [], []]);
+        this.getProjects();
+        //this.userProjects.push([response[i].id, []]);
         this.assignmentService.getAssignmentsByUser(response[i].id).subscribe((response2) =>
         { for(let j = 0; j < response2.length; j++){
             this.activeData[i][1].push([response2[j], '', 0]);
             this.getName(response2[j].project_id, response[i].id, i, j);
           }
         });
+        this.assignmentService.getDisabledAssignmentsByUser(response[i].id).subscribe((response2) =>
+        { for(let j = 0; j < response2.length; j++) {
+            this.activeData[i][2].push([response2[j], '', 0]);
+            this.getDName(response2[j].project_id, response[i].id, i, j);
+          }
+        });
       }
     });
-    this.getProjects();
   }
   getName(project_id: number, user_id: number, u_p: number, p_p: number){
     this.projectService.getProjectName(project_id).subscribe((response) =>
     { this.activeData[u_p][1][p_p][1] = response;
-      this.userProjects[u_p][1].push(response);
+      this.userProjects[u_p].splice(this.userProjects[u_p].indexOf(response), 1);
+      //this.userProjects[u_p].push(response);
       this.getAmount(user_id, project_id, u_p, p_p);
     });
   }
+  getDName(project_id: number, user_id: number, u_p: number, p_p: number){
+      this.projectService.getProjectName(project_id).subscribe((response) =>
+      { this.activeData[u_p][2][p_p][1] = response;
+        this.getDAmount(user_id, project_id, u_p, p_p);
+      });
+    }
   getAmount(user: number, project: number, u_p: number, p_p: number) {
     this.timeEntryService.getEntriesUserProject(user, project).subscribe((response) =>
     { let sum = 0;
@@ -59,6 +73,15 @@ export class UserListComponent implements OnInit {
       this.activeData[u_p][1][p_p][2] = sum;
     });
   }
+  getDAmount(user: number, project: number, u_p: number, p_p: number) {
+      this.timeEntryService.getEntriesUserProject(user, project).subscribe((response) =>
+      { let sum = 0;
+        for(let i = 0; i < response.length; i++) {
+          sum += response[i].entry_value;
+        }
+        this.activeData[u_p][2][p_p][2] = sum;
+      });
+    }
 
   isChecked = false;
   editing = false;
@@ -140,6 +163,11 @@ export class UserListComponent implements OnInit {
   assignForm = this.fb.group({
     projectName: ['', [Validators.required]],
     hourlyRate: [0, [Validators.required]],
+    user_id: [''],
+    project_id: [''],
+    start_date: [''],
+    end_date: [''],
+    enabled: ['']
   });
 
   get projectName() {
@@ -161,17 +189,24 @@ export class UserListComponent implements OnInit {
     window.location.reload();
   }
   endAssignment(data: any) {
-    console.log("test");
     this.assignmentService.endAssignment(data).subscribe((response) =>
     { console.log(response); });
     window.location.reload();
   }
+  restartAssignment(data: any) {
+      this.assignmentService.restartAssignment(data).subscribe((response) =>
+      { console.log(response); });
+      window.location.reload();
+    }
   getProjects() {
     this.projectService.getProjects().subscribe((response) =>
-    { for(let i = 0; i < response.length; i++) {
-        this.ps.push(response[i].name);
-        this.p_ids.push(response[i].id);
+    { let temp = new Array;
+      for(let i = 0; i < response.length; i++) {
+        temp.push(response[i].name);
+        /*this.ps.push(response[i].name);
+        this.p_ids.push(response[i].id);*/
       }
+      this.userProjects.push(temp)
     });
   }
   assigning = false;
@@ -186,6 +221,13 @@ export class UserListComponent implements OnInit {
   }
   hideProject(index: number){
     this.p_num.splice(this.p_num.indexOf(index), 1);
+  }
+  f_num = new Array
+  displayFinished(index: number){
+    this.f_num.push(index);
+  }
+  hideFinished(index: number){
+    this.f_num.splice(this.f_num.indexOf(index), 1);
   }
   //stuff to assign projects
   a_num = new Array

@@ -14,6 +14,9 @@ class AssignmentService (val assignmentRepository: AssignmentRepository){
     fun findAssignments(user_id: Long) : List<Assignment> {
         return assignmentRepository.findAssignments(user_id)
     }
+    fun findDisabledAssignments(user_id: Long) : List<Assignment> {
+        return assignmentRepository.findDisabledAssignments(user_id)
+    }
     fun findProjectIds(user_id: Long) : List<Long> {
         return assignmentRepository.findProjectIds(user_id)
     }

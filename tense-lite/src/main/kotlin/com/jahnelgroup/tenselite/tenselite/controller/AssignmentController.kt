@@ -24,6 +24,10 @@ class AssignmentController (val assignmentService: AssignmentService){
     fun findAssignments(@PathVariable("user_id") user_id: Long) : List<Assignment> {
         return assignmentService.findAssignments(user_id)
     }
+    @GetMapping("/getDisabledAssignmentsByUser/{user_id}")
+    fun findDisabledAssignments(@PathVariable("user_id") user_id: Long) : List<Assignment> {
+        return assignmentService.findDisabledAssignments(user_id)
+    }
     @PostMapping("/createAssignment")
     fun createAssignment(@RequestBody assignment: Assignment) : Assignment {
         assignmentService.createAssignment(assignment)

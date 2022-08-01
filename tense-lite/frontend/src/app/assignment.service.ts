@@ -27,10 +27,21 @@ export class AssignmentService {
       {responseType: 'json'}
     );
   }
+  restartAssignment(data: any): Observable<any> {
+      let date = new Date();
+      return this.http.patch('http://localhost:8080/endAssignment/',
+      { "user_id": data.user_id, "project_id": data.project_id, "hourly_rate": data.hourly_rate,
+        "start_date": data.start_date, "enabled": true},
+        {responseType: 'json'}
+      );
+    }
   getAssignment(user_id: number, project_id: number): Observable<any> {
     return this.http.get(`http://localhost:8080/getAssignment/${user_id}/${project_id}`);
   }
   getAssignmentsByUser(data: any): Observable<any> {
     return this.http.get(`http://localhost:8080/getAssignmentsByUser/${data}`);
+  }
+  getDisabledAssignmentsByUser(data: any): Observable<any> {
+    return this.http.get(`http://localhost:8080/getDisabledAssignmentsByUser/${data}`);
   }
 }
