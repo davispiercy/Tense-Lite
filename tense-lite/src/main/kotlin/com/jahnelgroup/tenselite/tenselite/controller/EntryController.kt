@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import java.time.LocalDate
 import java.util.*
 
 @RestController
 class EntryController (val entryService: EntryService){
     @GetMapping("/entries")
     fun findAll(): List<Entry> {
+        println("testing123")
         return entryService.findAll()
     }
     @GetMapping("/entries/{id}")
@@ -25,9 +27,11 @@ class EntryController (val entryService: EntryService){
     fun getEntry(@PathVariable("id") id: Long) : Entry {
         return entryService.getEntry(id)
     }
-    @GetMapping("/entries/{id}{date}")
-    fun getUserEntriesByDate(@PathVariable("id") id: Long, @PathVariable("date") date: Date): List<Entry> {
-        return entryService.getEntryByDate(id, date)
+    @GetMapping("/entriesByDate/{id}/{date}")
+    fun getUserEntriesByDate(@PathVariable("id") id: Long, @PathVariable("date") date: String): List<Entry> {
+        val rDate = LocalDate.parse(date)
+        println(rDate)
+        return entryService.getEntryByDate(id, rDate)
     }
     @GetMapping("/entries/{user_id}/{project_id}")
     fun getEntriesUserProject(@PathVariable("user_id") user_id: Long, @PathVariable("project_id") project_id: Long) : List<Entry> {
@@ -45,5 +49,11 @@ class EntryController (val entryService: EntryService){
     @DeleteMapping("/deleteEntry/{id}")
     fun deleteEntry(@PathVariable("id") id: Long) : Optional<Entry> {
         return entryService.deleteEntry(id)
+    }
+    @GetMapping("/entrysByDate/{id}/{date}")
+    fun getUserEntrysByDate(@PathVariable("id") id: Long, @PathVariable("date") date: String): LocalDate{
+        val rDate = LocalDate.parse(date)
+        println("rDate")
+        return rDate
     }
 }

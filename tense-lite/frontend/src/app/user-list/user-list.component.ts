@@ -164,6 +164,7 @@ export class UserListComponent implements OnInit {
     console.log("test");
     this.assignmentService.endAssignment(data).subscribe((response) =>
     { console.log(response); });
+    window.location.reload();
   }
   getProjects() {
     this.projectService.getProjects().subscribe((response) =>

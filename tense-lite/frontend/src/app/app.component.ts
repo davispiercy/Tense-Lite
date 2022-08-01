@@ -9,4 +9,5 @@ import { HeaderComponent } from './header/header.component'
 })
 export class AppComponent {
   title = 'frontend';
+  date = new Date();
 }

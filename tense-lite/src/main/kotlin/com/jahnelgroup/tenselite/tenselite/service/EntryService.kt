@@ -1,9 +1,9 @@
 package com.jahnelgroup.tenselite.tenselite.service
 
 import com.jahnelgroup.tenselite.tenselite.entity.Entry
-import com.jahnelgroup.tenselite.tenselite.entity.Project
 import com.jahnelgroup.tenselite.tenselite.repository.EntryRepository
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 import java.util.*
 
 @Service
@@ -17,8 +17,8 @@ class EntryService (val entryRepository: EntryRepository){
     fun getEntry(id: Long) : Entry {
         return entryRepository.findById(id).get()
     }
-    fun getEntryByDate(id: Long, date: Date): List<Entry> {
-        return entryRepository.getEntryByDate(id, date)
+    fun getEntryByDate(user_id: Long, date: LocalDate): List<Entry> {
+        return entryRepository.getEntryByDate(user_id, date)
     }
     fun getEntriesUserProject(user_id: Long, project_id: Long): List<Entry> {
         return entryRepository.getEntriesUserProject(user_id, project_id)

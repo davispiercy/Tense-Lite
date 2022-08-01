@@ -1,7 +1,12 @@
 <div class="entries-component">
   <div class="title">
     <h1>Time Entries</h1>
-    <h3>Date: {{display}}</h3>
+    <!--<h3>Date: {{display}}</h3>-->
+    <form [formGroup]="dateForm" (ngSubmit)="setDate()">
+      <label for="display-date">Date: </label>
+      <input id="display-date" type="date" formControlName="display_date">
+      <button type="submit" class="submit">Change Date</button>
+    </form>
   </div>
 
   <div class="add-entry">
@@ -56,12 +61,11 @@
         <td>{{entry[0].notes}}</td>
       </tr>
       <tr>
-        <td><button class="edit" (click)="edit(entry[0])">Edit Entry</button></td>
+        <td><button class="edit" (click)="edit(entry[0], entry[1])">Edit Entry</button></td>
         <td><button class="delete" (click)="delete(entry[0].id)">Delete Entry</button></td>
       </tr>
     </table>
   </div>
-
   <ng-template #loading>Loading...</ng-template>
 
 </div>
