@@ -21,15 +21,23 @@ export class AssignmentService {
   }
   endAssignment(data: any): Observable<any> {
     let date = new Date();
-    return this.http.patch('http://localhost:8080/endAssignment/',
+    return this.http.patch('http://localhost:8080/editAssignment/',
     { "user_id": data.user_id, "project_id": data.project_id, "hourly_rate": data.hourly_rate,
       "start_date": data.start_date, "end_date": date, "enabled": false},
       {responseType: 'json'}
     );
   }
+  editAssignment(user_id: number, project_id: number, start_date: Array<number>, data: any): Observable<any> {
+    console.log(data);
+    return this.http.patch('http://localhost:8080/editAssignment/',
+    { "user_id": user_id, "project_id": project_id, "hourly_rate": data.hourlyRate,
+      "start_date": start_date },
+      {responseType: 'json'}
+    );
+  }
   restartAssignment(data: any): Observable<any> {
       let date = new Date();
-      return this.http.patch('http://localhost:8080/endAssignment/',
+      return this.http.patch('http://localhost:8080/editAssignment/',
       { "user_id": data.user_id, "project_id": data.project_id, "hourly_rate": data.hourly_rate,
         "start_date": data.start_date, "enabled": true},
         {responseType: 'json'}

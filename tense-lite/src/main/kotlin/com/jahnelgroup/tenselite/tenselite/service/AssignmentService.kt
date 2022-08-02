@@ -28,7 +28,7 @@ class AssignmentService (val assignmentRepository: AssignmentRepository){
         assignmentRepository.save(assignment)
         return assignment
     }
-    fun endAssignment(assignment: Assignment) : Assignment {
+    fun editAssignment(assignment: Assignment) : Assignment {
         assignmentRepository.save(assignment)
         return assignment
     }

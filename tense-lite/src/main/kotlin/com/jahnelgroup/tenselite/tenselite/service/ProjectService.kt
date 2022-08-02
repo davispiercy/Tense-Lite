@@ -28,6 +28,9 @@ class ProjectService (val projectRepository: ProjectRepository){
     fun getProjectId(name: String): Long {
         return projectRepository.getProjectId(name)
     }
+    fun isBillable(name: String): List<Project> {
+        return projectRepository.isBillable(name)
+    }
     fun createProject(project: Project) : Project {
         projectRepository.save(project)
         return project

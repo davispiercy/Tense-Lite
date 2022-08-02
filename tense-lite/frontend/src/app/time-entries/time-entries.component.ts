@@ -35,13 +35,6 @@ export class TimeEntryComponent implements OnInit {
             this.getPName(response2[i].project_id);
           }
         });
-        //gets all entries for the user
-        /*this.timeEntryService.getUserEntries(this.user_id).subscribe((response) =>
-        { console.log(response);
-          for(let i = 0; i < response.length; i++){
-            this.getName(response[i]);
-          }
-        });*/
         this.timeEntryService.getUserEntriesByDate(this.user_id, this.convertDate(this.date.toLocaleDateString())).subscribe((response3) =>
         { for(let i = 0; i < response3.length; i++) {
             this.getName(response3[i]);
@@ -58,6 +51,27 @@ export class TimeEntryComponent implements OnInit {
     this.projectService.getProjectName(project_id).subscribe((response) =>
     { this.projects.push(response); this.p_ids.push(project_id); });
   }
+  refresh() {
+    this.entries = new Array;
+    this.projects = new Array;
+    this.p_ids = new Array;
+    const user = JSON.parse(localStorage.getItem('user')!);
+    this.userService.getUserId(user.uid).subscribe((response) =>
+    { this.user_id = response;
+      this.assignmentService.getAssignmentsByUser(this.user_id).subscribe((response2) =>
+      { for(let i = 0; i < response2.length; i++) {
+          this.getPName(response2[i].project_id);
+        }
+      });
+      this.timeEntryService.getUserEntriesByDate(this.user_id, this.convertDate(this.date.toLocaleDateString())).subscribe((response3) =>
+      { for(let i = 0; i < response3.length; i++) {
+          this.getName(response3[i]);
+        }
+      });
+    }
+    );
+  }
+
   isChecked = false;
   editing = false;
   convertDate(date: String) {
@@ -102,7 +116,6 @@ export class TimeEntryComponent implements OnInit {
     return ret;
   }
 
-
   showFormToggle() {
     this.isChecked = !this.isChecked;
     this.entryForm.patchValue({
@@ -119,20 +132,25 @@ export class TimeEntryComponent implements OnInit {
     hours: ['', Validators.required],
   });
   onSubmit() {
-    this.projectService.getProjectId(this.entryForm.value.pName!).subscribe((response2) =>
-      { this.assignmentService.getAssignment(this.user_id, response2).subscribe((response3) =>
-        { console.log(this.entryForm.value);
-          this.timeEntryService.addEntry(this.user_id, response2, this.entryForm.value, response3.hourly_rate).subscribe((response4) =>
-          { console.log(response4); });
-        });
-      });
-    this.isChecked = false;
-    window.location.reload();
+    if(parseFloat(this.entryForm.value.hours!) % 0.25 == 0 &&
+       parseFloat(this.entryForm.value.hours!) > 0.0 &&
+       parseFloat(this.entryForm.value.hours!) <= 24.0){
+      this.projectService.getProjectId(this.entryForm.value.pName!).subscribe((response2) =>
+        { this.assignmentService.getAssignment(this.user_id, response2).subscribe((response3) =>
+          { console.log(this.entryForm.value);
+            this.timeEntryService.addEntry(this.user_id, response2, this.entryForm.value, response3.hourly_rate).subscribe((response4) =>
+              { console.log(response4); this.refresh(); });
+            });
+          });
+      this.isChecked = false;
+    }
+
+
   }
   delete(id: number) {
     this.timeEntryService.delete(id).subscribe((response: any) =>
-    { console.log(response);} );
-    window.location.reload();
+    { console.log(response); this.refresh(); });
+    //window.location.reload();
   }
   id: number = 0;
   edit(entry: Entry, name: string) {
@@ -148,15 +166,21 @@ export class TimeEntryComponent implements OnInit {
     });
   }
   editEntry() {
-    this.projectService.getProjectId(this.entryForm.value.pName!).subscribe((response2) =>
-      { this.assignmentService.getAssignment(this.user_id, response2).subscribe((response3) =>
-        { this.timeEntryService.editEntry(this.id, this.user_id, response2, this.entryForm.value, response3.hourly_rate).subscribe((response4) =>
-          { console.log(response4); });
+    if(parseFloat(this.entryForm.value.hours!) % 0.25 == 0 &&
+        parseFloat(this.entryForm.value.hours!) > 0.0 &&
+        parseFloat(this.entryForm.value.hours!) <= 24.0) {
+      this.timeEntryService.delete(this.id).subscribe((response0) =>
+      { this.projectService.getProjectId(this.entryForm.value.pName!).subscribe((response2) =>
+        { this.assignmentService.getAssignment(this.user_id, response2).subscribe((response3) =>
+          { this.timeEntryService.addEntry(this.user_id, response2, this.entryForm.value, response3.hourly_rate).subscribe((response4) =>
+            { console.log(response4); this.refresh(); });
+          });
         });
       });
-    this.editing = !this.editing;
-    this.isChecked = !this.isChecked;
-    window.location.reload();
+      this.editing = !this.editing;
+      this.isChecked = !this.isChecked;
+    }
+
   }
   dateForm = this.fb.group({
     display_date: [this.convertDate(this.date.toLocaleDateString()), [Validators.required]]

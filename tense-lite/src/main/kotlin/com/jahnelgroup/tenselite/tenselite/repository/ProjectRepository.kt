@@ -15,6 +15,10 @@ interface ProjectRepository: JpaRepository<Project, Long> {
     @Query("select p.name from Project p where p.id = ?1")
     fun getProjectName(id: Long): String
 
+
+    @Query("select p from Project p where p.billable = true and p.name = ?1")
+    fun isBillable(name: String): List<Project>
+
     @Query("select p from Project p where p.enabled = false")
     fun findAllDisabled(): List<Project>
 

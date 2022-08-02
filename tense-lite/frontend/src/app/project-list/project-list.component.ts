@@ -20,16 +20,13 @@ export class ProjectListComponent implements OnInit {
   private userService: UserService, public authService: AuthService ) { }
 
   ngOnInit(): void {
-    //var ids: any;
-    //var id: any
-    /*this.userService.getUserId(JSON.parse(localStorage.getItem('user')!).uid).subscribe((response) =>
-      { id = response; this.projectService.getProjectIds(id).subscribe((response2) =>
-        { ids = response2; this.projects$ = this.projectService.getUserProjects(ids); });
-      });*/
     this.enabledProjects$ = this.projectService.getProjects();
     this.disabledProjects$ = this.projectService.getDisabledProjects();
   }
-
+  refresh() {
+    this.enabledProjects$ = this.projectService.getProjects();
+    this.disabledProjects$ = this.projectService.getDisabledProjects();
+  }
   isChecked = false;
   editing = false;
   showFormToggle() {
@@ -44,29 +41,30 @@ export class ProjectListComponent implements OnInit {
   projectForm = this.fb.group({
     name: ['', Validators.required],
     start_date: ['', Validators.required],
-    end_date: ['', Validators.required],
+    end_date: [''],
     billable: ['']
   });
 
   onSubmit() {
     this.projectService.addProject(this.projectForm.value).subscribe((response: any) =>
-    { console.log(response); });
+    { console.log(response); this.refresh(); });
     this.isChecked = false;
-    window.location.reload();
+    //window.location.reload();
+
   }
 
   disable(project: Project) {
     this.projectService.disableProject(project).subscribe((response: any) =>
-    { console.log(response);} );
+    { console.log(response); this.refresh(); } );
     this.isChecked = false;
-    window.location.reload();
+    //window.location.reload();
   }
 
   enable(project: Project) {
       this.projectService.enableProject(project).subscribe((response: any) =>
-      { console.log(response);} );
+      { console.log(response); this.refresh();} );
       this.isChecked = false;
-      window.location.reload();
+      //window.location.reload();
     }
   convertDateFromDate(date: String) {
       let year = date.slice(0, date.indexOf(','));
@@ -116,10 +114,10 @@ export class ProjectListComponent implements OnInit {
   }
   editProject() {
     this.projectService.editProject(this.id, this.projectForm.value).subscribe((response) =>
-    { console.log(response);});
+    { console.log(response); this.refresh();});
     this.editing = false;
     this.isChecked = false;
-    window.location.reload();
+    //window.location.reload();
   }
   stopEdit() {
     this.editing = false;

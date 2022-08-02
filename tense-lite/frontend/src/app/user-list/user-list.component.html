@@ -62,7 +62,7 @@
       <td *ngIf="authService.isAdmin && p_num.includes(i)">{{project[1]}}</td>
       <td *ngIf="authService.isAdmin && p_num.includes(i)">Hourly Rate: ${{project[0].hourly_rate}}, Billed: ${{project[2]}}</td>
       <td *ngIf="authService.isAdmin && p_num.includes(i)"><button (click)="endAssignment(project[0])">End</button></td>
-      <td *ngIf="authService.isAdmin && p_num.includes(i)"><button>Edit</button></td>
+      <td *ngIf="authService.isAdmin && p_num.includes(i)"><button (click)="editAssignment(project[0], project[1], i)">Edit</button></td>
     </tr>
 
     <td *ngIf="authService.isAdmin && !f_num.includes(i)" colspan="3">
@@ -75,7 +75,6 @@
       <td *ngIf="authService.isAdmin && f_num.includes(i)">{{project[1]}}</td>
       <td *ngIf="authService.isAdmin && f_num.includes(i)">Hourly Rate: ${{project[0].hourly_rate}}, Billed: ${{project[2]}}</td>
       <td *ngIf="authService.isAdmin && f_num.includes(i)"><button (click)="restartAssignment(project[0])">Restart</button></td>
-      <td *ngIf="authService.isAdmin && f_num.includes(i)"><button>Edit</button></td>
     </tr>
 
     <tr *ngIf="authService.isAdmin">
@@ -87,18 +86,24 @@
     <tr>
       <td *ngIf="authService.isAdmin && !a_num.includes(i)" colspan="3"><button class="display" (click)="displayAssign(i)">Assign to Project</button></td>
       <td *ngIf="authService.isAdmin && a_num.includes(i)" colspan="3">
-        <form [formGroup]="assignForm" (ngSubmit)="assignProject(user[0].id)">
+        <form [formGroup]="assignForm">
           <select formControlName="projectName">
             <option value="">Projects</option>
-            <option *ngFor="let project of userProjects[i]" [ngValue]="project">
-              {{ project }}
+            <option *ngFor="let project of userProjects[i]" [ngValue]="project[0]">
+              {{ project[0] }}
             </option>
           </select> <br>
           <label for="hourly-rate">Hourly Rate: </label>
           <input id="hourly-rate" type="number" formControlName="hourlyRate">
-          <button type="submit" class="submit">Assign</button>
-          <button class="hide" (click)="hideAssign(i)">Cancel</button>
         </form>
+        <div *ngIf="aEditing">
+          <button class="submit" (click)="editPAssignment(i)">Save</button>
+          <button class="hide" (click)="hideAssign(i)">Cancel</button>
+        </div>
+        <div *ngIf="!aEditing">
+          <button class="submit" (click)="assignProject(user[0].id, i)">Assign</button>
+          <button class="hide" (click)="hideAssign(i)">Cancel</button>
+        </div>
       </td>
     </tr>
   </table>

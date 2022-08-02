@@ -33,9 +33,9 @@ class AssignmentController (val assignmentService: AssignmentService){
         assignmentService.createAssignment(assignment)
         return assignment
     }
-    @PatchMapping("/endAssignment")
+    @PatchMapping("/editAssignment")
     fun endAssignment(@RequestBody assignment: Assignment) : Assignment {
-        assignmentService.endAssignment(assignment)
+        assignmentService.editAssignment(assignment)
         return assignment
     }
 }

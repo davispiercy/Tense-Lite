@@ -20,29 +20,23 @@ export class TimeEntryService {
   }
   addEntry(user_id: number, project_id: number, data: any, rate: number): Observable<any>{
     let value = rate * data.hours;
-    console.log(String(data.entry_date));
+    console.log(data);
     return this.http.post('http://localhost:8080/addEntry/',
     { "user_id": user_id, "project_id": project_id, "entry_date": data.entry_date,
     "notes": data.notes, "hours": data.hours, "hourly_rate": rate, "entry_value": value },
     {responseType: 'json'}
     );
   }
-  addUserEntry(data: any): Observable<any>{
-      return this.http.post('http://localhost:8080/addEntry/',
-      { "user_id": data.user_id, "project_id": data.project_id, "entry_date": data.entry_date,
-      "notes": data.notes, "hours": data.hours },
-      {responseType: 'json'}
-      );
-    }
   delete(id: number): Observable<any> {
     return this.http.delete(`http://localhost:8080/deleteEntry/${id}`);
   }
-  editEntry(id: number, user_id: number, project_id: number, data: any, rate: number): Observable<any>{
+  /*editEntry(id: number, user_id: number, project_id: number, data: any, rate: number): Observable<any>{
     let value = rate * data.hours;
-    return this.http.patch('http://localhost:8080/updateEntry',
-      { "id": id, "user_id": user_id, "project_id": data.project_id, "entry_date": data.entry_date,
+    return this.delete(id).subscribe((response) =>
+      { this.http.post('http://localhost:8080/addEntry/',
+      { "user_id": user_id, "project_id": project_id, "entry_date": data.entry_date,
       "notes": data.notes, "hours": data.hours, "hourly_rate": rate, "entry_value": value },
       {responseType: 'json'}
-    );
-  }
+      ); });
+  }*/
 }

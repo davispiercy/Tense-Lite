@@ -51,7 +51,7 @@
       <td>Start Date:</td>
       <td>{{formatString(project.start_date)}}</td>
     </tr>
-    <tr>
+    <tr *ngIf="project.end_date">
       <td>End Date:</td>
       <td>{{formatString(project.end_date)}}</td>
     </tr>
@@ -78,7 +78,7 @@
         <td>Start Date:</td>
         <td>{{formatString(project.start_date)}}</td>
       </tr>
-      <tr>
+      <tr *ngIf="project.end_date">
         <td>End Date:</td>
         <td>{{formatString(project.end_date)}}</td>
       </tr>
