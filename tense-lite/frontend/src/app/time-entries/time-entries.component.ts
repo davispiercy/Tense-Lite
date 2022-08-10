@@ -8,6 +8,8 @@ import { Entry } from '../models/entry.model';
 import { AuthService } from '../shared/services/auth.service';
 import { AssignmentService } from '../assignment.service';
 import { AppComponent } from '../app.component';
+import { CardModule } from 'primeng/card';
+import { SplitButtonModule} from 'primeng/splitbutton';
 
 @Component({
   selector: 'app-time-entries',
@@ -22,6 +24,11 @@ export class TimeEntryComponent implements OnInit {
   projects = new Array;
   p_ids = new Array;
   user_id: number;
+  items = new Array;
+  displayResponsive = false;
+  a_date: Date;
+  hours: number;
+  notes: String;
   constructor(private timeEntryService: TimeEntryService, private fb: FormBuilder,
   private userService: UserService, public authService: AuthService, public projectService: ProjectService,
   private assignmentService: AssignmentService, public appComponent: AppComponent) { }
@@ -42,6 +49,9 @@ export class TimeEntryComponent implements OnInit {
         });
       }
     );
+    this.items = [
+      {label: 'Delete', icon: 'pi pi-times'},
+    ]
   }
   getName(entry: Entry){
     this.projectService.getProjectName(entry.project_id).subscribe((response) =>
@@ -198,5 +208,22 @@ export class TimeEntryComponent implements OnInit {
       });
     }
     else{    }
+  }
+  save(entry: any){
+    if(entry[0].hours % 0.25 == 0){
+      console.log(entry[0]);
+      this.timeEntryService.delete(entry[0].id).subscribe((response) =>
+      { this.projectService.getProjectId(entry[1]).subscribe((response2) =>
+        { this.assignmentService.getAssignment(entry[0].user_id, response2).subscribe((response3) =>
+          { this.timeEntryService.addEntry(entry[0].user_id, response2, entry[0], response3.hourly_rate).subscribe((response4) =>
+            { console.log(response4); });
+          });
+        });
+      });
+    }
+  }
+  addBlank(user_id: number, date: Date){
+    this.timeEntryService.addBlank(user_id, date).subscribe((response) =>
+    { console.log(response); });
   }
 }

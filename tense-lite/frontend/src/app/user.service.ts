@@ -31,6 +31,9 @@ export class UserService {
   getRole(uid: string) : Observable<any> {
     return this.http.get(`http://localhost:8080/getRole/${uid}`,{responseType: 'text'})
   }
+  getName(uid: string) : Observable<any> {
+    return this.http.get(`http://localhost:8080/getName/${uid}`, {responseType: 'text'})
+  }
 
   addUser(data: any): Observable<any>{
     /*return this.http.post<User>(
@@ -88,6 +91,13 @@ export class UserService {
     return this.http.patch('http://localhost:8080/updateUser',
     { "id": id, "uid": uid, "first_name": data.first_name, "last_name": data.last_name, "email": data.email,
     "sec_group": data.sec_group, "enabled": data.enabled},
+    {responseType: "json"}
+    );
+  }
+  newEditUser(data: any): Observable<any> {
+    return this.http.patch('http://localhost:8080/updateUser',
+    { "id": data.id, "uid": data.uid, "first_name": data.first_name, "last_name": data.last_name,
+      "email": data.email, "sec_group": data.sec_group, "enabled": data.enabled},
     {responseType: "json"}
     );
   }

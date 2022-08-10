@@ -11,6 +11,9 @@ interface UserRepository: JpaRepository<User, Long> {
     @Query("select u from User u where u.enabled = false")
     fun findByDisabled(): List<User>
 
+    @Query("select u.first_name from User u where u.uid = ?1")
+    fun getName(uid: String): String
+
 
     @Query("select u.sec_group from User u where u.uid = ?1")
     fun getRole(sec_group: String): String

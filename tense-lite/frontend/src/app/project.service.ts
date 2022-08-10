@@ -53,7 +53,7 @@ export class ProjectService {
     let end = new Date(data.end_date);
     return this.http.patch(`http://localhost:8080/updateProject`,
       { "id": id, "name": data.name, "start_date": start, "end_date": end,
-      "billable": data.billable, "enabled": true},
+      "billable": data.billable, "enabled": data.enabled},
       {responseType: 'json'}
     );
   }

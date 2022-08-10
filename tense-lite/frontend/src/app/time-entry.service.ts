@@ -30,6 +30,12 @@ export class TimeEntryService {
   delete(id: number): Observable<any> {
     return this.http.delete(`http://localhost:8080/deleteEntry/${id}`);
   }
+  addBlank(user_id: number, date: Date): Observable<any> {
+    return this.http.post('http://localhost:8080/addEntry/',
+    { "user_id": user_id, "project_id": 0, "entry_date": date, "notes": "", "hours": 0, "hourly_rate": 0, "entry_value": 0},
+    {responseType: 'json'}
+    );
+  }
   /*editEntry(id: number, user_id: number, project_id: number, data: any, rate: number): Observable<any>{
     let value = rate * data.hours;
     return this.delete(id).subscribe((response) =>

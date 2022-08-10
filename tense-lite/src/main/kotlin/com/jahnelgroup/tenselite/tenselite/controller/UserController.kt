@@ -52,6 +52,10 @@ class UserController (val userService: UserService) {
     fun getRole(@PathVariable("uid") uid: String) : String {
         return userService.getRole(uid)
     }
+    @GetMapping("/getName/{uid}")
+    fun getName(@PathVariable("uid") uid: String): String {
+        return userService.getName(uid)
+    }
     @PostMapping("/createUser")
     fun createUser(@RequestBody user: User) : User {
         userService.createUser(user)

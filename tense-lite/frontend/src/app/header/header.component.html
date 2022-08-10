@@ -1,13 +1,4 @@
 <div class="header">
-  <ul>
-    <li id="title">Tense Lite</li>
-    <div class="logged-in" *ngIf="authService.isLoggedIn">
-      <li><a [routerLink]="['']">Profile</a></li>
-      <li><a [routerLink]="['/users']">Users</a></li>
-      <li><a [routerLink]="['/projects']">Projects</a></li>
-      <li><a [routerLink]="['/entries']">Time Entries</a></li>
-      <li><a (click)="authService.SignOut()" [routerLink]="['']">Log Out</a></li>
-    </div>
-  </ul>
+  <p-menu [model]="items" [style]="{'height': '100%', 'width': '100%'}"></p-menu>
 </div>
 

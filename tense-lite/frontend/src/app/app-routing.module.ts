@@ -14,12 +14,12 @@ const routes: Routes = [
 { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 { path: 'sign-in', component: SignInComponent },
 { path: 'register-user', component: SignUpComponent },
-{ path: 'dashboard', component: DashboardComponent},
+{ path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
 { path: 'forgot-password', component: ForgotPasswordComponent },
 { path: 'verify-email-address', component: VerifyEmailComponent },
 { path: 'users', component: UserListComponent, canActivate: [AuthGuard]},
 { path: 'projects', component: ProjectListComponent, canActivate: [AuthGuard]},
-{ path: 'entries', component: TimeEntryComponent},
+{ path: 'entries', component: TimeEntryComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({

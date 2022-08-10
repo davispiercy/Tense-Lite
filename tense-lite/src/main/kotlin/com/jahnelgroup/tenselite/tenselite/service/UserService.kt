@@ -37,6 +37,9 @@ class UserService (val userRepository: UserRepository){
     fun getRole(uid: String): String {
         return userRepository.getRole(uid)
     }
+    fun getName(uid: String): String {
+        return userRepository.getName(uid)
+    }
     fun createUser(user: User) : User {
         userRepository.save(user)
         return user

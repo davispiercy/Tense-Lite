@@ -1,12 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Directive, Input, HostListener } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserService } from '../user.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { User } from '../models/user.model';
+import { BigUser } from '../models/big-user.model';
+import { NewUser } from '../models/new-user.model';
+import { NewAssignment } from '../models/new-assignment.model';
 import { AuthService } from '../shared/services/auth.service';
 import { ProjectService } from '../project.service';
 import { TimeEntryService } from '../time-entry.service';
 import { AssignmentService } from '../assignment.service';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-user-list',
@@ -19,6 +23,9 @@ export class UserListComponent implements OnInit {
   projects$: Observable<any>;
   activeData = new Array;
   userProjects = new Array;
+  user_items = new Array;
+  project_items = new Array;
+  activeUsers = new Array<NewUser>;
 
   constructor(private userService: UserService, private fb: FormBuilder,
   public authService: AuthService, private projectService: ProjectService,
@@ -26,19 +33,46 @@ export class UserListComponent implements OnInit {
   private assignmentService: AssignmentService) {}
 
   ngOnInit(): void {
+    this.user_items = [
+      {label: 'Assign to Project', icon: 'pi pi-plus', command: () => {
+        console.log('assign to project');}
+      },
+      {label: 'Revoke Admin', icon: 'pi pi-ban', command: () => {
+        /*this.removeAdmin(user[0])*/ console.log('revoke admin');}
+      },
+      {label: 'Disable User', icon: 'pi pi-minus', command: () => {
+        console.log('disable user'); }
+      },
+    ];
+    this.project_items = [
+      {label: 'End Project', icon: 'pi pi-ban', command: () => {
+        console.log('end project'); }
+      },
+
+    ]
     this.inactiveUsers$ = this.userService.getDisabledUsers();
     this.userService.getUsers().subscribe((response) =>
     { for(let i = 0; i < response.length; i++){
+        this.activeUsers.push(new NewUser(response[i].uid, response[i].id, response[i].first_name,
+        response[i].last_name, response[i].email, response[i].sec_group, response[i].enabled));
+        //console.log(this.activeUsers.assignments);
         this.activeData.push([response[i], [], []]);
         this.getProjects();
         this.assignmentService.getAssignmentsByUser(response[i].id).subscribe((response2) =>
         { for(let j = 0; j < response2.length; j++){
+            this.activeUsers[i].active_assignments.push(new NewAssignment(response2[j].user_id, response2[j].project_id,
+            response2[j].project_name, response2[j].hourly_rate, response2[j].start_date, response2[j].end_date,
+            response2[j].amount, response2[j].enabled));
+            //console.log(this.activeUsers[i].assignments);
             this.activeData[i][1].push([response2[j], '', 0]);
             this.getName(response2[j].project_id, response[i].id, i, j);
           }
         });
         this.assignmentService.getDisabledAssignmentsByUser(response[i].id).subscribe((response2) =>
         { for(let j = 0; j < response2.length; j++) {
+            this.activeUsers[i].inactive_assignments.push(new NewAssignment(response2[j].user_id, response2[j].project_id,
+            response2[j].project_name, response2[j].hourly_rate, response2[j].start_date, response2[j].end_date,
+            response2[j].amount, response2[j].enabled));
             this.activeData[i][2].push([response2[j], '', 0]);
             this.getDName(response2[j].project_id, response[i].id, i, j);
           }
@@ -69,9 +103,24 @@ export class UserListComponent implements OnInit {
       }
     });
   }
+
+
+  onRowEditInit(dt: any, user: any){
+    dt.initRowEdit(user)
+    //console.log(user);
+  }
+  onRowEditSave(user: User) {
+    console.log(user);
+    this.userService.newEditUser(user).subscribe((response: any) =>
+    { console.log(response); /*this.refresh();*/ });
+  }
+  onRowEditCancel(user: User, index: number) {
+    //console.log("cancel");
+  }
   getName(project_id: number, user_id: number, u_p: number, p_p: number){
     this.projectService.getProjectName(project_id).subscribe((response) =>
     { this.activeData[u_p][1][p_p][1] = response;
+      this.activeUsers[u_p].active_assignments[p_p].project_name = response;
       for(let i = 0; i < this.userProjects[u_p].length; i++){
         if(this.userProjects[u_p][i][0] == response) {
           this.userProjects[u_p].splice(i, 1);
@@ -85,6 +134,7 @@ export class UserListComponent implements OnInit {
   getDName(project_id: number, user_id: number, u_p: number, p_p: number){
       this.projectService.getProjectName(project_id).subscribe((response) =>
       { this.activeData[u_p][2][p_p][1] = response;
+      this.activeUsers[u_p].inactive_assignments[p_p].project_name = response;
       for(let i = 0; i < this.userProjects[u_p].length; i++){
         if(this.userProjects[u_p][i][0] == response) {
           this.userProjects[u_p].splice(i, 1);
@@ -102,6 +152,7 @@ export class UserListComponent implements OnInit {
         sum += response[i].entry_value;
       }
       this.activeData[u_p][1][p_p][2] = sum;
+      this.activeUsers[u_p].active_assignments[p_p].amount = sum;
     });
   }
   getDAmount(user: number, project: number, u_p: number, p_p: number) {
@@ -111,6 +162,7 @@ export class UserListComponent implements OnInit {
           sum += response[i].entry_value;
         }
         this.activeData[u_p][2][p_p][2] = sum;
+        this.activeUsers[u_p].inactive_assignments[p_p].amount = sum;
       });
     }
 
@@ -205,12 +257,13 @@ export class UserListComponent implements OnInit {
   assignProject(user_id: number, index: number){
     let other_index = -1;
     for(let i = 0; i < this.userProjects[index].length; i++){
-      if(this.userProjects[index][i][0] == this.projectName![0]){
+      if(this.userProjects[index][i][0] == this.projectName!){
+        console.log(this.userProjects[index][i]);
         other_index = i
       }
     }
     if(this.userProjects[index][other_index][1] == true || this.hourlyRate! == 0){
-      this.projectService.getProjectId(this.projectName![0]).subscribe((response) =>
+      this.projectService.getProjectId(this.projectName!).subscribe((response) =>
       { this.assignmentService.createAssignment(user_id, response, this.hourlyRate!).subscribe((response2) =>
         { console.log(response2); this.refresh(); });
       });
