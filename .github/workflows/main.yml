@@ -18,9 +18,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - name: Install modules
-        run: |
-          cd frontend 
-          npm ci
+        run: npm ci
       - name: Build application
         run: |
           cd frontend
