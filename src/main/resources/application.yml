@@ -1,0 +1,23 @@
+spring:
+  jpa:
+    generate-ddl: false
+    hibernate:
+  ddl-auto: none
+  properties:
+    hibernate:
+      dialect: org.hibernate.dialect.MySQL8Dialect
+  mvc:
+    dispatch-options-request: true
+
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/tense-lite?createDatabaseIfNotExist=true&useSSL=true&serverTimezone=UTC
+    username: root
+    password: rootpassword
+    hikari:
+      initialization-fail-timeout: 0
+      data-source-properties:
+        cacheDefaultTimezone: false
+
+  flyway:
+    locations: classpath:/db/migration

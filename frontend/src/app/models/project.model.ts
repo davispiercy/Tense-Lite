@@ -1,0 +1,8 @@
+export interface Project {
+  id: number;
+  name: string;
+  start_date: Date;
+  end_date: Date;
+  billable: boolean;
+  enabled: boolean;
+}

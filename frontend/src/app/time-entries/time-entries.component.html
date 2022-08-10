@@ -1,0 +1,145 @@
+<div class="entries-component">
+  <div class="title">
+    <h1>Time Entries</h1>
+  </div>
+  <div>
+    <form [formGroup]="dateForm" (ngSubmit)="setDate()">
+      <label for="display-date">Date:</label>
+      <input id="display-date" type="date" formControlName="display_date">
+      <button type="submit" class="submit">Change Date</button>
+    </form>
+  </div>
+
+  <p-button (click)="addBlank(id, date)" icon="pi pi-plus" label="Add Project"></p-button>
+
+  <!--<div class="add-entry">
+    <div *ngIf="!isChecked">
+      <button class="add" (click)="showFormToggle()">Add Entry</button>
+    </div>
+
+    <div *ngIf="isChecked" class="form">
+      <form [formGroup]="entryForm">
+        <div *ngIf="editing">
+          <h3>Edit Entry</h3>
+        </div>
+        <div *ngIf="!editing">
+          <h3>New Entry</h3>
+        </div>
+        <select formControlName="pName">
+          <option value="">Select Project</option>
+          <option *ngFor="let project of projects" [ngValue]="project">
+            {{ project }}
+          </option>
+        </select> <br>
+        <label for="entry-date">Entry Date: </label>
+        <input id="entry-date" type="date" formControlName="entry_date"> <br>
+        <label for="notes">Notes: </label>
+        <input id="notes" type="text" formControlName="notes"> <br>
+        <label for="hours">Hours: </label>
+        <input id="hours" type="number" formControlName="hours"> <br>
+      </form>
+      <div *ngIf="editing">
+        <button type="submit" [disabled]="!entryForm.valid" (click)="editEntry()">Submit</button>
+      </div>
+      <div *ngIf="!editing">
+        <button type="submit" [disabled]="!entryForm.valid" (click)="onSubmit()">Submit</button>
+      </div>
+
+      <button id="cancel" (click)="showFormToggle()">Cancel</button>
+    </div>
+  </div>-->
+
+  <div id="entries" *ngIf="entries">
+    <div *ngFor="let entry of entries">
+      <!--<p-table [value]="[1]" responsiveLayout="scroll">
+        <ng-template pTemplate="body">
+          <tr>
+            <td pEditableColumn>
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <input pInputText type="text" [(ngModel)]="entry[1]">
+                </ng-template>
+                <ng-template pTemplate="output">
+                  {{entry[1]}}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+            <td pEditableColumn>
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <input pInputText type="number" [(ngModel)]="entry[0].hours">
+                </ng-template>
+                <ng-template pTemplate="output">
+                  {{entry[0].hours}} Hours
+                </ng-template>
+              </p-cellEditor>
+            </td>
+          </tr>
+          <tr>
+            <td pEditableColumn colspan="2">
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <textarea pInputTextarea [(ngModel)]="entry[0].notes" autoResisze="autoResize"></textarea>
+                </ng-template>
+                <ng-template pTemplate="output">
+                  {{entry[0].notes}}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>-->
+
+
+      <p-card header="{{entry[1]}}" subheader="{{entry[0].hours}} hours" [style]="{'width': '360px',
+      'margin': '10px', 'margin-left': 'auto', 'margin-right': 'auto'}" styleClass="p-card-shadow">
+        <p>Notes: {{entry[0].notes}}</p>
+        <ng-template pTemplate="footer">
+          <button pButton type="button" label="Edit" icon="pi pi-pencil" class="p-button-rounded"
+                  (click)="edit(entry[0], entry[1])" [style]="{'margin': '10px'}"></button>
+          <button pButton type="button" label="Delete" icon="pi pi-times" class="p-button-rounded"
+                  (click)="delete(entry[0].id)" [style]="{'margin': '10px'}"></button>
+        </ng-template>
+      </p-card>
+      <p-card [style]="{'width': '360px',
+      'margin': '10px', 'margin-left': 'auto', 'margin-right': 'auto'}" styleClass="p-card-shadow">
+        <ng-template pTemplate="header">
+          <p-dropdown [options]="projects" [(ngModel)]="entry[1]"></p-dropdown>
+        </ng-template>
+        <ng-template pTemplate="body">
+          <label for="hours"></label><br>
+          <p-inputNumber [(ngModel)]="entry[0].hours" inputId="hours" mode="decimal" [minFractionDigits]="0"
+                         [maxFractionDigits]="2" [min]="0" [max]="24"></p-inputNumber>Hours<br>
+          <textarea pInputTextarea [(ngModel)]="entry[0].notes"></textarea>
+        </ng-template>
+        <ng-template pTemplate="footer">
+          <button pButton type="button" label="Save" icon="pi pi-save" class="p-button-rounded"
+                  (click)="save(entry)" [style]="{'margin': '10px'}"></button>
+          <button pButton type="button" label="Delete" icon="pi pi-times" class="p-button-rounded"
+                  (click)="delete(entry[0].id)" [style]="{'margin': '10px'}"></button>
+        </ng-template>
+      </p-card>
+    </div>
+    <!--<table id="entry" *ngFor="let entry of entries; let i = index" [attr.data-index]=""i>
+      <tr>
+        <td>Project:</td>
+        <td>{{entry[1]}}</td>
+      </tr>
+      <tr>
+        <td>Hours:</td>
+        <td>{{entry[0].hours}}</td>
+      </tr>
+      <tr>
+        <td>Notes:</td>
+        <td>{{entry[0].notes}}</td>
+      </tr>
+      <tr>
+        <td><button class="edit" (click)="edit(entry[0], entry[1])">Edit Entry</button></td>
+        <td><button class="delete" (click)="delete(entry[0].id)">Delete Entry</button></td>
+      </tr>
+    </table>-->
+  </div>
+  <ng-template #loading>Loading...</ng-template>
+
+
+</div>

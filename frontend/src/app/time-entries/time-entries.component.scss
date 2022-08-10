@@ -1,0 +1,71 @@
+//styling for title header
+.title{
+  text-align: center;
+  width: 100%;
+  color: black;
+  padding: 20px;
+  margin-bottom: 10px;
+  height: 100px;
+}
+
+//styling for add entry button
+.add {
+  padding: 10px 10px;
+  box-shadow: 0 5px #999;
+}
+.add:hover{background-color: #3e8e41}
+
+.add:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+//styling for add entry form
+.add-entry{
+  position: center;
+}
+.form{
+  border: 2px solid black;
+  margin: 10px;
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.submit{
+  font-size: 18px;
+  height: 40px;
+}
+.submit:hover{
+  background-color: black;
+  color: white;
+}
+#display-date{
+  margin: 5px;
+  border: 2px solid black;
+  height: 40px;
+  font-size: 18px;
+}
+
+#entry{
+  border: 2px solid black;
+  margin: 10px;
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: grey;
+  color: white;
+}
+
+td{
+  padding: 10px;
+}
+
+.delete:hover{
+  background-color: red;
+  color: white;
+}
+.edit:hover{
+  background-color: #555;
+  color: white;
+}

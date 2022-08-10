@@ -1,0 +1,76 @@
+.project-list{
+  width: 100%;
+}
+.e-projects{
+  margin: 10px;
+}
+//styling for title header
+.d-projects{
+}
+
+.title{
+  text-align: center;
+  width: 100%;
+  color: black;
+  padding: 20px;
+  height: 100px;
+  margin: 10px;
+}
+
+//styling for add project button
+.add {
+  padding: 10px 10px;
+  box-shadow: 0 9px #999;
+}
+.add:hover{background-color: #3e8e41}
+
+.add:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+.add-project{
+  position: center;
+}
+
+//styling for add project form
+.form{
+  border: 2px solid black;
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
+}
+
+//styling for projects
+.project{
+  border: 2px solid black;
+  margin: 10px;
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: grey;
+  color: white;
+}
+td{
+  padding: 10px;
+}
+
+.active-projects{
+  width: 50%;
+  float: left;
+}
+
+.edit:hover{
+  background-color: #555;
+  color: white;
+}
+.disable:hover{
+  background-color: red;
+  color: white;
+}
+.enable:hover{
+  background-color: green;
+  color: white;
+}
+
+

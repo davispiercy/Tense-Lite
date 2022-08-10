@@ -1,0 +1,75 @@
+.title{
+  text-align: center;
+  width: 100%;
+  color: black;
+  padding: 20px;
+  margin-bottom: 10px;
+  height: 100px;
+}
+.add-user{
+  text-align: center;
+}
+.display-users{
+  text-align: left;
+}
+.user{
+  border: 2px solid black;
+  margin: 10px;
+  width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: grey;
+  color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  //box-shadow: 10px 10px;
+}
+td{
+  padding: 10px;
+}
+.active-users{
+  float: left;
+  width: 50%;
+}
+
+.add-user{
+  margin-left: 50%;
+  margin-right: 50%;
+  width: 100px;
+  position: center;
+}
+.add:hover{
+  background-color: yellow;
+}
+.edit:hover{
+  background-color: #555;
+  color: white;
+}
+.disable:hover{
+  background-color: red;
+  color: white;
+}
+.enable:hover{
+  background-color: green;
+  color: white;
+}
+.make-admin:hover{
+  background-color: blue;
+  color: white;
+}
+.remove-admin:hover{
+  background-color: black;
+  color: white;
+}
+.form{
+  border: 2px solid black;
+  margin: 10px;
+  width: 300px;
+}
+.display:hover{
+  background-color: blue;
+  color: white;
+}
+.hide:hover{
+  background-color: red;
+  color: white;
+}

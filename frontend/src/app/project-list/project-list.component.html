@@ -1,0 +1,271 @@
+<div class="project-list">
+
+  <div class="title">
+    <h1>Projects</h1>
+  </div>
+
+  <p-button (click)="showResponsiveDialog()" icon="pi pi-plus" label="Add Project"></p-button>
+  <p-dialog header="Add Project" [(visible)]="displayResponsive" [style]="{width: '400px', height: '350px'}"
+            [draggable]="false" [resizable]="true">
+    Project Name:
+    <input type="text" pInputText [(ngModel)]="name">
+    <span class="ml-2">{{name}}</span>
+    <div class="field col-12 md:col-4">
+      <label for="basic">Start Date: </label>
+      <p-calendar [(ngModel)]="s_date" [showIcon]="true"></p-calendar>
+    </div>
+    <div class="field col-12 md:col-4">
+      <label for="basic">End Date: </label>
+      <p-calendar [(ngModel)]="e_date" [showIcon]="true"></p-calendar>
+    </div>
+    <div class="field-checkbox">
+      <p-checkbox [(ngModel)]="billable" [binary]="true" inputId="binary"></p-checkbox>
+      <label for="binary">{{billable}}</label>
+    </div>
+    <ng-template pTemplate="footer">
+      <p-button (click)="displayResponsive=false" label="Cancel" styleClass="p-button-text"></p-button>
+      <p-button (click)="displayResponsive=false" label="Submit" styleClass="p-button-text"></p-button>
+    </ng-template>
+  </p-dialog>
+
+  <!--<div class="add-project" *ngIf="authService.isAdmin">
+    <div *ngIf="!isChecked">
+      <button class="add" (click)="showFormToggle()">Add Project</button>
+    </div>
+
+    <div *ngIf="isChecked" class="form">
+      <form [formGroup]="projectForm">
+        <div *ngIf="editing">
+          <h3>Edit Project</h3>
+        </div>
+        <div *ngIf="!editing">
+          <h3>New Project</h3>
+        </div>
+        <label for="name">Project Name: </label>
+        <input type="text" id="name" formControlName="name"> <br>
+        <label for="start-date">Start Date: </label>
+        <input id="start-date" type="date" formControlName="start_date"> <br>
+        <label for="end-date">End Date: </label>
+        <input id="end-date" type="date" formControlName="end_date"> <br>
+        <label for="billable">Billable: </label>
+        <input id="billable" type="checkbox" formControlName="billable">
+      </form>
+      <div *ngIf="editing">
+        <button type="sumbit" [disabled]="!projectForm.valid" (click)="editProject()">Submit</button>
+        <button (click)="stopEdit()">Cancel</button>
+      </div>
+      <div *ngIf="!editing">
+        <button type="sumbit" [disabled]="!projectForm.valid" (click)="onSubmit()">Submit</button>
+        <button (click)="showFormToggle()">Cancel</button>
+      </div>
+    </div>
+  </div>-->
+
+  <p-table [value]="enabledProjects" [style]="{'width': '80%', 'margin': '10px', 'margin-left': 'auto',
+    'margin-right': 'auto' }"
+           responsiveLayout="scroll" dataKey="id" editMode="row">
+    <ng-template pTemplate="caption">
+      <div class="flex align-items-center justify-content-between">
+        Active Projects
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-project let-editing="editing" let-ri="rowIndex">
+      <tr [pEditableRow]="project">
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="project.name">
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{project.name}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="date" [(ngModel)]=project.start_date>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{formatString(project.start_date)}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td *ngIf="project.end_date">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="date" [(ngModel)]="project.end_date">
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{formatString(project.end_date)}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td *ngIf="!project.end_date">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="date" [(ngModel)]="project.end_date">
+            </ng-template>
+            <ng-template pTemplate="output">
+              No End Date
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td style="text-align:center">
+          <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                  (click)="onRowEditInit(project)" class="p-button-rounded p-button-text"></button>
+          <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-ban"
+                  (click)="disable(project)" class="p-button-rounded p-button-text"></button>
+          <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                  (click)="onRowEditSave(project)" class="p-button-rounded p-button-success p-mr-2"></button>
+          <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                  (click)="onRowEditCancel(project, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+
+
+
+  <p-table [value]="disabledProjects" [style]="{'width': '80%', 'margin': '10px', 'margin-left': 'auto',
+    'margin-right': 'auto' }"
+           responsiveLayout="scroll" dataKey="id" editMode="row">
+    <ng-template pTemplate="caption">
+      <div class="flex align-items-center justify-content-between">
+        Inactive Projects
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Action</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-project let-editing="editing" let-ri="rowIndex">
+      <tr [pEditableRow]="project">
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="project.name">
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{project.name}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="date" [(ngModel)]=project.start_date>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{formatString(project.start_date)}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td *ngIf="project.end_date">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="date" [(ngModel)]="project.end_date">
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{formatString(project.end_date)}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td *ngIf="!project.end_date">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="date" [(ngModel)]="project.end_date">
+            </ng-template>
+            <ng-template pTemplate="output">
+              No End Date
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td style="text-align:center">
+          <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                  (click)="onRowEditInit(project)" class="p-button-rounded p-button-text"></button>
+          <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-check"
+                  (click)="enable(project)" class="p-button-rounded p-button-text"></button>
+          <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                  (click)="onRowEditSave(project)" class="p-button-rounded p-button-success p-mr-2"></button>
+          <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                  (click)="onRowEditCancel(project, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+          <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-plus"
+                  (click)="onRowEditAdd()" class="p-button-rounded p-button-text p-button-danger"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+
+<!--<div class="active-projects" *ngIf="enabledProjects$ | async as projects; else loading">
+  <h3>Active Projects</h3>
+  <table class="project" *ngFor="let project of projects">
+    <tr>
+      <td>Name:</td>
+      <td>{{project.name}}</td>
+    </tr>
+    <tr>
+      <td>Project ID:</td>
+      <td>{{project.id}}</td>
+    </tr>
+    <tr>
+      <td>Start Date:</td>
+      <td>{{formatString(project.start_date)}}</td>
+    </tr>
+    <tr *ngIf="project.end_date">
+      <td>End Date:</td>
+      <td>{{formatString(project.end_date)}}</td>
+    </tr>
+    <tr *ngIf="authService.isAdmin">
+      <td><button class="edit" (click)="edit(project)">Edit Project</button></td>
+      <td><button class="disable" (click)="disable(project)">Retire Project</button></td>
+    </tr>
+  </table>
+</div>-->
+
+<!--<div *ngIf="authService.isAdmin">
+  <div class="inactive-projects" *ngIf="disabledProjects$ | async as projects; else loading">
+    <h3>Inactive Projects</h3>
+    <table class="project" *ngFor="let project of projects">
+      <tr>
+        <td>Name:</td>
+        <td>{{project.name}}</td>
+      </tr>
+      <tr>
+        <td>Project ID:</td>
+        <td>{{project.id}}</td>
+      </tr>
+      <tr>
+        <td>Start Date:</td>
+        <td>{{formatString(project.start_date)}}</td>
+      </tr>
+      <tr *ngIf="project.end_date">
+        <td>End Date:</td>
+        <td>{{formatString(project.end_date)}}</td>
+      </tr>
+      <tr>-->
+        <!--<td><button class="edit" (click)="edit(project)">Edit Project</button></td>-->
+        <!--<td colspan="2"><button class="enable" (click)="enable(project)">Revive Project</button></td>
+      </tr>
+    </table>
+  </div>
+</div>-->
+
+
+
+<ng-template #loading>Loading...</ng-template>
