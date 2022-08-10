@@ -18,10 +18,14 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - name: Install modules
-        run: npm ci
+        run: |
+          cd frontend 
+          npm ci
       - name: Build application
-        run: npm run build
+        run: |
+          cd frontend
+          npm run build
       - name: Deploy to S3
-        run: aws s3 sync dist/frontend s3://tense-lite.click
+        run: aws s3 sync frontend/dist/frontend s3://tense-lite.click
       - name: Create CloudFront invalidation
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_ID }} --paths "/*"
