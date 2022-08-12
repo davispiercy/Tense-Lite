@@ -101,6 +101,11 @@ export class ProjectListComponent implements OnInit {
     //window.location.reload();
 
   }
+  addP() {
+    this.projectService.addP(this.name, this.s_date, this.e_date, this.billable).subscribe((response: any) =>
+    { console.log(response); });
+    this.displayResponsive = false;
+  }
 
   disable(project: Project) {
     this.projectService.disableProject(project).subscribe((response: any) =>

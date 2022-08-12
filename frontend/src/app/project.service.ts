@@ -27,6 +27,13 @@ export class ProjectService {
       {responseType: 'json'}
     );
   }
+  addP(name: String, s_date: Date, e_date: Date, billable: boolean): Observable<any> {
+    return this.http.post<Project>(
+      'http://localhost:8080/createProject/',
+      { "name": name, "start_date": s_date, "end_date": e_date, "billable": billable },
+      { responseType: 'json'}
+    );
+  }
   disableProject(data: any): Observable<any> {
     return this.http.patch(
       `http://localhost:8080/updateProject/`,

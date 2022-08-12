@@ -258,7 +258,6 @@ export class UserListComponent implements OnInit {
     let other_index = -1;
     for(let i = 0; i < this.userProjects[index].length; i++){
       if(this.userProjects[index][i][0] == this.projectName!){
-        console.log(this.userProjects[index][i]);
         other_index = i
       }
     }

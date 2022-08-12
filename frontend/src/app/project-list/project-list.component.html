@@ -9,22 +9,20 @@
             [draggable]="false" [resizable]="true">
     Project Name:
     <input type="text" pInputText [(ngModel)]="name">
-    <span class="ml-2">{{name}}</span>
     <div class="field col-12 md:col-4">
-      <label for="basic">Start Date: </label>
+      Start Date:
       <p-calendar [(ngModel)]="s_date" [showIcon]="true"></p-calendar>
     </div>
     <div class="field col-12 md:col-4">
-      <label for="basic">End Date: </label>
+      End Date:
       <p-calendar [(ngModel)]="e_date" [showIcon]="true"></p-calendar>
     </div>
     <div class="field-checkbox">
+      Billable:
       <p-checkbox [(ngModel)]="billable" [binary]="true" inputId="binary"></p-checkbox>
-      <label for="binary">{{billable}}</label>
     </div>
     <ng-template pTemplate="footer">
-      <p-button (click)="displayResponsive=false" label="Cancel" styleClass="p-button-text"></p-button>
-      <p-button (click)="displayResponsive=false" label="Submit" styleClass="p-button-text"></p-button>
+      <p-button (click)="addP()" label="Submit" styleClass="p-button-text"></p-button>
     </ng-template>
   </p-dialog>
 

@@ -94,20 +94,11 @@ export class AuthService {
     const user = JSON.parse(localStorage.getItem('user')!);
     return user !== null; //&& user.emailVerified !== false ? true : false;
   }
-  /*get isAdmin(): boolean {
-    const user = JSON.parse(localStorage.getItem('user')!);
-    //let admin = 'basic';
-    //let admin = this.userService.getRole(user.uid);
-
-    //setTimeout(() => console.log(admin == 'admin'), 1000);
-    return admin == 'admin';
-    //return user !== null;
-  }*/
   // Sign in with Google
   GoogleAuth() {
     return this.AuthLogin(new auth.GoogleAuthProvider()).then((res: any) => {
       if (res) {
-        this.router.navigate(['entries']);
+        this.router.navigate(['dashboard']);
       }
     });
   }
@@ -118,7 +109,7 @@ export class AuthService {
       .then((result) => {
         this.SetUserData(result.user);
         this.ngZone.run(() => {
-          this.router.navigate(['']);
+          this.router.navigate(['entries']);
         });
       })
       .catch((error) => {
@@ -129,6 +120,8 @@ export class AuthService {
   sign up with username/password and sign in with social auth
   provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
   SetUserData(user: any) {
+    localStorage.setItem('user', JSON.stringify(user));
+
     this.userService.checkIfExists(user.uid).subscribe((response: any) =>
       { if(response) {
           var eUser: User;
