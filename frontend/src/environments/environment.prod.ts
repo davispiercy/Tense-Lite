@@ -3,7 +3,7 @@ export const environment = {
   firebase: {
     apiKey: "AIzaSyCxmdN9WKdjxPbKKF60YEkrhomgBbWO7sU",
     authDomain: "tense-lite-37efa.firebaseapp.com",
-    databaseURL: "http://localhost:8080/",
+    databaseURL: "https://tense-lite.click/api",
     projectId: "tense-lite-37efa",
     storageBucket: "tense-lite-37efa.appspot.com",
     messagingSenderId: "400004221918",
