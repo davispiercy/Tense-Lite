@@ -10,9 +10,9 @@
     </form>
   </div>
 
-  <p-button (click)="addBlank(id, date)" icon="pi pi-plus" label="Add Project"></p-button>
+  <!--<p-button (click)="addBlank(id, date)" icon="pi pi-plus" label="Add Project"></p-button>-->
 
-  <!--<div class="add-entry">
+  <div class="add-entry">
     <div *ngIf="!isChecked">
       <button class="add" (click)="showFormToggle()">Add Entry</button>
     </div>
@@ -47,7 +47,7 @@
 
       <button id="cancel" (click)="showFormToggle()">Cancel</button>
     </div>
-  </div>-->
+  </div>
 
   <div id="entries" *ngIf="entries">
     <div *ngFor="let entry of entries">

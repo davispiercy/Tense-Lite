@@ -24,6 +24,7 @@ export class UserListComponent implements OnInit {
   activeData = new Array;
   userProjects = new Array;
   user_items = new Array;
+  sec_group_items = ['admin', 'basic'];
   project_items = new Array;
   activeUsers = new Array<NewUser>;
 
@@ -48,7 +49,6 @@ export class UserListComponent implements OnInit {
       {label: 'End Project', icon: 'pi pi-ban', command: () => {
         console.log('end project'); }
       },
-
     ]
     this.inactiveUsers$ = this.userService.getDisabledUsers();
     this.userService.getUsers().subscribe((response) =>
