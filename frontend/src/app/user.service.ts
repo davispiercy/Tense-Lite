@@ -34,6 +34,7 @@ export class UserService {
     return this.http.get(`${this.baseUrl}/getRole/${uid}`,{responseType: 'text'})
   }
   getName(uid: string) : Observable<any> {
+    console.log(this.baseUrl);
     return this.http.get(`${this.baseUrl}/getName/${uid}`, {responseType: 'text'})
   }
 

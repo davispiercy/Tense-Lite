@@ -3,7 +3,7 @@
   <img class="align-self-start mr-5 img-thumbnail rounded-circle" src="{{(user.photoURL) ? user.photoURL : '/assets/dummy-user.png'}}"
        alt="{{user.displayName}}">
   <div class="media-body">
-      <h2>Hello: <strong>{{(user.displayName) ? user.displayName : "Jory Hutchins"}}</strong></h2>
+      <h2>Hello: <strong>{{(name) ? name : "User"}}</strong></h2>
       <p>Email: <strong>{{user.email}}</strong></p>
   </div>
 </div>
