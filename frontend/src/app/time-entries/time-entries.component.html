@@ -11,10 +11,12 @@
   </div>
 
   <!--<p-button (click)="addBlank(id, date)" icon="pi pi-plus" label="Add Project"></p-button>-->
+  <button pButton type="button" label="Add Entry" icon="pi pi-plus" class="p-button-rounded p-button-success"
+          (click)="add_entry()"></button>
 
-  <div class="add-entry">
+  <!--<div class="add-entry">
     <div *ngIf="!isChecked">
-      <button class="add" (click)="showFormToggle()">Add Entry</button>
+      <button class="add" (click)="add_entry()">Add Entry</button>
     </div>
 
     <div *ngIf="isChecked" class="form">
@@ -47,7 +49,7 @@
 
       <button id="cancel" (click)="showFormToggle()">Cancel</button>
     </div>
-  </div>
+  </div>-->
 
   <div id="entries" *ngIf="entries">
     <div *ngFor="let entry of entries">
@@ -91,7 +93,7 @@
       </p-table>-->
 
 
-      <p-card header="{{entry[1]}}" subheader="{{entry[0].hours}} hours" [style]="{'width': '360px',
+      <!--<p-card header="{{entry[1]}}" subheader="{{entry[0].hours}} hours" [style]="{'width': '360px',
       'margin': '10px', 'margin-left': 'auto', 'margin-right': 'auto'}" styleClass="p-card-shadow">
         <p>Notes: {{entry[0].notes}}</p>
         <ng-template pTemplate="footer">
@@ -100,22 +102,21 @@
           <button pButton type="button" label="Delete" icon="pi pi-times" class="p-button-rounded"
                   (click)="delete(entry[0].id)" [style]="{'margin': '10px'}"></button>
         </ng-template>
-      </p-card>
+      </p-card>-->
       <p-card [style]="{'width': '360px',
       'margin': '10px', 'margin-left': 'auto', 'margin-right': 'auto'}" styleClass="p-card-shadow">
         <ng-template pTemplate="header">
           <p-dropdown [options]="projects" [(ngModel)]="entry[1]"></p-dropdown>
         </ng-template>
         <ng-template pTemplate="body">
-          <label for="hours"></label><br>
           <p-inputNumber [(ngModel)]="entry[0].hours" inputId="hours" mode="decimal" [minFractionDigits]="0"
-                         [maxFractionDigits]="2" [min]="0" [max]="24"></p-inputNumber>Hours<br>
-          <textarea pInputTextarea [(ngModel)]="entry[0].notes"></textarea>
+                         [maxFractionDigits]="2" [min]="0" [max]="24" [inputStyle]="{'width': '50px'}"></p-inputNumber> Hours<br><br>
+          <textarea rows="4" cols="35" pInputTextarea [(ngModel)]="entry[0].notes" ></textarea>
         </ng-template>
         <ng-template pTemplate="footer">
           <button pButton type="button" label="Save" icon="pi pi-save" class="p-button-rounded"
                   (click)="save(entry)" [style]="{'margin': '10px'}"></button>
-          <button pButton type="button" label="Delete" icon="pi pi-times" class="p-button-rounded"
+          <button pButton type="button" label="Delete" icon="pi pi-times" class="p-button-rounded p-button-danger"
                   (click)="delete(entry[0].id)" [style]="{'margin': '10px'}"></button>
         </ng-template>
       </p-card>

@@ -29,6 +29,12 @@ export class TimeEntryService {
     {responseType: 'json'}
     );
   }
+  addBlankEntry(user_id: number) {
+    return this.http.post(`${this.baseUrl}/addEntry/`,
+    { "user_id": user_id, "project_id": 1, "entry_date": new Date()},
+    { responseType: 'json' }
+    );
+  }
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/deleteEntry/${id}`);
   }

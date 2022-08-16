@@ -11,6 +11,7 @@ import { AppComponent } from '../app.component';
 import { CardModule } from 'primeng/card';
 import { SplitButtonModule} from 'primeng/splitbutton';
 
+
 @Component({
   selector: 'app-time-entries',
   templateUrl: './time-entries.component.html',
@@ -80,6 +81,10 @@ export class TimeEntryComponent implements OnInit {
       });
     }
     );
+  }
+  add_entry() {
+    this.timeEntryService.addBlankEntry(this.user_id).subscribe((response) =>
+      { console.log(response); /*this.refresh();*/ } );
   }
 
   isChecked = false;
@@ -227,3 +232,4 @@ export class TimeEntryComponent implements OnInit {
     { console.log(response); });
   }
 }
+
