@@ -6,6 +6,8 @@ import { Project } from '../models/project.model';
 import { UserService } from '../user.service';
 import { AuthService } from '../shared/services/auth.service'
 import { SelectItem } from 'primeng/api';
+import { Directive, Input, HostListener } from '@angular/core';
+import { NewProject } from '../models/new-project.model';
 
 @Component({
   selector: 'app-project-list',
@@ -22,7 +24,8 @@ export class ProjectListComponent implements OnInit {
   s_date: Date;
   e_date: Date;
   billable: boolean;
-  //clonedProjects: { [s: string]: Project; } = {};
+  projects = new Array;
+  disabled_projects = new Array;
 
   constructor(private projectService: ProjectService, private fb: FormBuilder,
   private userService: UserService, public authService: AuthService ) { }
@@ -37,6 +40,8 @@ export class ProjectListComponent implements OnInit {
           response[i].end_date = this.cdd(response[i].end_date);
         }
         this.enabledProjects.push(response[i]);
+        this.projects.push(new NewProject(response[i].id, response[i].name, response[i].start_date,
+           response[i].end_date, response[i].billable, response[i].enabled));
       }
     });
     this.projectService.getDisabledProjects().subscribe((response) =>
@@ -48,18 +53,71 @@ export class ProjectListComponent implements OnInit {
           response[i].end_date = this.cdd(response[i].end_date);
         }
         this.disabledProjects.push(response[i]);
+        this.disabled_projects.push(new NewProject(response[i].id, response[i].name, response[i].start_date,
+          response[i].end_date, response[i].billable, response[i].enabled));
       }
     });
   }
-  /*refresh() {
-    this.enabledProjects$ = this.projectService.getProjects();
-    this.disabledProjects$ = this.projectService.getDisabledProjects();
-  }*/
+  addRow(dt: any) {
+    this.projectService.addRow().subscribe((response) =>
+      {  this.refresha(dt);  /**/ });
+  }
+  refresh() {
+    //this.enabledProjects$ = this.projectService.getProjects();
+    //this.disabledProjects$ = this.projectService.getDisabledProjects();
+    this.projects = [];
+    this.disabled_projects = [];
+    this.projectService.getProjects().subscribe((response) =>
+        { for(let i = 0; i < response.length; i++){
+            if(response[i].start_date){
+              response[i].start_date = this.cdd(response[i].start_date);
+            }
+            if(response[i].end_date){
+              response[i].end_date = this.cdd(response[i].end_date);
+            }
+            this.enabledProjects.push(response[i]);
+            this.projects.push(new NewProject(response[i].id, response[i].name, response[i].start_date,
+               response[i].end_date, response[i].billable, response[i].enabled));
+          }
+        });
+    this.projectService.getDisabledProjects().subscribe((response) =>
+        { for(let i = 0; i < response.length; i++){
+            if(response[i].start_date){
+              response[i].start_date = this.cdd(response[i].start_date);
+            }
+            if(response[i].end_date){
+              response[i].end_date = this.cdd(response[i].end_date);
+            }
+            this.disabledProjects.push(response[i]);
+            this.disabled_projects.push(new NewProject(response[i].id, response[i].name, response[i].start_date,
+              response[i].end_date, response[i].billable, response[i].enabled));
+          }
+        });
+  }
+  refresha(dt: any) {
+      //this.enabledProjects$ = this.projectService.getProjects();
+      //this.disabledProjects$ = this.projectService.getDisabledProjects();
+      this.projects = []
+      this.projectService.getProjects().subscribe((response) =>
+          { for(let i = 0; i < response.length; i++){
+              if(response[i].start_date){
+                response[i].start_date = this.cdd(response[i].start_date);
+              }
+              if(response[i].end_date){
+                response[i].end_date = this.cdd(response[i].end_date);
+              }
+              this.enabledProjects.push(response[i]);
+              this.projects.push(new NewProject(response[i].id, response[i].name, response[i].start_date,
+                 response[i].end_date, response[i].billable, response[i].enabled));
+            }
+      dt.initRowEdit(this.projects[this.projects.length-1]);
+          });
+    }
   onRowEditInit(project: Project) {
     //this.clonedProjects[project.id] = {...project};
     //console.log(this.clonedProjects);
     //console.log(this.cdd(project.start_date));
-    //console.log(project.start_date)
+    console.log(project.end_date)
   }
   onRowEditSave(project: Project) {
     this.projectService.editProject(project.id, project).subscribe((response: any) =>
@@ -67,9 +125,6 @@ export class ProjectListComponent implements OnInit {
   }
   onRowEditCancel(project: Project, index: number) {
     //console.log("cancel");
-  }
-  onRowEditAdd(){
-    console.log("add user");
   }
   showResponsiveDialog(){
     this.displayResponsive = true;
@@ -109,16 +164,14 @@ export class ProjectListComponent implements OnInit {
 
   disable(project: Project) {
     this.projectService.disableProject(project).subscribe((response: any) =>
-    { console.log(response); /*this.refresh();*/ } );
+    { console.log(response); this.refresh(); } );
     this.isChecked = false;
-    //window.location.reload();
   }
 
   enable(project: Project) {
       this.projectService.enableProject(project).subscribe((response: any) =>
-      { console.log(response); /*this.refresh();*/} );
+      { console.log(response); this.refresh();} );
       this.isChecked = false;
-      //window.location.reload();
     }
   convertDateFromDate(date: String) {
       let year = date.slice(0, date.indexOf(','));

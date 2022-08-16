@@ -21,7 +21,11 @@ export class ProjectService {
   getProjectId(name: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/getProjectId/${name}`);
   }
-
+  addRow(): Observable<any> {
+    return this.http.post(`${this.baseUrl}/createProject/`,
+    { "name": '', 'start_date': new Date(), 'end_date': null},
+    { responseType: 'json'});
+  }
   addProject(data: any): Observable<any>{
     return this.http.post<Project>(
       `${this.baseUrl}/createProject/`,
@@ -39,7 +43,7 @@ export class ProjectService {
   disableProject(data: any): Observable<any> {
     return this.http.patch(
       `${this.baseUrl}/updateProject/`,
-      { "id": data.id, "name": data.name, "start_date": data.start_date, "end_date": data.end_date,
+      { "id": data.id, "name": data.name, "start_date": data.start_date, "end_date": new Date(),
       "billable": data.billable, "enabled": false},
       {responseType: 'json'}
     );
@@ -48,7 +52,7 @@ export class ProjectService {
 
       return this.http.patch(
         `${this.baseUrl}/updateProject/`,
-        { "id": data.id, "name": data.name, "start_date": data.start_date, "end_date": data.end_date,
+        { "id": data.id, "name": data.name, "start_date": data.start_date, "end_date": null,
         "billable": data.billable, "enabled": true},
         {responseType: 'json'}
       );

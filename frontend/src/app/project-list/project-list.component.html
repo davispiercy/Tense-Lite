@@ -4,28 +4,6 @@
     <h1>Projects</h1>
   </div>
 
-  <p-button (click)="showResponsiveDialog()" icon="pi pi-plus" label="Add Project"></p-button>
-  <p-dialog header="Add Project" [(visible)]="displayResponsive" [style]="{width: '400px', height: '350px'}"
-            [draggable]="false" [resizable]="true">
-    Project Name:
-    <input type="text" pInputText [(ngModel)]="name">
-    <div class="field col-12 md:col-4">
-      Start Date:
-      <p-calendar [(ngModel)]="s_date" [showIcon]="true"></p-calendar>
-    </div>
-    <div class="field col-12 md:col-4">
-      End Date:
-      <p-calendar [(ngModel)]="e_date" [showIcon]="true"></p-calendar>
-    </div>
-    <div class="field-checkbox">
-      Billable:
-      <p-checkbox [(ngModel)]="billable" [binary]="true" inputId="binary"></p-checkbox>
-    </div>
-    <ng-template pTemplate="footer">
-      <p-button (click)="addP()" label="Submit" styleClass="p-button-text"></p-button>
-    </ng-template>
-  </p-dialog>
-
   <!--<div class="add-project" *ngIf="authService.isAdmin">
     <div *ngIf="!isChecked">
       <button class="add" (click)="showFormToggle()">Add Project</button>
@@ -59,7 +37,7 @@
     </div>
   </div>-->
 
-  <p-table [value]="enabledProjects" [style]="{'width': '80%', 'margin': '10px', 'margin-left': 'auto',
+  <p-table #dt [value]="projects" [style]="{'width': '80%', 'margin': '10px', 'margin-left': 'auto',
     'margin-right': 'auto' }"
            responsiveLayout="scroll" dataKey="id" editMode="row">
     <ng-template pTemplate="caption">
@@ -69,9 +47,100 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th>Name</th>
-        <th>Start Date</th>
-        <th>End Date</th>
+        <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+        <th pSortableColumn="start_date">Start Date <p-sortIcon field="start_date"></p-sortIcon></th>
+        <th pSortableColumn="end_date">End Date <p-sortIcon field="end_date"></p-sortIcon></th>
+        <th pSortableColumn="billable">Billable <p-sortIcon field="billable"></p-sortIcon></th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-project let-editing="editing" let-ri="rowIndex">
+      <tr [pEditableRow]="project">
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="project.name">
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{project.name}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="date" [(ngModel)]=project.start_date>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{formatString(project.start_date)}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td *ngIf="project.end_date">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="date" [(ngModel)]="project.end_date">
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{formatString(project.end_date)}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td *ngIf="!project.end_date">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="date" [(ngModel)]="project.end_date">
+            </ng-template>
+            <ng-template pTemplate="output">
+              No End Date
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-checkbox [(ngModel)]="project.billable" [binary]="true" inputId="binary"></p-checkbox>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{project.billable}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td style="text-align:center">
+          <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                  (click)="onRowEditInit(project)" class="p-button-rounded p-button-text"></button>
+          <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-ban" label="Retire"
+                  (click)="disable(project)" class="p-button-rounded p-button-text p-button-danger"></button>
+          <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                  (click)="onRowEditSave(project)" class="p-button-rounded p-button-success p-mr-2"></button>
+          <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                  (click)="onRowEditCancel(project, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <button pButton type="button" icon="pi pi-plus" class="ui-button-info" [label]="'Add Project'"
+              (click)="addRow(dt)"></button>
+    </ng-template>
+  </p-table>
+
+
+
+
+
+  <p-table [value]="disabled_projects" [style]="{'width': '80%', 'margin': '10px', 'margin-left': 'auto',
+    'margin-right': 'auto' }"
+           responsiveLayout="scroll" dataKey="id" editMode="row">
+    <ng-template pTemplate="caption">
+      <div class="flex align-items-center justify-content-between">
+        Inactive Projects
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+        <th pSortableColumn="start_date">Start Date <p-sortIcon field="start_date"></p-sortIcon></th>
+        <th pSortableColumn="end_date">End Date <p-sortIcon field="end_date"></p-sortIcon></th>
         <th></th>
       </tr>
     </ng-template>
@@ -118,91 +187,8 @@
           </p-cellEditor>
         </td>
         <td style="text-align:center">
-          <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
-                  (click)="onRowEditInit(project)" class="p-button-rounded p-button-text"></button>
-          <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-ban"
-                  (click)="disable(project)" class="p-button-rounded p-button-text"></button>
-          <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
-                  (click)="onRowEditSave(project)" class="p-button-rounded p-button-success p-mr-2"></button>
-          <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
-                  (click)="onRowEditCancel(project, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-
-
-
-
-  <p-table [value]="disabledProjects" [style]="{'width': '80%', 'margin': '10px', 'margin-left': 'auto',
-    'margin-right': 'auto' }"
-           responsiveLayout="scroll" dataKey="id" editMode="row">
-    <ng-template pTemplate="caption">
-      <div class="flex align-items-center justify-content-between">
-        Inactive Projects
-      </div>
-    </ng-template>
-    <ng-template pTemplate="header">
-      <tr>
-        <th>Name</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th>Action</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-project let-editing="editing" let-ri="rowIndex">
-      <tr [pEditableRow]="project">
-        <td>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <input pInputText type="text" [(ngModel)]="project.name">
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{project.name}}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-        <td>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <input pInputText type="date" [(ngModel)]=project.start_date>
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{formatString(project.start_date)}}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-        <td *ngIf="project.end_date">
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <input pInputText type="date" [(ngModel)]="project.end_date">
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{formatString(project.end_date)}}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-        <td *ngIf="!project.end_date">
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <input pInputText type="date" [(ngModel)]="project.end_date">
-            </ng-template>
-            <ng-template pTemplate="output">
-              No End Date
-            </ng-template>
-          </p-cellEditor>
-        </td>
-        <td style="text-align:center">
-          <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
-                  (click)="onRowEditInit(project)" class="p-button-rounded p-button-text"></button>
-          <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-check"
-                  (click)="enable(project)" class="p-button-rounded p-button-text"></button>
-          <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
-                  (click)="onRowEditSave(project)" class="p-button-rounded p-button-success p-mr-2"></button>
-          <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
-                  (click)="onRowEditCancel(project, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
-          <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-plus"
-                  (click)="onRowEditAdd()" class="p-button-rounded p-button-text p-button-danger"></button>
+          <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-check" label="Activate"
+                  (click)="enable(project)" class="p-button-rounded p-button-text p-button-success"></button>
         </td>
       </tr>
     </ng-template>
