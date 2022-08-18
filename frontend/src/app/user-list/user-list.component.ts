@@ -35,8 +35,8 @@ export class UserListComponent implements OnInit {
 
   ngOnInit(): void {
     this.user_items = [
-      {label: 'Assign to Project', icon: 'pi pi-plus', command: () => {
-        console.log('assign to project');}
+      {label: 'Assign to Project', icon: 'pi pi-plus', command: (x: any) => {
+        console.log(x);}
       },
       {label: 'Revoke Admin', icon: 'pi pi-ban', command: () => {
         /*this.removeAdmin(user[0])*/ console.log('revoke admin');}
@@ -84,18 +84,27 @@ export class UserListComponent implements OnInit {
     this.inactiveUsers$ = this.userService.getDisabledUsers();
     this.activeData = new Array;
     this.userProjects = new Array;
+    this.activeUsers = new Array;
     this.userService.getUsers().subscribe((response) =>
     { for(let i = 0; i < response.length; i++){
+        this.activeUsers.push(new NewUser(response[i].uid, response[i].id, response[i].first_name,
+        response[i].last_name, response[i].email, response[i].sec_group, response[i].enabled));
         this.activeData.push([response[i], [], []]);
         this.getProjects();
         this.assignmentService.getAssignmentsByUser(response[i].id).subscribe((response2) =>
         { for(let j = 0; j < response2.length; j++){
+            this.activeUsers[i].active_assignments.push(new NewAssignment(response2[j].user_id, response2[j].project_id,
+              response2[j].project_name, response2[j].hourly_rate, response2[j].start_date, response2[j].end_date,
+              response2[j].amount, response2[j].enabled));
             this.activeData[i][1].push([response2[j], '', 0]);
             this.getName(response2[j].project_id, response[i].id, i, j);
           }
         });
         this.assignmentService.getDisabledAssignmentsByUser(response[i].id).subscribe((response2) =>
         { for(let j = 0; j < response2.length; j++) {
+            this.activeUsers[i].inactive_assignments.push(new NewAssignment(response2[j].user_id, response2[j].project_id,
+              response2[j].project_name, response2[j].hourly_rate, response2[j].start_date, response2[j].end_date,
+              response2[j].amount, response2[j].enabled));
             this.activeData[i][2].push([response2[j], '', 0]);
             this.getDName(response2[j].project_id, response[i].id, i, j);
           }
@@ -109,13 +118,25 @@ export class UserListComponent implements OnInit {
     dt.initRowEdit(user)
     //console.log(user);
   }
-  onRowEditSave(user: User) {
+  onUserRowEditSave(user: User) {
     console.log(user);
     this.userService.newEditUser(user).subscribe((response: any) =>
     { console.log(response); /*this.refresh();*/ });
   }
-  onRowEditCancel(user: User, index: number) {
+  onUserRowEditCancel(user: User, index: number) {
     //console.log("cancel");
+    this.refresh();
+  }
+  onProjectRowEditSave(project: any) {
+    console.log(project);
+    this.assignmentService.editAssignment(project).subscribe((response) =>
+      { console.log(response); });
+    //this.userService.newEditUser(user).subscribe((response: any) =>
+    //{ console.log(response); /*this.refresh();*/ });
+  }
+  onProjectRowEditCancel(project: any, index: number) {
+    //console.log("cancel");
+    this.refresh();
   }
   getName(project_id: number, user_id: number, u_p: number, p_p: number){
     this.projectService.getProjectName(project_id).subscribe((response) =>
@@ -298,13 +319,13 @@ export class UserListComponent implements OnInit {
       hourlyRate: data.hourly_rate,
     });
   }
-  editPAssignment(index: number) {
+  /*editPAssignment(index: number) {
     this.assignmentService.editAssignment(this.a_id, this.p_id, this.s_date, this.assignForm.value).subscribe((response) =>
     { console.log(response); this.refresh(); });
     this.aEditing = false;
     this.hideAssign(index);
     //window.location.reload();
-  }
+  }*/
   getProjects() {
     this.projectService.getProjects().subscribe((response) =>
     { let temp = new Array;

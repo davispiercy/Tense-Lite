@@ -58,8 +58,8 @@ tasks.withType<Test> {
 }
 
 flyway {
-	url = "jdbc:mysql://127.0.0.1:3306/tense-lite?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC"
-	user = "root"
-	password = "rootpassword"
+	url = "jdbc:mysql://tenselite.cqiaew1yudy1.us-east-1.rds.amazonaws.com?createDatabaseIfNotExist=true&useSSL=true&serverTimezone=UTC"
+	user = "admin"
+	password = "Soccerplayer11"
 	locations = arrayOf("filesystem:src/main/resources/db/migration")
 }

@@ -78,6 +78,7 @@ import {CheckboxModule} from 'primeng/checkbox';
     DialogModule,
     CalendarModule,
     CheckboxModule,
+    ToastModule,
   ],
   //providers: [],
   providers: [ { provide: HTTP_INTERCEPTORS, useClass: MyInterceptor, multi: true }

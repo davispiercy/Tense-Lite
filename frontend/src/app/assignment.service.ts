@@ -29,12 +29,19 @@ export class AssignmentService {
       {responseType: 'json'}
     );
   }
-  editAssignment(user_id: number, project_id: number, start_date: Array<number>, data: any): Observable<any> {
+  /*editAssignment(user_id: number, project_id: number, start_date: Array<number>, data: any): Observable<any> {
     console.log(data);
     return this.http.patch(`${this.baseUrl}/editAssignment/`,
     { "user_id": user_id, "project_id": project_id, "hourly_rate": data.hourlyRate,
       "start_date": start_date },
       {responseType: 'json'}
+    );
+  }*/
+  editAssignment(data: any): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/editAssignment/`,
+    { "user_id": data.user_id, "project_id": data.project_id, "hourly_rate": data.hourly_rate,
+      "start_date": data.start_date, "end_date": data.end_date },
+    {responseType: 'json'}
     );
   }
   restartAssignment(data: any): Observable<any> {

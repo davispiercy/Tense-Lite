@@ -34,5 +34,4 @@ interface UserRepository: JpaRepository<User, Long> {
     @Query("select (count(u) > 0) from User u where u.uid = ?1")
     fun checkIfExists(uid: String): Boolean
 
-
 }

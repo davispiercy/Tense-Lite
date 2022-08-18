@@ -5,6 +5,7 @@
   <div class="media-body">
       <h2>Hello: <strong>{{(name) ? name : "User"}}</strong></h2>
       <p>Email: <strong>{{user.email}}</strong></p>
+      <p>Admin: <strong>{{authService.isAdmin}}</strong></p>
   </div>
 </div>
 <ng-template #loading>Loading...</ng-template>

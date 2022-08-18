@@ -10,14 +10,14 @@ spring:
     dispatch-options-request: true
 
   datasource:
-    driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/tense-lite?createDatabaseIfNotExist=true&useSSL=true&serverTimezone=UTC
-    username: root
-    password: rootpassword
+    url: jdbc:mysql://tenselite.cqiaew1yudy1.us-east-1.rds.amazonaws.com/tenselite?createDatabaseIfNotExist=true&useSSL=true&serverTimezone=UTC
+    username: admin
+    password: Soccerplayer11
     hikari:
       initialization-fail-timeout: 0
       data-source-properties:
         cacheDefaultTimezone: false
 
   flyway:
+    baselineOnMigrate: true
     locations: classpath:/db/migration

@@ -1,10 +1,7 @@
 package com.jahnelgroup.tenselite.tenselite.service
 
-import com.fasterxml.jackson.databind.util.JSONPObject
 import com.jahnelgroup.tenselite.tenselite.entity.User
 import com.jahnelgroup.tenselite.tenselite.repository.UserRepository
-import org.apache.tomcat.util.json.JSONParser
-import org.springframework.boot.json.GsonJsonParser
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -29,10 +26,10 @@ class UserService (val userRepository: UserRepository){
         return userRepository.getUserById(uid)
     }
     fun getEnabledUsers(): List<User> {
-        return userRepository.findByEnabledTrue();
+        return userRepository.findByEnabledTrue()
     }
     fun getDisabledUsers(): List<User> {
-        return userRepository.findByDisabled();
+        return userRepository.findByDisabled()
     }
     fun getRole(uid: String): String {
         return userRepository.getRole(uid)
@@ -49,7 +46,7 @@ class UserService (val userRepository: UserRepository){
         return user
     }
     fun deleteUser(user_id: Long) : Optional<User> {
-        var user: Optional<User> = userRepository.findById(user_id)
+        val user: Optional<User> = userRepository.findById(user_id)
         userRepository.deleteById(user_id)
         return user
     }

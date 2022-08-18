@@ -10,12 +10,14 @@ import { AssignmentService } from '../assignment.service';
 import { AppComponent } from '../app.component';
 import { CardModule } from 'primeng/card';
 import { SplitButtonModule} from 'primeng/splitbutton';
+import { MessageService } from 'primeng/api';
 
 
 @Component({
   selector: 'app-time-entries',
   templateUrl: './time-entries.component.html',
-  styleUrls: ['./time-entries.component.scss']
+  styleUrls: ['./time-entries.component.scss'],
+  providers: [MessageService]
 })
 export class TimeEntryComponent implements OnInit {
   entries = new Array;
@@ -32,7 +34,8 @@ export class TimeEntryComponent implements OnInit {
   notes: String;
   constructor(private timeEntryService: TimeEntryService, private fb: FormBuilder,
   private userService: UserService, public authService: AuthService, public projectService: ProjectService,
-  private assignmentService: AssignmentService, public appComponent: AppComponent) { }
+  private assignmentService: AssignmentService, public appComponent: AppComponent,
+  private messageService: MessageService) { }
 
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user')!);
@@ -84,7 +87,7 @@ export class TimeEntryComponent implements OnInit {
   }
   add_entry() {
     this.timeEntryService.addBlankEntry(this.user_id).subscribe((response) =>
-      { console.log(response); /*this.refresh();*/ } );
+      { console.log(response); this.refresh(); });
   }
 
   isChecked = false;
@@ -221,7 +224,9 @@ export class TimeEntryComponent implements OnInit {
       { this.projectService.getProjectId(entry[1]).subscribe((response2) =>
         { this.assignmentService.getAssignment(entry[0].user_id, response2).subscribe((response3) =>
           { this.timeEntryService.addEntry(entry[0].user_id, response2, entry[0], response3.hourly_rate).subscribe((response4) =>
-            { console.log(response4); });
+            { console.log(response4);
+              this.messageService.add({severity: 'success', summary: 'Success', detail: 'Time Entry Saved!'});
+            });
           });
         });
       });

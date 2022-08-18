@@ -14,9 +14,9 @@
       <th pSortableColumn="first_name">First Name <p-sortIcon field="first_name"></p-sortIcon></th>
       <th pSortableColumn="last_name">Last Name <p-sortIcon field="last_name"></p-sortIcon></th>
       <th>Email</th>
-      <th pSortableColumn="sec_group">Security Group <p-sortIcon field="sec_group"></p-sortIcon></th>
-      <th>Projects</th>
-      <th></th>
+      <th *ngIf="authService.isAdmin" pSortableColumn="sec_group">Security Group <p-sortIcon field="sec_group"></p-sortIcon></th>
+      <th *ngIf="authService.isAdmin">Projects</th>
+      <th *ngIf="authService.isAdmin"></th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-user let-expanded="expanded" let-editing="editing" let-ri="rowIndex">
@@ -42,20 +42,20 @@
         </p-cellEditor>
       </td>
       <td>{{user.email}}</td>
-      <td>{{user.sec_group}}</td>
-      <td>
+      <td *ngIf="authService.isAdmin">{{user.sec_group}}</td>
+      <td *ngIf="authService.isAdmin">
         <button type="button" pButton pRipple [pRowToggler]="user" class="p-button-text p-button-rounded
         p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
       </td>
-      <td style="text-align:center">
+      <td *ngIf="authService.isAdmin" style="text-align:center">
         <!--<button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
                 (click)="onRowEditInit(user)" class="p-button-rounded p-button-text"></button>-->
         <p-splitButton *ngIf="!editing" label="Edit" icon="pi pi-pencil" (onClick)="onRowEditInit(dt, user)"
                        [model]="user_items"></p-splitButton>
         <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
-                (click)="onRowEditSave(user)" class="p-button-rounded p-button-success p-mr-2"></button>
+                (click)="onUserRowEditSave(user)" class="p-button-rounded p-button-success p-mr-2"></button>
         <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
-                (click)="onRowEditCancel(user, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                (click)="onUserRowEditCancel(user, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
       </td>
     </tr>
   </ng-template>
@@ -63,7 +63,7 @@
     <tr>
       <td colspan="7">
         <div class="p-3">
-          <p-table [value]="user.active_assignments">
+          <p-table #ds [value]="user.active_assignments" editMode="row">
             <ng-template pTemplate="caption">
               <div class="flex align-items-center justify-content-between">
                 Active Projects
@@ -74,29 +74,34 @@
                 <th pSortableColumn="project_name">Name <p-sortIcon field="project_name"></p-sortIcon></th>
                 <th pSortableColumn="hourly_rate">Hourly Rate <p-sortIcon field="hourly_rate"></p-sortIcon></th>
                 <th pSortableColumn="amount">Amount Billed <p-sortIcon field="amount"></p-sortIcon></th>
+                <th></th>
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-project let-editing="editing" let-rj="rowIndex">
               <tr [pEditableRow]="project">
+                <td>{{project.project_name}}</td>
                 <td>
                   <p-cellEditor>
                     <ng-template pTemplate="input">
-                      <input pInputText type="text" [(ngModel)]="project.project_name">
+                      <input pInputNumber type="number" [(ngModel)]="project.hourly_rate">
                     </ng-template>
                     <ng-template pTemplate="output">
-                      {{project.project_name}}
+                      {{project.hourly_rate | currency: 'USD'}}
                     </ng-template>
                   </p-cellEditor>
                 </td>
-                <td>{{project.hourly_rate | currency: 'USD'}}</td>
                 <td>{{project.amount | currency: 'USD'}}</td>
                 <td>
-                  <p-splitButton *ngIf="!editing" label="Edit" icon="pi pi-pencil" (onClick)="onRowEditInit(dt, project)"
-                                 [model]="project_items"></p-splitButton>
+                  <!--<p-splitButton *ngIf="!editing" label="Edit" icon="pi pi-pencil" (onClick)="onRowEditInit(dt, project)"
+                                 [model]="project_items"></p-splitButton>-->
+                  <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-pencil"
+                          (click)="onRowEditInit(ds, project)" class="p-button-rounded p-button-text"></button>
+                  <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-ban"
+                          (click)="endAssignment(project)" class="p-button-rounded p-button-text"></button>
                   <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
-                          (click)="onRowEditSave(project)" class="p-button-rounded p-button-success p-mr-2"></button>
+                          (click)="onProjectRowEditSave(project)" class="p-button-rounded p-button-success p-mr-2"></button>
                   <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
-                          (click)="onRowEditCancel(project, rj)" class="p-button-rounded p-button-text p-button-danger"></button>
+                          (click)="onProjectRowEditCancel(project, rj)" class="p-button-rounded p-button-text p-button-danger"></button>
                 </td>
               </tr>
             </ng-template>
@@ -119,6 +124,7 @@
                 <td>{{project.project_name}}</td>
                 <td>{{project.hourly_rate | currency: 'USD'}}</td>
                 <td>{{project.amount | currency: 'USD'}}</td>
+                <td><button pButton pRipple type="button" (click)="restartAssignment(project)" label="Restart"></button></td>
               </tr>
             </ng-template>
           </p-table>

@@ -50,8 +50,8 @@
         <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
         <th pSortableColumn="start_date">Start Date <p-sortIcon field="start_date"></p-sortIcon></th>
         <th pSortableColumn="end_date">End Date <p-sortIcon field="end_date"></p-sortIcon></th>
-        <th pSortableColumn="billable">Billable <p-sortIcon field="billable"></p-sortIcon></th>
-        <th></th>
+        <th *ngIf="authService.isAdmin" pSortableColumn="billable">Billable <p-sortIcon field="billable"></p-sortIcon></th>
+        <th *ngIf="authService.isAdmin"></th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-project let-editing="editing" let-ri="rowIndex">
@@ -96,7 +96,7 @@
             </ng-template>
           </p-cellEditor>
         </td>
-        <td>
+        <td *ngIf="authService.isAdmin">
           <p-cellEditor>
             <ng-template pTemplate="input">
               <p-checkbox [(ngModel)]="project.billable" [binary]="true" inputId="binary"></p-checkbox>
@@ -106,10 +106,10 @@
             </ng-template>
           </p-cellEditor>
         </td>
-        <td style="text-align:center">
+        <td *ngIf="authService.isAdmin" style="text-align:center">
           <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
                   (click)="onRowEditInit(project)" class="p-button-rounded p-button-text"></button>
-          <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-ban" label="Retire"
+          <button *ngIf="!editing" pButton pRipple type="button" label="Retire"
                   (click)="disable(project)" class="p-button-rounded p-button-text p-button-danger"></button>
           <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
                   (click)="onRowEditSave(project)" class="p-button-rounded p-button-success p-mr-2"></button>
@@ -119,16 +119,12 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="footer">
-      <button pButton type="button" icon="pi pi-plus" class="ui-button-info" [label]="'Add Project'"
+      <button *ngIf="authService.isAdmin" pButton type="button" icon="pi pi-plus" class="ui-button-info" [label]="'Add Project'"
               (click)="addRow(dt)"></button>
     </ng-template>
   </p-table>
 
-
-
-
-
-  <p-table [value]="disabled_projects" [style]="{'width': '80%', 'margin': '10px', 'margin-left': 'auto',
+  <p-table *ngIf="authService.isAdmin" [value]="disabled_projects" [style]="{'width': '80%', 'margin': '10px', 'margin-left': 'auto',
     'margin-right': 'auto' }"
            responsiveLayout="scroll" dataKey="id" editMode="row">
     <ng-template pTemplate="caption">
@@ -187,7 +183,7 @@
           </p-cellEditor>
         </td>
         <td style="text-align:center">
-          <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-check" label="Activate"
+          <button *ngIf="!editing" pButton pRipple type="button" label="Activate"
                   (click)="enable(project)" class="p-button-rounded p-button-text p-button-success"></button>
         </td>
       </tr>
