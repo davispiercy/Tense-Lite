@@ -50,8 +50,11 @@
       <td *ngIf="authService.isAdmin" style="text-align:center">
         <!--<button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
                 (click)="onRowEditInit(user)" class="p-button-rounded p-button-text"></button>-->
-        <p-splitButton *ngIf="!editing" label="Edit" icon="pi pi-pencil" (onClick)="onRowEditInit(dt, user)"
-                       [model]="user_items"></p-splitButton>
+        <!--<p-splitButton *ngIf="!editing" label="Edit" icon="pi pi-pencil" (onClick)="onRowEditInit(dt, user)"
+                       [model]="user_items"></p-splitButton>-->
+        <button *ngIf="!editing" pButton pRipple type="button" (click)="onRowEditInit(dt, user)" icon="pi pi-pencil" class="p-button-rounded p-mr-2"></button>
+        <button *ngIf="!editing" pButton pRipple type="button" (click)="disable(user)" icon="pi pi-ban" class="p-button-rounded p-button-danger p-mr-2"></button>
+        <button *ngIf="!editing" pButton pRipple type="button" (click)="newAssign(user)" icon="pi pi-plus" class="p-button-rounded p-button-success p-mr-2"></button>
         <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
                 (click)="onUserRowEditSave(user)" class="p-button-rounded p-button-success p-mr-2"></button>
         <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"

@@ -11,7 +11,7 @@ class WebMvcConfig : WebMvcConfigurer {
 
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
-            .allowedOrigins("http://localhost:4200")
+            .allowedOrigins("http://localhost:4200", "http://tense-lite.click")
             .allowedMethods("HEAD", "OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE")
             .allowedHeaders("*")
             .allowCredentials(true)

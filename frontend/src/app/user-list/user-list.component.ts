@@ -223,6 +223,9 @@ export class UserListComponent implements OnInit {
       { console.log(response); this.refresh(); } );
       //window.location.reload();
   }
+  newAssign(user: User) {
+    console.log(this.userProjects); //this has the projects each user could be assigned to
+  }
   id: number = 0;
   uid: string;
   edit(user: User) {
