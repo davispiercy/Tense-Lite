@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://localhost:8080",
+  apiUrl: "https://api.tense-lite.com",
   firebase: {
     apiKey: "AIzaSyCxmdN9WKdjxPbKKF60YEkrhomgBbWO7sU",
     authDomain: "tense-lite-37efa.firebaseapp.com",

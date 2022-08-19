@@ -95,8 +95,6 @@ export class ProjectListComponent implements OnInit {
         });
   }
   refresha(dt: any) {
-      //this.enabledProjects$ = this.projectService.getProjects();
-      //this.disabledProjects$ = this.projectService.getDisabledProjects();
       this.projects = []
       this.projectService.getProjects().subscribe((response) =>
           { for(let i = 0; i < response.length; i++){
@@ -114,17 +112,17 @@ export class ProjectListComponent implements OnInit {
           });
     }
   onRowEditInit(project: Project) {
-    //this.clonedProjects[project.id] = {...project};
-    //console.log(this.clonedProjects);
-    //console.log(this.cdd(project.start_date));
-    console.log(project.end_date)
+
   }
   onRowEditSave(project: Project) {
     this.projectService.editProject(project.id, project).subscribe((response: any) =>
-        { console.log(response); /*this.refresh();*/ });
+        { console.log(response); });
   }
   onRowEditCancel(project: Project, index: number) {
-    //console.log("cancel");
+    if(project.name == ''){
+      this.projectService.deleteProject(project).subscribe((response) =>
+      { console.log(response); this.refresh(); });
+    }
   }
   showResponsiveDialog(){
     this.displayResponsive = true;
@@ -153,8 +151,6 @@ export class ProjectListComponent implements OnInit {
     this.projectService.addProject(this.projectForm.value).subscribe((response: any) =>
     { console.log(response); /*this.refresh();*/ });
     this.isChecked = false;
-    //window.location.reload();
-
   }
   addP() {
     this.projectService.addP(this.name, this.s_date, this.e_date, this.billable).subscribe((response: any) =>
@@ -215,7 +211,6 @@ export class ProjectListComponent implements OnInit {
     else if(month == 10){r_month='October'}
     else if(month == 11){r_month='November'}
     else{r_month='December'}
-    //return this.month + ' ' + date[2] + ', ' + date[0]
     return r_month + ' ' + date.substring(8,10) + ', ' + date.substring(0,4);
   }
   id: number = 0;
@@ -241,7 +236,6 @@ export class ProjectListComponent implements OnInit {
     { console.log(response); /*this.refresh();*/});
     this.editing = false;
     this.isChecked = false;
-    //window.location.reload();
   }
   stopEdit() {
     this.editing = false;

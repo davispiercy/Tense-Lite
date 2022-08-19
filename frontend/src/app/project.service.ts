@@ -48,6 +48,9 @@ export class ProjectService {
       {responseType: 'json'}
     );
   }
+  deleteProject(data: any): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/deleteProject/${data.id}`);
+  }
   enableProject(data: any): Observable<any> {
 
       return this.http.patch(
